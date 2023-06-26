@@ -1,4 +1,5 @@
-# essentials
+# VTFYPANEL - Vuetify Panel
+Este é um painel com Vuetify 3 utilizando a API LAPI(https://www.github.com/ernandesrs/pproj_lapi), é um projeto de estudo do Vuetify 3.
 
 ## Project setup
 
