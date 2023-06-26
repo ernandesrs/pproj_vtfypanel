@@ -39,8 +39,8 @@
                     <p>{{ computedUserFromStore.email }}</p>
                   </div>
                   <div class="d-flex justify-center">
-                    <v-btn elevation="0" prepend-icon="mdi-account" size="small" text="Perfil"
-                      class="ma-1" :to="{ name: 'app.profile' }"></v-btn>
+                    <v-btn elevation="0" prepend-icon="mdi-account" size="small" text="Perfil" class="ma-1"
+                      :to="{ name: 'app.profile' }"></v-btn>
                     <v-btn @click.stop="methodLogout" elevation="0" color="red" prepend-icon="mdi-logout" size="small"
                       :loading="logouting" text="Sair" class="ma-1"></v-btn>
                   </div>
@@ -52,8 +52,10 @@
       </template>
     </v-app-bar>
 
-    <v-main class="d-flex align-center justify-center" style="min-height: 300px;">
-      <router-view />
+    <v-main>
+      <v-container>
+        <router-view />
+      </v-container>
     </v-main>
   </v-layout>
 </template>
