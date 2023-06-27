@@ -1,5 +1,6 @@
 // Composables
 import { createRouter, createWebHistory } from 'vue-router'
+import middleware from '../services/middleware'
 
 const routes = [
   {
@@ -12,44 +13,45 @@ const routes = [
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
+        beforeEnter: middleware.redirectIfUnauthenticated,
         component: () => import(/* webpackChunkName: "home" */ '@/views/HomeView.vue'),
       },
       {
         path: '/assinaturas',
         name: 'app.subscriptions',
+        beforeEnter: middleware.redirectIfUnauthenticated,
         component: () => import('@/views/SubscriptionsView.vue')
       },
       {
         path: '/assinaturas/nova-assinatura',
         name: 'app.subscriptions.new',
+        beforeEnter: middleware.redirectIfUnauthenticated,
         component: () => import('@/views/SubscriptionsNewView.vue')
       },
       {
         path: '/cartoes',
         name: 'app.cards',
+        beforeEnter: middleware.redirectIfUnauthenticated,
         component: () => import('@/views/CardsView.vue')
       },
       {
         path: '/perfil',
         name: 'app.profile',
+        beforeEnter: middleware.redirectIfUnauthenticated,
         component: () => import('@/views/ProfileView.vue')
       }
     ],
   },
   {
     path: '/auth',
-    component: () => import(''),
+    component: () => import('@/layouts/auth/Default.vue'),
     children: [
       {
         path: 'login',
         name: 'auth.login',
-        component: () => import(/* webpackChunkName: "home" */ '@/views/HomeView.vue'),
-      },
-      {
-        path: 'logout',
-        name: 'auth.logout',
-        component: () => import(/* webpackChunkName: "home" */ '@/views/HomeView.vue'),
-      },
+        beforeEnter: middleware.redirectIfAuthenticated,
+        component: () => import('@/views/LoginView.vue'),
+      }
     ]
   }
 ]

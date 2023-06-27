@@ -15,6 +15,9 @@ export const useAppStore = defineStore('app', {
   actions: {
     updateBreadcrumbs(appBreadcrumbs) {
       this.appBreadcrumbs = appBreadcrumbs;
+    },
+    updateAppUser(appUser) {
+      this.appUser = appUser;
     }
   }
 })
