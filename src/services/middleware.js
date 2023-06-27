@@ -1,4 +1,4 @@
-import store from '../store';
+import { useAppStore } from '@/store/app';
 import axios from '../plugins/axios';
 import token from '../services/token';
 // import alerts from '../services/alerts';
@@ -27,7 +27,7 @@ export default {
         }
 
         axios.request('/me', {}, 'get').then((resp) => {
-            store.commit('appUser', resp.data.user);
+            useAppStore().updateAppUser(resp.data.user);
 
             next()
         }).catch((resp) => {
