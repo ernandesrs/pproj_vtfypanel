@@ -17,7 +17,7 @@
               <template v-slot:activator="{ props: tooltip }">
                 <v-btn color="primary" v-bind="mergeProps(menu, tooltip)">
                   <v-avatar size="36" color="primary">
-                    <v-img v-if="computedUserFromStore.photo_thumb" :src="computedUserFromStore.photo_thumb"></v-img>
+                    <v-img v-if="computedUserFromStore.photo_url" :src="computedUserFromStore.photo_url"></v-img>
                     <span v-else class="text-h8">{{ computedUserFromStore.first_name[0] }}{{
                       computedUserFromStore.last_name[0] }}</span>
                   </v-avatar>
@@ -30,7 +30,7 @@
               <v-card>
                 <v-card-text>
                   <v-avatar size="100" color="primary">
-                    <v-img v-if="computedUserFromStore.photo_thumb" :src="computedUserFromStore.photo_thumb"></v-img>
+                    <v-img v-if="computedUserFromStore.photo_url" :src="computedUserFromStore.photo_url"></v-img>
                     <span v-else class="text-h4">{{ computedUserFromStore.first_name[0] }}{{
                       computedUserFromStore.last_name[0] }}</span>
                   </v-avatar>
