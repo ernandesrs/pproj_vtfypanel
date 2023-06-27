@@ -85,6 +85,7 @@
 
 import { useAppStore } from '@/store/app';
 import ActionsBar from '@/components/ActionsBar.vue';
+import axios from '@/plugins/axios';
 
 export default {
   components: { ActionsBar },
@@ -113,32 +114,7 @@ export default {
         dialog: false,
         data: {}
       },
-      subscriptions: [
-        {
-          id: 4,
-          starts_in: '2023-06-01',
-          ends_in: '2023-12-01',
-          status: 'active'
-        },
-        {
-          id: 3,
-          starts_in: '2023-01-01',
-          ends_in: '2023-06-01',
-          status: 'pending'
-        },
-        {
-          id: 2,
-          starts_in: '2023-01-01',
-          ends_in: '2023-06-01',
-          status: 'canceled'
-        },
-        {
-          id: 1,
-          starts_in: '2023-01-01',
-          ends_in: '2023-06-01',
-          status: 'ended'
-        }
-      ]
+      subscriptions: []
     };
   },
   created() {
@@ -154,6 +130,20 @@ export default {
         to: { name: 'app.subscriptions' }
       }
     ]);
+
+    axios.req({
+      action: '/dash/subscriptions',
+      method: 'get',
+      success: (resp) => {
+        if (resp.data.subscriptions) {
+          this.subscriptions = resp.data.subscriptions;
+          let active = this.subscriptions.find((item, index) => { return item.status == 'active'; });
+          if (active?.id) {
+            this.hasActiveSubscription = true;
+          }
+        }
+      }
+    });
   },
   methods: {
     methodShowSubscription(event) {
