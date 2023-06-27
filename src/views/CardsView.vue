@@ -90,6 +90,7 @@
 import { useAppStore } from '@/store/app';
 import Confirmation from '@/components/Confirmation.vue';
 import ActionsBar from '@/components/ActionsBar.vue';
+import axios from '@/plugins/axios';
 
 export default {
   components: { Confirmation, ActionsBar },
@@ -154,40 +155,7 @@ export default {
         errors: {},
         submitting: false
       },
-      cards: [
-        {
-          id: 4,
-          name: 'Visa Final 8989',
-          number: "**** **** **** 8989",
-          last_digits: 8989,
-          brand: "visa",
-          expiration_date: "0226"
-        },
-        {
-          id: 3,
-          name: 'Visa Final 8989',
-          number: "**** **** **** 8989",
-          last_digits: 8989,
-          brand: "visa",
-          expiration_date: "0226"
-        },
-        {
-          id: 2,
-          name: 'Visa Final 8989',
-          number: "**** **** **** 8989",
-          last_digits: 8989,
-          brand: "visa",
-          expiration_date: "0226"
-        },
-        {
-          id: 1,
-          name: 'Mastercard Final 8989',
-          number: "**** **** **** 8989",
-          last_digits: 8989,
-          brand: "mastercard",
-          expiration_date: "0226"
-        }
-      ]
+      cards: []
     };
   },
   created() {
@@ -203,6 +171,16 @@ export default {
         to: { name: "app.cards" }
       }
     ]);
+
+    axios.req({
+      action: '/dash/credit-cards',
+      method: 'get',
+      success: (resp) => {
+        if (resp.data?.success) {
+          this.cards = resp.data.cards;
+        }
+      }
+    });
   },
   methods: {
     methodEditCard(event) {
