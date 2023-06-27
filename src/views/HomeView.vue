@@ -1,9 +1,12 @@
 <template>
   <template v-if="hasActiveSubscription">
-    <v-sheet width="100%" border rounded elevation="4" style="background-color: rgba(164, 240, 226, 0.262); color: #585858;">
+    <v-sheet width="100%" border rounded elevation="4"
+      style="background-color: rgba(164, 240, 226, 0.262); color: #585858;">
       <v-container class="text-center">
         <h1 class="text-center text-h5 font-weight-bold" style="color: rgb(72, 112, 72);">Você é PRO!</h1>
-        <p class="text-center text-h7 mb-5"><v-btn color="primary" variant="outlined" class="text-none text-subtitle-1">Clique aqui</v-btn> e saiba como desfrutar de nossos recursos especiais para quem é PRO!</p>
+        <p class="text-center text-h7 mb-5"><v-btn color="primary" variant="outlined"
+            class="text-none text-subtitle-1">Clique aqui</v-btn> e saiba como desfrutar de nossos recursos especiais para
+          quem é PRO!</p>
       </v-container>
     </v-sheet>
   </template>
@@ -20,6 +23,7 @@
 
 <script>
 
+import axios from '@/plugins/axios';
 import { useAppStore } from '@/store/app';
 
 export default {
@@ -37,6 +41,16 @@ export default {
         to: { name: 'app.home' }
       }
     ]);
+
+    axios.req({
+      action: '/dash/subscriptions/show/active',
+      method: 'get',
+      success: (resp) => {
+        if (resp.data.subscription) {
+          this.hasActiveSubscription = true;
+        }
+      }
+    });
   }
 }
 </script>
