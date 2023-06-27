@@ -1,4 +1,9 @@
 <template>
+  <actions-bar bar-title="Histórico de assinaturas" :action-button-create="{
+    text: 'Fazer uma assinatura',
+    to: hasActiveSubscription ? null : { name: 'app.subscriptions.new' }
+  }"></actions-bar>
+
   <v-table fixed-header>
     <thead>
       <tr>
@@ -38,8 +43,10 @@
 <script>
 
 import { useAppStore } from '@/store/app';
+import ActionsBar from '@/components/ActionsBar.vue';
 
 export default {
+  components: { ActionsBar },
   data() {
     return {
       allowedSubscriptionStatusConfig: {
@@ -60,6 +67,7 @@ export default {
           color: 'red'
         },
       },
+      hasActiveSubscription: false,
       subscriptions: [
         {
           id: 4,

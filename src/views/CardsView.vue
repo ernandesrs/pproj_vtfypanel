@@ -40,6 +40,13 @@
     </v-card>
   </v-dialog>
 
+  <actions-bar bar-title="Cartões cadastrados" :action-button-create="{
+    text: 'Novo cartão',
+    callback: () => {
+      formCard.editing = true;
+    }
+  }"></actions-bar>
+
   <v-table density="compact">
     <thead>
       <tr>
@@ -82,9 +89,10 @@
 
 import { useAppStore } from '@/store/app';
 import Confirmation from '@/components/Confirmation.vue';
+import ActionsBar from '@/components/ActionsBar.vue';
 
 export default {
-  components: { Confirmation },
+  components: { Confirmation, ActionsBar },
   data() {
     return {
       formCard: {
