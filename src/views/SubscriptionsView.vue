@@ -178,8 +178,8 @@ export default {
         if (resp.data.subscriptions) {
           this.subscriptions = resp.data.subscriptions;
           let active = this.subscriptions.find((item, index) => { return item.status == 'active'; });
-          if (active?.id) {
-            this.hasActiveSubscription = true;
+          if (!active?.id) {
+            this.hasActiveSubscription = false;
           }
         }
       }

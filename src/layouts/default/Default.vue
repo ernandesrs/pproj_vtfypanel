@@ -62,6 +62,7 @@
 
 <script>
 
+import token from '@/services/token';
 import { useAppStore } from '@/store/app';
 import { mergeProps } from 'vue';
 
@@ -120,6 +121,8 @@ export default {
     mergeProps,
     methodLogout() {
       this.logouting = true;
+      token.remove();
+      this.$router.push({ name: 'auth.login' });
     }
   }
 }
