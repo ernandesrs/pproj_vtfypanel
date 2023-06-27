@@ -125,3 +125,9 @@ export default {
 }
 
 </script>
+
+<style>
+button>span {
+  pointer-events: none;
+}
+</style>
