@@ -6,22 +6,23 @@
         {{ formCard.data?.id ? 'Atualizar cartão' : 'Novo cartão' }}
       </v-card-title>
       <v-card-text>
-        <v-form>
+        <v-form v-model="formCard.valid">
           <v-row>
             <v-col cols="12">
-              <v-text-field label="Nome:" v-model="formCard.data.name"></v-text-field>
+              <v-text-field label="Nome:" v-model="formCard.data.name" :rules="formCard.rules.nameRules"></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field label="Número:" v-model="formCard.data.number"
-                :readonly="formCard.data.id ? true : false"></v-text-field>
+              <v-text-field label="Número:" v-model="formCard.data.number" :readonly="formCard.data.id ? true : false"
+                :rules="formCard.data?.id ? [] : formCard.rules.numberRules"></v-text-field>
             </v-col>
             <v-col cols="6">
               <v-text-field label="Data de expiração:" v-model="formCard.data.expiration_date"
-                :readonly="formCard.data.id ? true : false"></v-text-field>
+                :readonly="formCard.data.id ? true : false"
+                :rules="formCard.data?.id ? [] : formCard.rules.expirationDateRules"></v-text-field>
             </v-col>
             <v-col cols="6">
-              <v-text-field label="CVV:" v-model="formCard.data.cvv"
-                :readonly="formCard.data.id ? true : false"></v-text-field>
+              <v-text-field label="CVV:" v-model="formCard.data.cvv" :readonly="formCard.data.id ? true : false"
+                :rules="formCard.data?.id ? [] : formCard.rules.cvvRules"></v-text-field>
             </v-col>
           </v-row>
         </v-form>
@@ -31,7 +32,7 @@
           <v-btn @click="formCard.editing = false" color="primary">
             Fechar
           </v-btn>
-          <v-btn @click.stop="methodSaveCard" color="primary" :loading="formCard.submitting">
+          <v-btn @click.stop="methodSaveCard" color="primary" :loading="formCard.submitting" :disabled="!formCard.valid">
             {{ formCard.data?.id ? 'Atualizar' : 'Cadastrar' }}
           </v-btn>
         </div>
@@ -87,8 +88,61 @@ export default {
   data() {
     return {
       formCard: {
+        valid: false,
         editing: false,
         data: {},
+        rules: {
+          nameRules: [
+            value => {
+              if (value && value.toString().length <= 50) {
+                return true;
+              }
+              return 'Máximo 50 caracteres';
+            }
+          ],
+          numberRules: [
+            value => {
+              if (!isNaN(parseInt(value)) && isFinite(value)) {
+                return true;
+              }
+              return 'Apenas números';
+            },
+            value => {
+              if (value.toString().length == 16) {
+                return true;
+              }
+              return 'Informe 16 dígitos.';
+            }
+          ],
+          expirationDateRules: [
+            value => {
+              if (!isNaN(parseInt(value)) && isFinite(value)) {
+                return true;
+              }
+              return 'Apenas números';
+            },
+            value => {
+              if (value.toString().length == 4) {
+                return true;
+              }
+              return 'Informe 4 dígitos. Ex.: 01/23 informe 0123.';
+            }
+          ],
+          cvvRules: [
+            value => {
+              if (!isNaN(parseInt(value)) && isFinite(value)) {
+                return true;
+              }
+              return 'Apenas números';
+            },
+            value => {
+              if (value.toString().length == 3) {
+                return true;
+              }
+              return 'CVV possui 3 dígitos';
+            }
+          ]
+        },
         errors: {},
         submitting: false
       },
@@ -151,16 +205,28 @@ export default {
       this.formCard.editing = true;
     },
     methodSaveCard() {
+      if (!this.formCard.valid) {
+        window.alert('Algum dado é inválido');
+        return;
+      }
+
       let data = this.formCard.data;
       let creating = data?.id ? false : true;
 
       this.formCard.submitting = true;
+      console.log(this.formCard);
 
       // simulate server saving
       setTimeout(() => {
         this.formCard.submitting = false;
         this.formCard.editing = false;
-      }, 2500);
+
+        if (creating) {
+          // save on database
+        } else {
+          // update on database
+        }
+      }, 1750);
     },
     methodDeleteCardConfirmed(event) {
       let target = event.target;
