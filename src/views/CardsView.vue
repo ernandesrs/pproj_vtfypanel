@@ -9,7 +9,13 @@
         <v-form v-model="formCard.valid">
           <v-row>
             <v-col cols="12">
-              <v-text-field label="Nome:" v-model="formCard.data.name" :rules="formCard.rules.nameRules"></v-text-field>
+              <v-text-field label="Nome para o cartão:" v-model="formCard.data.name"
+                :rules="formCard.rules.nameRules"></v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field label="Titular:" v-model="formCard.data.holder_name"
+                :readonly="formCard.data.id ? true : false"
+                :rules="formCard.data?.id ? [] : formCard.rules.holderNameRules"></v-text-field>
             </v-col>
             <v-col cols="12">
               <v-text-field label="Número:" v-model="formCard.data.number" :readonly="formCard.data.id ? true : false"
@@ -103,10 +109,18 @@ export default {
         rules: {
           nameRules: [
             value => {
-              if (value && value.toString().length <= 50) {
+              if (value && value.length <= 50 && value.length >= 5) {
                 return true;
               }
-              return 'Máximo 50 caracteres';
+              return 'Mínimo 5 e máximo 50 caracteres';
+            }
+          ],
+          holderNameRules: [
+            value => {
+              if (value && value.length > 0) {
+                return true;
+              }
+              return 'Informe o nome do titular';
             }
           ],
           numberRules: [
@@ -172,6 +186,7 @@ export default {
       }
     ]);
 
+    // get credit cards
     axios.req({
       action: '/dash/credit-cards',
       method: 'get',
@@ -200,19 +215,50 @@ export default {
       let creating = data?.id ? false : true;
 
       this.formCard.submitting = true;
-      console.log(this.formCard);
-
-      // simulate server saving
-      setTimeout(() => {
-        this.formCard.submitting = false;
-        this.formCard.editing = false;
-
-        if (creating) {
-          // save on database
-        } else {
-          // update on database
-        }
-      }, 1750);
+      if (creating) {
+        axios.req({
+          action: '/dash/credit-cards',
+          method: 'post',
+          data: {
+            name: data.name,
+            card_number: data.number,
+            card_holder_name: data.holder_name,
+            card_cvv: data.cvv,
+            card_expiration_date: data.expiration_date,
+          },
+          success: (resp) => {
+            if (resp.data?.success) {
+              // success alert
+              this.cards.unshift(resp.data.card);
+              this.formCard.editing = false;
+            } else {
+              // fail alert
+            }
+          },
+          finally: () => {
+            this.formCard.submitting = false;
+          }
+        });
+      } else {
+        axios.req({
+          action: '/dash/credit-cards/' + data.id,
+          method: 'put',
+          data: {
+            name: data.name
+          },
+          success: (resp) => {
+            if (resp.data?.success) {
+              // success alert
+              this.formCard.editing = false;
+            } else {
+              // fail alert
+            }
+          },
+          finally: () => {
+            this.formCard.submitting = false;
+          }
+        });
+      }
     },
     methodDeleteCardConfirmed(event) {
       let target = event.target;
