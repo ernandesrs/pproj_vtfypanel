@@ -6,10 +6,10 @@
         Detalhes da assinatura
       </v-card-title>
       <v-card-text>
-        <v-row class="border">
+        <v-row class="border mb-4">
           <v-col cols="6">
             <p class="font-weight-bold">ID</p>
-            <p>{{ subscription.data.id }}</p>
+            <p>#{{ subscription.data.id }}</p>
           </v-col>
           <v-col cols="6">
             <p class="font-weight-bold">Status</p>
@@ -25,6 +25,46 @@
             </p>
             <p>
               {{ subscription.data.starts_in }} até {{ subscription.data.ends_in }}
+            </p>
+          </v-col>
+        </v-row>
+
+        <v-row class="border">
+          <v-col cols="6">
+            <p class="font-weight-bold">ID do pacote</p>
+            <p>#{{ subscription.data.package_metadata.id }}</p>
+          </v-col>
+          <v-col cols="6">
+            <p class="font-weight-bold">
+              Nome do pacote
+            </p>
+            <p>
+              {{ subscription.data.package_metadata.name }}
+            </p>
+          </v-col>
+          <v-col cols="4">
+            <p class="font-weight-bold">ID da transação</p>
+            <p>#{{ subscription.data.transaction_id }}</p>
+          </v-col>
+          <v-col cols="4">
+            <p class="font-weight-bold">Preço</p>
+            <p>
+              R$ {{ subscription.data.package_metadata.price }}
+            </p>
+          </v-col>
+          <v-col cols="4">
+            <p class="font-weight-bold">Validade</p>
+            <p>
+              {{ subscription.data.package_metadata.expiration_month }} mês(es)
+            </p>
+          </v-col>
+
+          <v-col cols="12">
+            <p class="font-weight-bold">
+              Descrição
+            </p>
+            <p>
+              {{ subscription.data.package_metadata.description }}
             </p>
           </v-col>
         </v-row>
@@ -109,7 +149,7 @@ export default {
           color: 'red'
         },
       },
-      hasActiveSubscription: false,
+      hasActiveSubscription: true,
       subscription: {
         dialog: false,
         data: {}
