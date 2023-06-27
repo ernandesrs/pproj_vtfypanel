@@ -8,9 +8,10 @@
                     {{ dialogTitle }}
                 </div>
                 <div class="text-center py-3">
-                    <v-btn @click.stop="dialog = false" class="mx-1" size="small" color="default">Cancelar</v-btn>
+                    <v-btn @click.stop="dialog = false" class="mx-1" size="small" color="default"
+                        :disabled="confirmLoading">Cancelar</v-btn>
                     <v-btn @click.stop="methodConfirmAction" class="mx-1" size="small" :color="color"
-                        :data-identificator="dataIdentificator">Confirmar</v-btn>
+                        :data-identificator="dataIdentificator" :loading="confirmLoading">Confirmar</v-btn>
                 </div>
             </v-card-text>
         </v-card>
@@ -23,6 +24,7 @@ export default {
     data() {
         return {
             dialog: false,
+            confirmLoading: false
         };
     },
     props: {
@@ -61,10 +63,20 @@ export default {
         confirmCallback: {
             type: Function,
             default: null
+        },
+        actionConfirm: {
+            type: String,
+            default: null
+        }
+    },
+    watch: {
+        dialog() {
+            this.confirmLoading = false;
         }
     },
     methods: {
         methodConfirmAction(event) {
+            this.confirmLoading = true;
             if (this.confirmCallback) {
                 this.confirmCallback(event);
             }
