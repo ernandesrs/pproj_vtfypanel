@@ -83,8 +83,8 @@
           <v-btn @click.stop="methodEditCard" :data-identificator="card.id" text="Editar" variant="outlined"
             class="text-none mx-1" color="primary" size="small"></v-btn>
           <confirmation :data-identificator="card.id" text="Excluir" color="red" size="small" variant="outlined"
-            :dialog-title="'Tem certeza de que deseja excluir o cartão final ' + card.last_digits + '?'"
-            :confirm-callback="methodDeleteCardConfirmed"></confirmation>
+            :dialog-title="'Excluir o cartão ' + card.name + '?'" :confirm-callback="methodDeleteCardConfirmed">
+          </confirmation>
         </td>
       </tr>
     </tbody>
@@ -261,12 +261,21 @@ export default {
       }
     },
     methodDeleteCardConfirmed(event) {
-      let target = event.target;
+      let id = event.target.getAttribute("data-identificator");
       let index = this.cards.findIndex((card) => {
-        return card.id == target.getAttribute("data-identificator");
+        return card.id == id;
       });
 
-      this.cards.splice(index, 1);
+      axios.req({
+        action: '/dash/credit-cards/' + id,
+        method: 'delete',
+        success: (resp) => {
+          if (resp.data?.success) {
+            // add success alert
+            this.cards.splice(index, 1);
+          }
+        }
+      });
     },
     methodFormCardDialogClosed() {
       this.formCard.data = {};
