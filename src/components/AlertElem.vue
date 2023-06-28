@@ -78,7 +78,6 @@ export default {
         computedAlertFromStore: {
             deep: true,
             handler(nv, ov) {
-                console.log(nv);
                 if (nv) {
                     this.alert = nv;
                 }

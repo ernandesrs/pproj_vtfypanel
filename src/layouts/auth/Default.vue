@@ -2,6 +2,7 @@
   <v-layout class="rounded rounded-md">
     <v-main>
       <v-container>
+        <alert-elem />
         <router-view />
       </v-container>
     </v-main>
@@ -11,9 +12,10 @@
 <script>
 
 import { mergeProps } from 'vue';
+import AlertElem from '@/components/AlertElem.vue';
 
 export default {
-  components: { mergeProps },
+  components: { mergeProps, AlertElem },
   data() {
     return {
     };

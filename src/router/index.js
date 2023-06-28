@@ -50,7 +50,7 @@ const routes = [
         path: 'login',
         name: 'auth.login',
         beforeEnter: middleware.redirectIfAuthenticated,
-        component: () => import('@/views/LoginView.vue'),
+        component: () => import('@/views/Auth/LoginView.vue'),
       }
     ]
   }
