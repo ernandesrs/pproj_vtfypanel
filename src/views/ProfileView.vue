@@ -10,8 +10,8 @@
         </div>
       </v-avatar>
       <div class="py-3">
-        <confirmation v-if="formUser.data?.photo_url" text="Excluir foto" color="red" size="small"
-          dialog-title="Excluir sua foto?" :confirm-callback="methodDeleteUserPhoto"></confirmation>
+        <confirmation-button v-if="formUser.data?.photo_url" text="Excluir foto" color="red" size="small"
+          dialog-title="Excluir sua foto?" :confirm-callback="methodDeleteUserPhoto"></confirmation-button>
         <v-file-input @update:model-value="methodUploadUserPhoto" v-model="photoUpload.photo" v-else
           accept="image/png, image/jpeg, image/bmp" placeholder="Enviar foto" prepend-icon="mdi-account" label="Foto"
           :error-messages="photoUpload.errors?.photo"></v-file-input>
@@ -77,11 +77,11 @@
 import { useAppStore } from '@/store/app';
 import ActionsBar from '@/components/ActionsBar.vue';
 import axios from '@/plugins/axios';
-import Confirmation from '@/components/Confirmation.vue';
+import ConfirmationButton from '@/components/ConfirmationButton.vue';
 import alert from '@/services/alert';
 
 export default {
-  components: { ActionsBar, Confirmation },
+  components: { ActionsBar, ConfirmationButton },
   data() {
     return {
       formUser: {
