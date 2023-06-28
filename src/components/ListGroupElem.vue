@@ -18,8 +18,8 @@
                 <td v-if="computedHasAction">
                     <div class="d-flex align-center">
                         <!-- actions button -->
-                        <v-btn v-if="actionShow" text="Ver" prepend-icon="mdi-eye-outline" size="small" color="secondary"
-                            class="ma-1" />
+                        <v-btn v-if="actionShow" @click.stop="methodShowItem" text="Ver" prepend-icon="mdi-eye-outline"
+                            size="small" color="secondary" class="ma-1" :data-identificator="item?.id ?? index" />
                         <v-btn v-if="actionEdit" @click.stop="methodEditItem" text="Editar"
                             prepend-icon="mdi-square-edit-outline" size="small" color="primary" class="ma-1"
                             :data-identificator="item?.id ?? index" />

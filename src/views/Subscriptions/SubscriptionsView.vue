@@ -86,41 +86,29 @@
       to: hasActiveSubscription ? null : { name: 'app.subscriptions.new' }
     }"></actions-bar>
 
-    <v-table fixed-header>
-      <thead>
-        <tr>
-          <th class="text-left">
-            #ID
-          </th>
-          <th class="text-left">
-            Período
-          </th>
-          <th class="text-left">
-            Status
-          </th>
-          <th class="text-center">
-            Ações
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="subscription in subscriptions" :key="subscription.id">
-          <td>{{ subscription.id }}</td>
-          <td>
-            <div>{{ subscription.starts_in }} <span class="font-weight-bold">à</span> {{ subscription.ends_in }}</div>
-          </td>
-          <td>
-            <v-chip :color="allowedSubscriptionStatusConfig[subscription.status].color">
-              {{ allowedSubscriptionStatusConfig[subscription.status].text }}
-            </v-chip>
-          </td>
-          <td class="text-center">
-            <v-btn @click.stop="methodShowSubscription" :data-identificator="subscription.id" text="Detalhes"
-              variant="outlined" class="text-none mx-1" color="primary" size="small"></v-btn>
-          </td>
-        </tr>
-      </tbody>
-    </v-table>
+    <list-group-elem empty-list-text="Você não possui histório de assinaturas" :items="subscriptions" v-slot="{ item }"
+      :action-show="methodShowSubscription">
+
+      <v-row>
+        <v-col class="d-none d-sm-block" sm="5" md="3" lg="2">
+          <p class="pr-2 font-weight-bold">Nome do pacote</p>
+          <p>{{ item.package_metadata.name }}</p>
+        </v-col>
+
+        <v-col cols="7" sm="4" lg="3">
+          <p class="pr-2 font-weight-bold">Período</p>
+          <p>{{ item.starts_in }} <span class="font-weight-bold">à</span> {{ item.ends_in }}</p>
+        </v-col>
+
+        <v-col cols="5" sm="3" lg="3">
+          <p class="pr-2 font-weight-bold">Status</p>
+          <v-chip :color="allowedSubscriptionStatusConfig[item.status].color">
+            {{ allowedSubscriptionStatusConfig[item.status].text }}
+          </v-chip>
+        </v-col>
+      </v-row>
+    </list-group-elem>
+
   </template>
 </template>
 
@@ -130,9 +118,10 @@ import { useAppStore } from '@/store/app';
 import ActionsBar from '@/components/ActionsBar.vue';
 import axios from '@/plugins/axios';
 import LoadingElem from '@/components/LoadingElem.vue';
+import ListGroupElem from '@/components/ListGroupElem.vue';
 
 export default {
-  components: { ActionsBar, LoadingElem },
+  components: { ActionsBar, LoadingElem, ListGroupElem },
   data() {
     return {
       loadingContent: true,

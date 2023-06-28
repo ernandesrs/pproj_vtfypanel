@@ -6,6 +6,9 @@ const errors = {
     // auth
     LoginFailException: 'E-mail e/ou senha inválidos ou não existem.',
     VerificationTokenInvalidException: 'Token de verificação é inválido. Acesse sua conta e solicite um novo link.',
+
+    // dash
+    InvalidCreditCardException: 'Cartão de crédito inválido.'
 };
 
 export default {
