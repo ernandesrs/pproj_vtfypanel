@@ -19,8 +19,7 @@
                 :error-messages="formCard.errors?.holder_name"></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field label="Número:"
-                v-model="formCard.data.secure_number"
+              <v-text-field label="Número:" v-model="formCard.data.secure_number"
                 :readonly="formCard.data.id ? true : false" :rules="formCard.data?.id ? [] : formCard.rules.numberRules"
                 :error-messages="formCard.errors?.number"></v-text-field>
             </v-col>
@@ -31,8 +30,8 @@
                 :error-messages="formCard.errors?.expiration_date"></v-text-field>
             </v-col>
             <v-col cols="6">
-              <v-text-field label="CVV:" v-model="formCard.data.secure_cvv"
-                :readonly="formCard.data.id ? true : false" :rules="formCard.data?.id ? [] : formCard.rules.cvvRules"
+              <v-text-field label="CVV:" v-model="formCard.data.secure_cvv" :readonly="formCard.data.id ? true : false"
+                :rules="formCard.data?.id ? [] : formCard.rules.cvvRules"
                 :error-messages="formCard.errors?.cvv"></v-text-field>
             </v-col>
           </v-row>
@@ -51,49 +50,53 @@
     </v-card>
   </v-dialog>
 
-  <actions-bar bar-title="Cartões cadastrados" :action-button-create="{
-    text: 'Novo cartão',
-    callback: () => {
-      formCard.editing = true;
-    }
-  }"></actions-bar>
+  <loading-elem v-if="loadingContent" />
 
-  <v-table density="compact">
-    <thead>
-      <tr>
-        <th class="text-left">
-          #ID
-        </th>
-        <th class="text-left">
-          Informações
-        </th>
-        <th class="text-center">
-          Ações
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="card in cards" :key="card.id">
-        <td>{{ card.id }}</td>
-        <td class="py-4">
-          <v-card elevation="0">
-            <v-card-text>
-              <div>{{ card.name }}</div>
-              <div>{{ card.secure_number }}</div>
-              <div>{{ card.expiration_date }} - {{ card.brand.toUpperCase() }}</div>
-            </v-card-text>
-          </v-card>
-        </td>
-        <td class="text-center">
-          <v-btn @click.stop="methodEditCard" :data-identificator="card.id" text="Editar" variant="outlined"
-            class="text-none mx-1" color="primary" size="small"></v-btn>
-          <confirmation :data-identificator="card.id" text="Excluir" color="red" size="small" variant="outlined"
-            :dialog-title="'Excluir o cartão ' + card.name + '?'" :confirm-callback="methodDeleteCardConfirmed">
-          </confirmation>
-        </td>
-      </tr>
-    </tbody>
-  </v-table>
+  <template v-else>
+    <actions-bar bar-title="Cartões cadastrados" :action-button-create="{
+      text: 'Novo cartão',
+      callback: () => {
+        formCard.editing = true;
+      }
+    }"></actions-bar>
+
+    <v-table density="compact">
+      <thead>
+        <tr>
+          <th class="text-left">
+            #ID
+          </th>
+          <th class="text-left">
+            Informações
+          </th>
+          <th class="text-center">
+            Ações
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="card in cards" :key="card.id">
+          <td>{{ card.id }}</td>
+          <td class="py-4">
+            <v-card elevation="0">
+              <v-card-text>
+                <div>{{ card.name }}</div>
+                <div>{{ card.secure_number }}</div>
+                <div>{{ card.expiration_date }} - {{ card.brand.toUpperCase() }}</div>
+              </v-card-text>
+            </v-card>
+          </td>
+          <td class="text-center">
+            <v-btn @click.stop="methodEditCard" :data-identificator="card.id" text="Editar" variant="outlined"
+              class="text-none mx-1" color="primary" size="small"></v-btn>
+            <confirmation :data-identificator="card.id" text="Excluir" color="red" size="small" variant="outlined"
+              :dialog-title="'Excluir o cartão ' + card.name + '?'" :confirm-callback="methodDeleteCardConfirmed">
+            </confirmation>
+          </td>
+        </tr>
+      </tbody>
+    </v-table>
+  </template>
 </template>
 
 <script>
@@ -103,11 +106,13 @@ import Confirmation from '@/components/Confirmation.vue';
 import ActionsBar from '@/components/ActionsBar.vue';
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
+import LoadingElem from '@/components/LoadingElem.vue';
 
 export default {
-  components: { Confirmation, ActionsBar },
+  components: { Confirmation, ActionsBar, LoadingElem },
   data() {
     return {
+      loadingContent: true,
       formCard: {
         valid: false,
         editing: false,
@@ -200,6 +205,9 @@ export default {
         if (resp.data?.success) {
           this.cards = resp.data.cards;
         }
+      },
+      finally: () => {
+        this.loadingContent = false;
       }
     });
   },

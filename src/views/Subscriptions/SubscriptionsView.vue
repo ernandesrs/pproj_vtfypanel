@@ -79,46 +79,49 @@
     </v-card>
   </v-dialog>
 
-  <actions-bar bar-title="Histórico de assinaturas" :action-button-create="{
-    text: 'Fazer uma assinatura',
-    to: hasActiveSubscription ? null : { name: 'app.subscriptions.new' }
-  }"></actions-bar>
+  <loading-elem v-if="loadingContent" />
+  <template v-else>
+    <actions-bar bar-title="Histórico de assinaturas" :action-button-create="{
+      text: 'Fazer uma assinatura',
+      to: hasActiveSubscription ? null : { name: 'app.subscriptions.new' }
+    }"></actions-bar>
 
-  <v-table fixed-header>
-    <thead>
-      <tr>
-        <th class="text-left">
-          #ID
-        </th>
-        <th class="text-left">
-          Período
-        </th>
-        <th class="text-left">
-          Status
-        </th>
-        <th class="text-center">
-          Ações
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="subscription in subscriptions" :key="subscription.id">
-        <td>{{ subscription.id }}</td>
-        <td>
-          <div>{{ subscription.starts_in }} <span class="font-weight-bold">à</span> {{ subscription.ends_in }}</div>
-        </td>
-        <td>
-          <v-chip :color="allowedSubscriptionStatusConfig[subscription.status].color">
-            {{ allowedSubscriptionStatusConfig[subscription.status].text }}
-          </v-chip>
-        </td>
-        <td class="text-center">
-          <v-btn @click.stop="methodShowSubscription" :data-identificator="subscription.id" text="Detalhes"
-            variant="outlined" class="text-none mx-1" color="primary" size="small"></v-btn>
-        </td>
-      </tr>
-    </tbody>
-  </v-table>
+    <v-table fixed-header>
+      <thead>
+        <tr>
+          <th class="text-left">
+            #ID
+          </th>
+          <th class="text-left">
+            Período
+          </th>
+          <th class="text-left">
+            Status
+          </th>
+          <th class="text-center">
+            Ações
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="subscription in subscriptions" :key="subscription.id">
+          <td>{{ subscription.id }}</td>
+          <td>
+            <div>{{ subscription.starts_in }} <span class="font-weight-bold">à</span> {{ subscription.ends_in }}</div>
+          </td>
+          <td>
+            <v-chip :color="allowedSubscriptionStatusConfig[subscription.status].color">
+              {{ allowedSubscriptionStatusConfig[subscription.status].text }}
+            </v-chip>
+          </td>
+          <td class="text-center">
+            <v-btn @click.stop="methodShowSubscription" :data-identificator="subscription.id" text="Detalhes"
+              variant="outlined" class="text-none mx-1" color="primary" size="small"></v-btn>
+          </td>
+        </tr>
+      </tbody>
+    </v-table>
+  </template>
 </template>
 
 <script>
@@ -126,11 +129,13 @@
 import { useAppStore } from '@/store/app';
 import ActionsBar from '@/components/ActionsBar.vue';
 import axios from '@/plugins/axios';
+import LoadingElem from '@/components/LoadingElem.vue';
 
 export default {
-  components: { ActionsBar },
+  components: { ActionsBar, LoadingElem },
   data() {
     return {
+      loadingContent: true,
       allowedSubscriptionStatusConfig: {
         active: {
           text: 'Ativo',
@@ -182,6 +187,9 @@ export default {
             this.hasActiveSubscription = false;
           }
         }
+      },
+      finally: () => {
+        this.loadingContent = false;
       }
     });
   },
