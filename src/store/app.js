@@ -5,6 +5,10 @@ export const useAppStore = defineStore('app', {
   state: () => ({
     appBreadcrumbs: [],
     appUser: {
+    },
+    appFlashAlert: {
+      message: null,
+      color: null
     }
   }),
   actions: {
@@ -13,6 +17,9 @@ export const useAppStore = defineStore('app', {
     },
     updateAppUser(appUser) {
       this.appUser = appUser;
+    },
+    updateAppFlashAlert(appFlashAlert) {
+      this.appFlashAlert = appFlashAlert;
     }
   }
 })

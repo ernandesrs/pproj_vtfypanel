@@ -78,6 +78,7 @@ import { useAppStore } from '@/store/app';
 import ActionsBar from '@/components/ActionsBar.vue';
 import axios from '@/plugins/axios';
 import Confirmation from '@/components/Confirmation.vue';
+import alert from '@/services/alert';
 
 export default {
   components: { ActionsBar, Confirmation },
@@ -123,7 +124,7 @@ export default {
         data: data,
         success: (resp) => {
           if (resp.data?.success) {
-            // add success alert
+            alert.add('Seu perfil foi atualizado!', 'info', null, 5, false);
 
             this.formUser.errors = {};
           }
@@ -141,6 +142,7 @@ export default {
         action: '/me/photo-delete',
         method: 'delete',
         success: (resp) => {
+          alert.add('Sua foto foi excluída!', 'warning', 'Pronto!', null, 5, false);
           this.formUser.data.photo_url = null;
         }
       })
@@ -155,6 +157,7 @@ export default {
         method: 'post',
         data: data,
         success: (resp) => {
+          alert.add('Sua foto de perfil foi atualizada!', 'info', null, 5, false);
           this.formUser.data.photo_url = resp.data.user.photo_url;
           useAppStore().updateAppUser(resp.data.user);
         },

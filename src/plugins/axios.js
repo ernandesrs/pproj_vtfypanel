@@ -1,6 +1,6 @@
 import axios from 'axios';
 import token from './../services/token';
-// import alerts from './../services/alerts';
+import alert from '@/services/alert';
 
 axios.defaults.baseURL = 'http://127.0.0.1:8000/api/v1';
 
@@ -37,7 +37,7 @@ export default {
                 config.success(response);
             }
         }).catch((response) => {
-            // alerts.addError(response.response?.data?.error);
+            alert.addError(response.response?.data?.error);
 
             if (config?.fail) {
                 config.fail(response);

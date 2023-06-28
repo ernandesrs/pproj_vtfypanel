@@ -54,6 +54,7 @@
 
     <v-main>
       <v-container>
+        <alert-elem></alert-elem>
         <router-view />
       </v-container>
     </v-main>
@@ -65,13 +66,15 @@
 import token from '@/services/token';
 import { useAppStore } from '@/store/app';
 import { mergeProps } from 'vue';
+import AlertElem from '@/components/AlertElem.vue';
 
 export default {
-  components: { mergeProps },
+  components: { mergeProps, AlertElem },
   data() {
     return {
       drawer: true,
       breadcrumbs: [],
+      flashAlert: null,
       logouting: false,
       items: [
         {
@@ -107,6 +110,12 @@ export default {
       handler(nv, ov) {
         this.breadcrumbs = nv;
       }
+    },
+    computedFlashAlertFromStore: {
+      deep: true,
+      handler(nv, ov) {
+        this.flashAlert = nv;
+      }
     }
   },
   computed: {
@@ -115,6 +124,9 @@ export default {
     },
     computedUserFromStore() {
       return useAppStore().appUser;
+    },
+    computedFlashAlertFromStore() {
+      return useAppStore().appFlashAlert;
     }
   },
   methods: {
