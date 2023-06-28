@@ -13,26 +13,27 @@
                 :error-messages="formCard.errors?.name"></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field label="Titular:" v-model="formCard.data.card_holder_name"
+              <v-text-field label="Titular:" v-model="formCard.data.holder_name"
                 :readonly="formCard.data.id ? true : false"
                 :rules="formCard.data?.id ? [] : formCard.rules.holderNameRules"
-                :error-messages="formCard.errors?.card_holder_name"></v-text-field>
+                :error-messages="formCard.errors?.holder_name"></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field label="Número:" v-model="formCard.data.card_number"
+              <v-text-field label="Número:"
+                v-model="formCard.data.secure_number"
                 :readonly="formCard.data.id ? true : false" :rules="formCard.data?.id ? [] : formCard.rules.numberRules"
-                :error-messages="formCard.errors?.card_number"></v-text-field>
+                :error-messages="formCard.errors?.number"></v-text-field>
             </v-col>
             <v-col cols="6">
-              <v-text-field label="Data de expiração:" v-model="formCard.data.card_expiration_date"
+              <v-text-field label="Data de expiração:" v-model="formCard.data.expiration_date"
                 :readonly="formCard.data.id ? true : false"
                 :rules="formCard.data?.id ? [] : formCard.rules.expirationDateRules"
-                :error-messages="formCard.errors?.card_expiration_date"></v-text-field>
+                :error-messages="formCard.errors?.expiration_date"></v-text-field>
             </v-col>
             <v-col cols="6">
-              <v-text-field label="CVV:" v-model="formCard.data.card_cvv" :readonly="formCard.data.id ? true : false"
-                :rules="formCard.data?.id ? [] : formCard.rules.cvvRules"
-                :error-messages="formCard.errors?.card_cvv"></v-text-field>
+              <v-text-field label="CVV:" v-model="formCard.data.secure_cvv"
+                :readonly="formCard.data.id ? true : false" :rules="formCard.data?.id ? [] : formCard.rules.cvvRules"
+                :error-messages="formCard.errors?.cvv"></v-text-field>
             </v-col>
           </v-row>
         </v-form>
@@ -78,7 +79,7 @@
           <v-card elevation="0">
             <v-card-text>
               <div>{{ card.name }}</div>
-              <div>{{ card.number }}</div>
+              <div>{{ card.secure_number }}</div>
               <div>{{ card.expiration_date }} - {{ card.brand.toUpperCase() }}</div>
             </v-card-text>
           </v-card>
@@ -226,10 +227,10 @@ export default {
           method: 'post',
           data: {
             name: data.name,
-            card_number: data.card_number,
-            card_holder_name: data.card_holder_name,
-            card_cvv: data.card_cvv,
-            card_expiration_date: data.card_expiration_date,
+            number: data.secure_number,
+            holder_name: data.holder_name,
+            cvv: data.secure_cvv,
+            expiration_date: data.expiration_date,
           },
           success: (resp) => {
             if (resp.data?.success) {
