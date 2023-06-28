@@ -9,26 +9,30 @@
         <v-form v-model="formCard.valid">
           <v-row>
             <v-col cols="12">
-              <v-text-field label="Nome para o cartão:" v-model="formCard.data.name"
-                :rules="formCard.rules.nameRules"></v-text-field>
+              <v-text-field label="Nome para o cartão:" v-model="formCard.data.name" :rules="formCard.rules.nameRules"
+                :error-messages="formCard.errors?.name"></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field label="Titular:" v-model="formCard.data.holder_name"
+              <v-text-field label="Titular:" v-model="formCard.data.card_holder_name"
                 :readonly="formCard.data.id ? true : false"
-                :rules="formCard.data?.id ? [] : formCard.rules.holderNameRules"></v-text-field>
+                :rules="formCard.data?.id ? [] : formCard.rules.holderNameRules"
+                :error-messages="formCard.errors?.card_holder_name"></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field label="Número:" v-model="formCard.data.number" :readonly="formCard.data.id ? true : false"
-                :rules="formCard.data?.id ? [] : formCard.rules.numberRules"></v-text-field>
+              <v-text-field label="Número:" v-model="formCard.data.card_number"
+                :readonly="formCard.data.id ? true : false" :rules="formCard.data?.id ? [] : formCard.rules.numberRules"
+                :error-messages="formCard.errors?.card_number"></v-text-field>
             </v-col>
             <v-col cols="6">
-              <v-text-field label="Data de expiração:" v-model="formCard.data.expiration_date"
+              <v-text-field label="Data de expiração:" v-model="formCard.data.card_expiration_date"
                 :readonly="formCard.data.id ? true : false"
-                :rules="formCard.data?.id ? [] : formCard.rules.expirationDateRules"></v-text-field>
+                :rules="formCard.data?.id ? [] : formCard.rules.expirationDateRules"
+                :error-messages="formCard.errors?.card_expiration_date"></v-text-field>
             </v-col>
             <v-col cols="6">
-              <v-text-field label="CVV:" v-model="formCard.data.cvv" :readonly="formCard.data.id ? true : false"
-                :rules="formCard.data?.id ? [] : formCard.rules.cvvRules"></v-text-field>
+              <v-text-field label="CVV:" v-model="formCard.data.card_cvv" :readonly="formCard.data.id ? true : false"
+                :rules="formCard.data?.id ? [] : formCard.rules.cvvRules"
+                :error-messages="formCard.errors?.card_cvv"></v-text-field>
             </v-col>
           </v-row>
         </v-form>
@@ -38,7 +42,7 @@
           <v-btn @click="formCard.editing = false" color="primary">
             Fechar
           </v-btn>
-          <v-btn @click.stop="methodSaveCard" color="primary" :loading="formCard.submitting" :disabled="!formCard.valid">
+          <v-btn @click.stop="methodSaveCard" color="primary" :disabled="!formCard.valid" :loading="formCard.submitting">
             {{ formCard.data?.id ? 'Atualizar' : 'Cadastrar' }}
           </v-btn>
         </div>
@@ -97,6 +101,7 @@ import { useAppStore } from '@/store/app';
 import Confirmation from '@/components/Confirmation.vue';
 import ActionsBar from '@/components/ActionsBar.vue';
 import axios from '@/plugins/axios';
+import alert from '@/services/alert';
 
 export default {
   components: { Confirmation, ActionsBar },
@@ -207,7 +212,7 @@ export default {
     },
     methodSaveCard() {
       if (!this.formCard.valid) {
-        window.alert('Algum dado é inválido');
+        alert.addError('InvalidDataException');
         return;
       }
 
@@ -221,19 +226,20 @@ export default {
           method: 'post',
           data: {
             name: data.name,
-            card_number: data.number,
-            card_holder_name: data.holder_name,
-            card_cvv: data.cvv,
-            card_expiration_date: data.expiration_date,
+            card_number: data.card_number,
+            card_holder_name: data.card_holder_name,
+            card_cvv: data.card_cvv,
+            card_expiration_date: data.card_expiration_date,
           },
           success: (resp) => {
             if (resp.data?.success) {
-              // success alert
+              alert.add('Novo cartão cadastrado!', 'success');
               this.cards.unshift(resp.data.card);
               this.formCard.editing = false;
-            } else {
-              // fail alert
             }
+          },
+          fail: (resp) => {
+            this.formCard.errors = resp.response?.data?.errors;
           },
           finally: () => {
             this.formCard.submitting = false;
@@ -248,11 +254,12 @@ export default {
           },
           success: (resp) => {
             if (resp.data?.success) {
-              // success alert
+              alert.add('Cartão atualizado!', 'info');
               this.formCard.editing = false;
-            } else {
-              // fail alert
             }
+          },
+          fail: (resp) => {
+            this.formCard.errors = resp.response?.data?.errors;
           },
           finally: () => {
             this.formCard.submitting = false;
@@ -271,7 +278,7 @@ export default {
         method: 'delete',
         success: (resp) => {
           if (resp.data?.success) {
-            // add success alert
+            alert.add('Cartão excluído!', 'warning');
             this.cards.splice(index, 1);
           }
         }
