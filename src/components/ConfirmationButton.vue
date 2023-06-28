@@ -1,13 +1,13 @@
 <template>
-    <v-btn :icon="icon" :text="text" :size="size" :color="color" :variant="variant" class="ma-2"
+    <v-btn :prepend-icon="icon" :text="text" :size="size" :color="color" :variant="variant" class="ma-1"
         @click="dialog = true"></v-btn>
     <v-dialog v-model="dialog" width="auto">
         <v-card>
-            <v-card-text>
+            <v-card-text class="text-center">
                 <div class="text-h6" :class="'text-' + color">
                     {{ dialogTitle }}
                 </div>
-                <div class="text-center py-3">
+                <div class="py-3">
                     <v-btn @click.stop="dialog = false" class="mx-1" size="small" color="default"
                         :disabled="confirmLoading">Cancelar</v-btn>
                     <v-btn @click.stop="methodConfirmAction" class="mx-1" size="small" :color="color"
@@ -64,8 +64,8 @@ export default {
             type: Function,
             default: null
         },
-        actionConfirm: {
-            type: String,
+        confirmRoute: {
+            type: Object,
             default: null
         }
     },
@@ -79,6 +79,8 @@ export default {
             this.confirmLoading = true;
             if (this.confirmCallback) {
                 this.confirmCallback(event);
+            } else if (this.confirmRoute) {
+                this.$router.push(this.confirmRoute);
             }
         }
     }

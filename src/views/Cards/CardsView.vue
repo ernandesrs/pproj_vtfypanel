@@ -60,56 +60,32 @@
       }
     }"></actions-bar>
 
-    <v-table density="compact">
-      <thead>
-        <tr>
-          <th class="text-left">
-            #ID
-          </th>
-          <th class="text-left">
-            Informações
-          </th>
-          <th class="text-center">
-            Ações
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="card in cards" :key="card.id">
-          <td>{{ card.id }}</td>
-          <td class="py-4">
-            <v-card elevation="0">
-              <v-card-text>
-                <div>{{ card.name }}</div>
-                <div>{{ card.secure_number }}</div>
-                <div>{{ card.expiration_date }} - {{ card.brand.toUpperCase() }}</div>
-              </v-card-text>
-            </v-card>
-          </td>
-          <td class="text-center">
-            <v-btn @click.stop="methodEditCard" :data-identificator="card.id" text="Editar" variant="outlined"
-              class="text-none mx-1" color="primary" size="small"></v-btn>
-            <confirmation :data-identificator="card.id" text="Excluir" color="red" size="small" variant="outlined"
-              :dialog-title="'Excluir o cartão ' + card.name + '?'" :confirm-callback="methodDeleteCardConfirmed">
-            </confirmation>
-          </td>
-        </tr>
-      </tbody>
-    </v-table>
+    <list-group-elem empty-list-text="Você não possui cartões cadastrados" :items="cards" v-slot="{ item }"
+      :action-edit="methodEditCard" :action-delete="methodDeleteCardConfirmed"
+      action-delete-dialog-title="Realmente quer excluir este cartão?">
+      <v-card class="bg-grey-lighten-4 w-100" elevation="1" style="max-width: 350px;">
+        <v-card-text>
+          <div>{{ item.name }}</div>
+          <div>{{ item.secure_number }}</div>
+          <div>{{ item.expiration_date }} - {{ item.brand.toUpperCase() }}</div>
+        </v-card-text>
+      </v-card>
+    </list-group-elem>
   </template>
 </template>
 
 <script>
 
 import { useAppStore } from '@/store/app';
-import Confirmation from '@/components/Confirmation.vue';
+import ConfirmationButton from '@/components/ConfirmationButton.vue';
 import ActionsBar from '@/components/ActionsBar.vue';
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
 import LoadingElem from '@/components/LoadingElem.vue';
+import ListGroupElem from '@/components/ListGroupElem.vue';
 
 export default {
-  components: { Confirmation, ActionsBar, LoadingElem },
+  components: { ConfirmationButton, ActionsBar, LoadingElem, ListGroupElem },
   data() {
     return {
       loadingContent: true,
