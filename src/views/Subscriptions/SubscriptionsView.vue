@@ -19,13 +19,19 @@
               </v-chip>
             </p>
           </v-col>
-          <v-col cols="12">
+          <v-col cols="12" md="6">
             <p class="font-weight-bold">
               Período de validade
             </p>
             <p>
               {{ subscription.data.starts_in }} até {{ subscription.data.ends_in }}
             </p>
+          </v-col>
+          <v-col cols="12" md="6">
+            <confirmation-button v-if="subscription.data.status == 'active'" text="Cancelar assinatura" size="small"
+              color="red" variant="outlined" icon="mdi-close" dialog-title="Tem certeza de quer quer cancelar?"
+              :confirm-callback="methodSubscriptionCancel"
+              :data-identificator="subscription.data.id"></confirmation-button>
           </v-col>
         </v-row>
 
@@ -115,18 +121,20 @@
 
 import { useAppStore } from '@/store/app';
 import axios from '@/plugins/axios';
+import alert from '@/services/alert';
 import ActionsBar from '@/components/ActionsBar.vue';
 import LoadingElem from '@/components/LoadingElem.vue';
 import ListGroupElem from '@/components/ListGroupElem.vue';
+import ConfirmationButton from '@/components/ConfirmationButton.vue';
 
 export default {
-  components: { ActionsBar, LoadingElem, ListGroupElem },
+  components: { ActionsBar, LoadingElem, ListGroupElem, ConfirmationButton },
   data() {
     return {
       loadingContent: true,
       subscription: {
         dialog: false,
-        data: {}
+        data: {},
       },
       subscriptions: {
         hasActiveSubscription: true,
@@ -216,6 +224,20 @@ export default {
       if (!this.subscription.dialog) {
         this.subscription.data = {};
       }
+    },
+    methodSubscriptionCancel(event) {
+      let id = parseInt(event.target.getAttribute('data-identificator'));
+      axios.req({
+        action: '/dash/subscriptions/' + id + '/cancel',
+        method: 'patch',
+        success: (resp) => {
+          alert.add('Assinatura cancelada com sucesso!', 'warning', 'CANCELADA :(!', 5, true);
+          this.$router.push({ name: 'app.home' });
+        },
+        finally: () => {
+          this.subscription.dialog = false;
+        }
+      });
     }
   }
 }
