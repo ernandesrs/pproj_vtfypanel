@@ -83,12 +83,11 @@
   <template v-else>
     <actions-bar bar-title="Histórico de assinaturas" :action-button-create="{
       text: 'Fazer uma assinatura',
-      to: hasActiveSubscription ? null : { name: 'app.subscriptions.new' }
+      to: this.subscriptions.hasActiveSubscription ? null : { name: 'app.subscriptions.new' }
     }"></actions-bar>
 
-    <list-group-elem empty-list-text="Você não possui histório de assinaturas" :items="subscriptions" v-slot="{ item }"
-      :action-show="methodShowSubscription">
-
+    <list-group-elem @changePage="methodChangePage" empty-list-text="Você não possui histório de assinaturas"
+      :items="subscriptions.list" :pages="subscriptions.pages" v-slot="{ item }" :action-show="methodShowSubscription">
       <v-row>
         <v-col class="d-none d-sm-block" sm="5" md="3" lg="2">
           <p class="pr-2 font-weight-bold">Nome do pacote</p>
@@ -115,8 +114,8 @@
 <script>
 
 import { useAppStore } from '@/store/app';
-import ActionsBar from '@/components/ActionsBar.vue';
 import axios from '@/plugins/axios';
+import ActionsBar from '@/components/ActionsBar.vue';
 import LoadingElem from '@/components/LoadingElem.vue';
 import ListGroupElem from '@/components/ListGroupElem.vue';
 
@@ -125,6 +124,16 @@ export default {
   data() {
     return {
       loadingContent: true,
+      subscription: {
+        dialog: false,
+        data: {}
+      },
+      subscriptions: {
+        hasActiveSubscription: true,
+        limit: 10,
+        list: [],
+        pages: []
+      },
       allowedSubscriptionStatusConfig: {
         active: {
           text: 'Ativo',
@@ -142,13 +151,7 @@ export default {
           text: 'canceled',
           color: 'red'
         },
-      },
-      hasActiveSubscription: true,
-      subscription: {
-        dialog: false,
-        data: {}
-      },
-      subscriptions: []
+      }
     };
   },
   created() {
@@ -165,28 +168,45 @@ export default {
       }
     ]);
 
-    axios.req({
-      action: '/dash/subscriptions',
-      method: 'get',
-      success: (resp) => {
-        if (resp.data.subscriptions) {
-          this.subscriptions = resp.data.subscriptions;
-          let active = this.subscriptions.find((item, index) => { return item.status == 'active'; });
-          if (!active?.id) {
-            this.hasActiveSubscription = false;
-          }
-        }
-      },
-      finally: () => {
-        this.loadingContent = false;
-      }
-    });
+    this.methodGetSubscriptions(1);
+    this.methodCheckActiveSubscription();
   },
   methods: {
+    methodGetSubscriptions(page) {
+      let action = '/dash/subscriptions?page=' + page + '&limit=' + this.subscriptions.limit;
+
+      axios.req({
+        action: action,
+        method: 'get',
+        success: (resp) => {
+          this.subscriptions.list = resp.data.data.data;
+          this.subscriptions.pages = resp.data.data.meta.links;
+        },
+        finally: () => {
+          this.loadingContent = false;
+        }
+      });
+    },
+    methodChangePage(page) {
+      this.methodGetSubscriptions(page.page);
+    },
+    methodCheckActiveSubscription() {
+      axios.req({
+        action: '/dash/subscriptions/show/active',
+        method: 'get',
+        success: (resp) => {
+          if (resp.data.subscription) {
+            this.subscriptions.hasActiveSubscription = true;
+          } else {
+            this.subscriptions.hasActiveSubscription = false;
+          }
+        }
+      });
+    },
     methodShowSubscription(event) {
       let id = event.target.getAttribute('data-identificator');
 
-      this.subscription.data = this.subscriptions.find((subscription) => {
+      this.subscription.data = this.subscriptions.list.find((subscription) => {
         return subscription.id == id;
       });
 
