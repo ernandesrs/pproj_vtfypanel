@@ -89,12 +89,12 @@
     <list-group-elem @changePage="methodChangePage" empty-list-text="Você não possui histório de assinaturas"
       :items="subscriptions.list" :pages="subscriptions.pages" v-slot="{ item }" :action-show="methodShowSubscription">
       <v-row>
-        <v-col class="d-none d-sm-block" sm="5" md="3" lg="2">
+        <v-col sm="5" md="3" lg="3">
           <p class="pr-2 font-weight-bold">Nome do pacote</p>
           <p>{{ item.package_metadata.name }}</p>
         </v-col>
 
-        <v-col cols="7" sm="4" lg="3">
+        <v-col cols="7" sm="4" lg="3" class="d-none d-sm-block">
           <p class="pr-2 font-weight-bold">Período</p>
           <p>{{ item.starts_in }} <span class="font-weight-bold">à</span> {{ item.ends_in }}</p>
         </v-col>
