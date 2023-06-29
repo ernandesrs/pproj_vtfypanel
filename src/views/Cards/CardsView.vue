@@ -1,6 +1,6 @@
 <template>
   <!-- create/edit card dialog -->
-  <v-dialog @update:model-value="methodFormCardDialogClosed" v-model="card.dialog" width="100%" max-width="550px">
+  <v-dialog @update:model-value="methodFormCardDialogClosed" v-model="card.dialog" persistent width="100%" max-width="550px">
     <v-card class="pa-4">
       <v-card-title>
         {{ card.form.data?.id ? 'Atualizar cartão' : 'Novo cartão' }}
