@@ -48,6 +48,12 @@ const routes = [
         name: 'auth.login',
         beforeEnter: middleware.redirectIfAuthenticated,
         component: () => import('@/views/Auth/LoginView.vue'),
+      },
+      {
+        path: 'verify-account',
+        name: 'auth.verify',
+        beforeEnter: middleware.redirectIfUnauthenticated,
+        component: () => import('@/views/Auth/VerifyView.vue'),
       }
     ]
   }
