@@ -3,7 +3,7 @@
         <v-table>
             <thead>
                 <tr>
-                    <th class="font-weight-bold">ID</th>
+                    <th class="font-weight-bold d-none d-md-table-cell">ID</th>
                     <th class="font-weight-bold">Informações</th>
                     <th v-if="computedHasAction" class="font-weight-bold">Ações</th>
                 </tr>
@@ -18,14 +18,14 @@
                 </div>
 
                 <tr v-for="item, index in items">
-                    <td v-if="item?.id" class="text-right">
+                    <td v-if="item?.id" class="text-right d-none d-md-table-cell">
                         {{ item.id }}
                     </td>
                     <td class="w-100 py-6">
                         <slot :item="item" :index="index" />
                     </td>
                     <td v-if="computedHasAction">
-                        <div class="d-flex align-center">
+                        <div class="d-flex flex-column flex-sm-row align-center">
                             <!-- actions button -->
                             <v-btn v-if="actionShow" @click.stop="methodShowItem" text="Ver" prepend-icon="mdi-eye-outline"
                                 size="small" color="secondary" class="ma-1" :data-identificator="item?.id ?? index" />

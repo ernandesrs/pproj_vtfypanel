@@ -44,7 +44,7 @@ export default {
         let adminLevels = [8, 9];
         let route = null;
         if (!adminLevels.includes(useAppStore().appUser.level)) {
-            alert.add('Você não possui permissão para acessar esta área!', 'warning');
+            alert.add('Você não possui permissão para acessar esta área!', 'warning', null, null, true);
             route = { name: 'app.home' };
         } else {
             useAppStore().appConfig = { app: 'admin', appName: 'ADMIN' };
