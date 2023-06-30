@@ -3,6 +3,10 @@ import { defineStore } from 'pinia'
 
 export const useAppStore = defineStore('app', {
   state: () => ({
+    appConfig: {
+      app: 'app',
+      appName: 'PANEL',
+    },
     appBreadcrumbs: [],
     appUser: {
     },

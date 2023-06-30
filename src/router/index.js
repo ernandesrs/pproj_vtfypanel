@@ -40,6 +40,23 @@ const routes = [
     ],
   },
   {
+    path: '/admin',
+    beforeEnter: [middleware.redirectIfUnauthenticated, middleware.redirectIfUnauthenticatedOrNotAdmin],
+    component: () => import('@/layouts/default/Default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'admin.home',
+        component: () => import('@/views/Admin/HomeView.vue'),
+      },
+      {
+        path: 'usuarios',
+        name: 'admin.users',
+        component: () => import('@/views/Admin/UsersView.vue'),
+      },
+    ]
+  },
+  {
     path: '/auth',
     component: () => import('@/layouts/auth/Default.vue'),
     children: [
