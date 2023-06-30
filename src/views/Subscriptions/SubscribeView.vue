@@ -186,8 +186,13 @@ export default {
       }
     ]);
 
-    this.methodCheckActiveSubscription();
-    this.methodLoadContent();
+    if (!useAppStore().appUser.email_verified_at) {
+      alert.add('É preciso verificar sua conta antes de fazer uma assinatura.', 'warning', 'Verifique sua conta', 10, true);
+      this.$router.push({ name: 'app.home' });
+    } else {
+      this.methodCheckActiveSubscription();
+      this.methodLoadContent();
+    }
   },
   methods: {
     methodCheckActiveSubscription() {
