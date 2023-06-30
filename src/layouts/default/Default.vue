@@ -2,9 +2,17 @@
   <v-layout class="rounded rounded-md">
     <v-navigation-drawer v-model="drawer" color="dark" class="pa-3">
       <v-list class="pa-3">
-        <v-list-item v-for="item in items" :title="item.text" :prepend-icon="item.icon" :to="item.to"
+        <v-list-item v-for="item in mainNav" :title="item.text" :prepend-icon="item.icon" :to="item.to"
           :active="item.activeIn.includes(this.$route.name)" rounded></v-list-item>
       </v-list>
+
+      <template v-slot:append>
+        <v-list class="pa-3">
+          <v-list-item @click="item.callback" v-for="item in endNav" :color="item.color ?? null" :title="item.text"
+            :prepend-icon="item.icon" :to="item.to ?? null" :active="item.activeIn.includes(this.$route.name)"
+            rounded></v-list-item>
+        </v-list>
+      </template>
     </v-navigation-drawer>
 
     <v-app-bar>
@@ -76,7 +84,7 @@ export default {
       breadcrumbs: [],
       flashAlert: null,
       logouting: false,
-      items: [
+      mainNav: [
         {
           text: 'Dashboard',
           icon: 'mdi-home',
@@ -94,12 +102,21 @@ export default {
           icon: 'mdi-credit-card-multiple-outline',
           to: { name: 'app.cards' },
           activeIn: ['app.cards']
-        },
+        }
+      ],
+      endNav: [
         {
           text: 'Perfil',
           icon: 'mdi-account',
           to: { name: 'app.profile' },
           activeIn: ['app.profile']
+        },
+        {
+          text: 'Logout',
+          icon: 'mdi-logout',
+          callback: this.methodLogout,
+          color: 'red',
+          activeIn: []
         }
       ]
     };
