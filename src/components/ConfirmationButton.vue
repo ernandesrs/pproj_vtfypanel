@@ -1,17 +1,17 @@
 <template>
     <v-btn :prepend-icon="icon" :text="text" :size="size" :color="color" :variant="variant" class="ma-1"
         @click="dialog = true"></v-btn>
-    <v-dialog v-model="dialog" width="auto">
+    <v-dialog v-model="dialog" width="100%" max-width="375px">
         <v-card>
             <v-card-text class="text-center">
                 <div class="text-h6" :class="'text-' + color">
                     {{ dialogTitle }}
                 </div>
                 <div class="py-3">
-                    <v-btn @click.stop="dialog = false" class="mx-1" size="small" color="default"
-                        :disabled="confirmLoading">Cancelar</v-btn>
-                    <v-btn @click.stop="methodConfirmAction" class="mx-1" size="small" :color="color"
-                        :data-identificator="dataIdentificator" :loading="confirmLoading">Confirmar</v-btn>
+                    <v-btn @click.stop="dialog = false" class="mx-1" prepend-icon="mdi-close" text="Cancelar" size="small" color="default"
+                        :disabled="confirmLoading"></v-btn>
+                    <v-btn @click.stop="methodConfirmAction" class="mx-1" prepend-icon="mdi-check" text="Confirmar" size="small" :color="color"
+                        :data-identificator="dataIdentificator" :loading="confirmLoading"></v-btn>
                 </div>
             </v-card-text>
         </v-card>

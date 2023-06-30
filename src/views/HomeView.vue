@@ -19,7 +19,7 @@
         <v-container class="text-center">
           <h1 class="text-center text-h5 font-weight-bold">Parece que você não tem uma assinatura</h1>
           <p class="text-center text-h7 mb-5">Nosso plano PRO possui diversos recursos que farão você querer mais!</p>
-          <v-btn text="Veja e assine" size="large" color="primary" :to="{ name: 'app.subscriptions.new' }"></v-btn>
+          <v-btn append-icon="mdi-arrow-right" text="Veja e assine" size="large" color="primary" :to="{ name: 'app.subscriptions.new' }"></v-btn>
         </v-container>
       </v-sheet>
     </template>
@@ -28,8 +28,8 @@
 
 <script>
 
-import axios from '@/plugins/axios';
 import { useAppStore } from '@/store/app';
+import axios from '@/plugins/axios';
 import LoadingElem from '@/components/LoadingElem.vue';
 
 export default {

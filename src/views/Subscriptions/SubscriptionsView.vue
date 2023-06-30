@@ -77,9 +77,7 @@
       </v-card-text>
       <v-card-actions>
         <div class="d-flex justify-center w-100">
-          <v-btn @click="subscription.dialog = false" color="primary">
-            Fechar
-          </v-btn>
+          <v-btn @click="subscription.dialog = false" prepend-icon="mdi-close" text="Fechar" color="primary"></v-btn>
         </div>
       </v-card-actions>
     </v-card>
@@ -88,7 +86,8 @@
   <loading-elem v-if="loadingContent" />
   <template v-else>
     <actions-bar bar-title="Histórico de assinaturas" :action-button-create="{
-      text: 'Fazer uma assinatura',
+      text: 'Assinar',
+      icon: 'mdi-cart-plus',
       to: this.subscriptions.hasActiveSubscription ? null : { name: 'app.subscriptions.new' }
     }"></actions-bar>
 

@@ -1,6 +1,7 @@
 <template>
   <!-- create/edit card dialog -->
-  <v-dialog @update:model-value="methodFormCardDialogClosed" v-model="card.dialog" persistent width="100%" max-width="550px">
+  <v-dialog @update:model-value="methodFormCardDialogClosed" v-model="card.dialog" persistent width="100%"
+    max-width="550px">
     <v-card class="pa-4">
       <v-card-title>
         {{ card.form.data?.id ? 'Atualizar cartão' : 'Novo cartão' }}
@@ -40,13 +41,10 @@
       </v-card-text>
       <v-card-actions>
         <div class="d-flex justify-center w-100">
-          <v-btn @click="card.dialog = false" color="primary">
-            Fechar
-          </v-btn>
-          <v-btn @click.stop="methodSaveCard" color="primary" :disabled="!card.form.valid"
-            :loading="card.form.submitting">
-            {{ card.form.data?.id ? 'Atualizar' : 'Cadastrar' }}
-          </v-btn>
+          <v-btn @click="card.dialog = false" class="mx-3 px-4" prepend-icon="mdi-close" text="Fechar" color="primary"></v-btn>
+          <v-btn @click.stop="methodSaveCard" class="mx-3 px-4" prepend-icon="mdi-check"
+            :text="card.form.data?.id ? 'Atualizar' : 'Cadastrar'" color="primary" variant="flat" :disabled="!card.form.valid"
+            :loading="card.form.submitting"></v-btn>
         </div>
       </v-card-actions>
     </v-card>
@@ -57,6 +55,7 @@
   <template v-else>
     <actions-bar bar-title="Cartões cadastrados" :action-button-create="{
       text: 'Novo cartão',
+      icon: 'mdi-credit-card-plus-outline',
       callback: methodCreateCard
     }"></actions-bar>
 
