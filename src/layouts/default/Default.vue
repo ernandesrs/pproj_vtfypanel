@@ -1,6 +1,13 @@
 <template>
   <v-layout class="rounded rounded-md">
-    <v-navigation-drawer v-model="drawer" color="dark" class="pa-3">
+    <v-navigation-drawer v-model="drawer" color="dark" class="py-2 px-3">
+      <div class="text-center">
+        <v-icon icon="$vuetify" :size="75"></v-icon>
+        <v-app-bar-title>
+          <span class="font-weight-bold">VTFY</span><span class="font-weight-light">PANEL</span>
+        </v-app-bar-title>
+      </div>
+
       <v-list class="pa-3">
         <v-list-item v-for="item in mainNav" :title="item.text" :prepend-icon="item.icon" :to="item.to"
           :active="item.activeIn.includes(this.$route.name)" rounded></v-list-item>
