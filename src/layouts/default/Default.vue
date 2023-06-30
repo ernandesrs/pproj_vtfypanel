@@ -143,7 +143,7 @@ export default {
               text: 'Usuários',
               icon: 'mdi-account-group-outline',
               to: { name: 'admin.users' },
-              activeIn: ['admin.users']
+              activeIn: ['admin.users', 'admin.users.create', 'admin.users.edit']
             },
           ],
           endNav: [

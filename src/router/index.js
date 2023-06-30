@@ -52,8 +52,18 @@ const routes = [
       {
         path: 'usuarios',
         name: 'admin.users',
-        component: () => import('@/views/Admin/UsersView.vue'),
+        component: () => import('@/views/Admin/Users/ListView.vue'),
       },
+      {
+        path: 'usuarios/criar',
+        name: 'admin.users.create',
+        component: () => import('@/views/Admin/Users/FormView.vue'),
+      },
+      {
+        path: 'usuarios/:user_id/editar',
+        name: 'admin.users.edit',
+        component: () => import('@/views/Admin/Users/FormView.vue'),
+      }
     ]
   },
   {
