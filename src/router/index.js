@@ -5,35 +5,46 @@ import middleware from '../services/middleware'
 const routes = [
   {
     path: '/',
+    component: () => import('@/layouts/Default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'home',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        // beforeEnter: middleware.redirectIfUnauthenticated,
+        component: () =>/* webpackChunkName: "home" */ import('@/views/HomeView.vue')
+      }
+    ]
+  },
+  {
+    path: '/app',
     beforeEnter: middleware.redirectIfUnauthenticated,
     component: () => import('@/layouts/default/Default.vue'),
     children: [
       {
         path: '',
         name: 'app.home',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        // beforeEnter: middleware.redirectIfUnauthenticated,
-        component: () => import(/* webpackChunkName: "home" */ '@/views/HomeView.vue'),
+        component: () => import('@/views/App/HomeView.vue'),
       },
       {
-        path: '/assinaturas',
+        path: 'assinaturas',
         name: 'app.subscriptions',
-        component: () => import('@/views/Subscriptions/SubscriptionsView.vue')
+        component: () => import('@/views/App/Subscriptions/SubscriptionsView.vue')
       },
       {
-        path: '/assinaturas/nova-assinatura',
+        path: 'assinaturas/nova-assinatura',
         name: 'app.subscriptions.new',
-        component: () => import('@/views/Subscriptions/SubscribeView.vue')
+        component: () => import('@/views/App/Subscriptions/SubscribeView.vue')
       },
       {
-        path: '/cartoes',
+        path: 'cartoes',
         name: 'app.cards',
-        component: () => import('@/views/Cards/CardsView.vue')
+        component: () => import('@/views/App/Cards/CardsView.vue')
       },
       {
-        path: '/perfil',
+        path: 'perfil',
         name: 'app.profile',
         component: () => import('@/views/ProfileView.vue')
       }
