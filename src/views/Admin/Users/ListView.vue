@@ -140,7 +140,7 @@ export default {
 				return user.id == id;
 			});
 
-			axios.req({
+			return axios.req({
 				action: '/admin/users/' + id,
 				method: 'delete',
 				success: (resp) => {

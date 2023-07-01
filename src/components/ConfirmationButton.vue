@@ -8,10 +8,11 @@
                     {{ dialogTitle }}
                 </div>
                 <div class="py-3">
-                    <v-btn @click.stop="dialog = false" class="mx-1" prepend-icon="mdi-close" text="Cancelar" size="small" color="default"
-                        :disabled="confirmLoading"></v-btn>
-                    <v-btn @click.stop="methodConfirmAction" class="mx-1" prepend-icon="mdi-check" text="Confirmar" size="small" :color="color"
-                        :data-identificator="dataIdentificator" :loading="confirmLoading"></v-btn>
+                    <v-btn @click.stop="dialog = false" class="mx-1" prepend-icon="mdi-close" text="Cancelar" size="small"
+                        color="default" :disabled="confirmLoading"></v-btn>
+                    <v-btn @click.stop="methodConfirmAction" class="mx-1" prepend-icon="mdi-check" text="Confirmar"
+                        size="small" :color="color" :data-identificator="dataIdentificator"
+                        :loading="confirmLoading"></v-btn>
                 </div>
             </v-card-text>
         </v-card>
@@ -78,7 +79,15 @@ export default {
         methodConfirmAction(event) {
             this.confirmLoading = true;
             if (this.confirmCallback) {
-                this.confirmCallback(event);
+                let promise = this.confirmCallback(event);
+
+                try {
+                    promise.finally(() => {
+                        this.dialog = false;
+                    });
+                } catch (e) {
+                    // 
+                }
             } else if (this.confirmRoute) {
                 this.$router.push(this.confirmRoute);
             }

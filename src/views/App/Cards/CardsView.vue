@@ -256,7 +256,7 @@ export default {
         return card.id == id;
       });
 
-      axios.req({
+      return axios.req({
         action: '/dash/credit-cards/' + id,
         method: 'delete',
         success: (resp) => {
