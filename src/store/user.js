@@ -4,6 +4,7 @@ export const useUserStore = defineStore('user', {
     state: () => {
         return {
             user: {},
+            adminLevels: [8, 9]
         };
     },
     actions: {
@@ -35,6 +36,9 @@ export const useUserStore = defineStore('user', {
         },
         isVerified() {
             return this.user.email_verified_at ? true : false;
+        },
+        hasAdminAccess() {
+            return this.adminLevels.includes(this.user.level);
         },
         getInitials() {
             return this.user.first_name[0] + '' + this.user.last_name[0];

@@ -42,11 +42,9 @@ export default {
         });
     },
     redirectIfUnauthenticatedOrNotAdmin: (to, from, next) => {
-        let adminLevels = [8, 9];
         let route = null;
 
-        if (!adminLevels.includes(useUserStore().getLevel)) {
-            alert.add('Você não possui permissão para acessar esta área!', 'warning', null, null, true);
+        if (!useUserStore().hasAdminAccess) {
             route = { name: 'app.home' };
         } else {
             useAppStore().appConfig = { app: 'admin', appName: 'ADMIN' };

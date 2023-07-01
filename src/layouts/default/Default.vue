@@ -54,8 +54,9 @@
                     <p>{{ computedUserStore.getEmail }}</p>
                   </div>
                   <div class="d-flex justify-center">
-                    <v-btn elevation="0" prepend-icon="mdi-account" size="small" text="Perfil" color="primary" variant="outlined" class="ma-1"
-                      :to="{ name: 'app.profile' }" :disabled="this.$route.name == 'app.profile'"></v-btn>
+                    <v-btn elevation="0" prepend-icon="mdi-account" size="small" text="Perfil" color="primary"
+                      variant="outlined" class="ma-1" :to="{ name: 'app.profile' }"
+                      :disabled="this.$route.name == 'app.profile'"></v-btn>
                     <v-btn @click.stop="methodLogout" elevation="0" color="red" prepend-icon="mdi-logout" size="small"
                       :loading="logouting" text="Sair" class="ma-1"></v-btn>
                   </div>
