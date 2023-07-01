@@ -33,7 +33,7 @@
                                 prepend-icon="mdi-square-edit-outline" size="small" color="primary" class="ma-1"
                                 :data-identificator="item?.id ?? index" />
                             <confirmation-button v-if="actionDelete" text="Excluir" icon="mdi-delete-outline" size="small"
-                                color="red" variant="outlined"
+                                color="danger" variant="outlined"
                                 :dialog-title="actionDeleteDialogTitle ?? 'Confirmar exclusão?'"
                                 :data-identificator="item?.id ?? index" :confirm-callback="computedGetConfirmCallback"
                                 :confirm-route="computedGetConfirmRoute" />

@@ -3,7 +3,7 @@
         <v-app-bar-title v-if="barTitle" :text="barTitle"></v-app-bar-title>
         <v-btn @click.stop="methodActionCreateClick"
             v-if="actionButtonCreate.url || actionButtonCreate.to || actionButtonCreate.callback"
-            :prepend-icon="actionButtonCreate.icon ?? 'mdi-plus'" :text="actionButtonCreate.text" color="green" size="large"
+            :prepend-icon="actionButtonCreate.icon ?? 'mdi-plus'" :text="actionButtonCreate.text" color="success" size="large"
             variant="flat" class="text-none"></v-btn>
     </v-app-bar>
 </template>

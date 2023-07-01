@@ -118,6 +118,7 @@
 <script>
 
 import { useAppStore } from '@/store/app';
+import { useUserStore } from '@/store/user';
 import LoadingElem from '@/components/LoadingElem.vue';
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
@@ -186,7 +187,7 @@ export default {
       }
     ]);
 
-    if (!useAppStore().appUser.email_verified_at) {
+    if (!useUserStore.isVerified) {
       alert.add('É preciso verificar sua conta antes de fazer uma assinatura.', 'warning', 'Verifique sua conta', 10, true);
       this.$router.push({ name: 'app.home' });
     } else {

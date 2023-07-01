@@ -24,12 +24,12 @@ const TITLES = {
 };
 
 const COLORS = {
-    error: 'red',
-    success: 'green',
-    danger: 'red',
-    warning: 'orange',
+    error: 'danger',
+    success: 'success',
+    danger: 'danger',
+    warning: 'warning',
     default: null,
-    info: 'blue'
+    info: 'info'
 };
 
 export default {

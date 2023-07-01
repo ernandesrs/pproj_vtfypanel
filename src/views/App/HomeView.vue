@@ -29,7 +29,7 @@
     <v-sheet class="py-5">
       <v-row justify="center">
         <v-col v-for="item in [1, 2, 3]" cols="12" sm="6" lg="4">
-          <v-card :title="'Lorem ipsum #' + item" :color="['primary', 'green', 'red'][(item - 1)]">
+          <v-card :title="'Lorem ipsum #' + item" :color="['primary', 'success', 'danger'][(item - 1)]">
             <v-card-text>
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat enim expedita nemo.</p>
             </v-card-text>
