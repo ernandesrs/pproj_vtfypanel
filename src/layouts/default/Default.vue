@@ -89,7 +89,7 @@ export default {
   components: { mergeProps, AlertElem },
   data() {
     return {
-      drawer: true,
+      drawer: false,
       breadcrumbs: [],
       flashAlert: null,
       logouting: false,
@@ -165,6 +165,9 @@ export default {
       }
     };
   },
+  created() {
+    this.methodDefineNavigationDrawerStatus()
+  },
   watch: {
     computedBreadcrumbsFromStore: {
       deep: true,
@@ -194,6 +197,13 @@ export default {
     }
   },
   methods: {
+    methodDefineNavigationDrawerStatus() {
+      if (window.innerWidth < 1280) {
+        this.drawer = false;
+      } else {
+        this.drawer = true;
+      }
+    },
     mergeProps,
     methodLogout() {
       this.logouting = true;
