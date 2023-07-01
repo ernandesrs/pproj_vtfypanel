@@ -12,9 +12,9 @@
         <v-table class="border">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th class="d-none d-md-table-cell">ID</th>
                     <th>Informações</th>
-                    <th>Ações</th>
+                    <th v-if="computedHasAction">Ações</th>
                 </tr>
             </thead>
             <tbody style="position: relative;">

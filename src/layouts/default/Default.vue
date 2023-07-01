@@ -145,6 +145,12 @@ export default {
               to: { name: 'admin.users' },
               activeIn: ['admin.users', 'admin.users.create', 'admin.users.edit']
             },
+            {
+              text: 'Pacotes',
+              icon: 'mdi-package-variant-closed',
+              to: { name: 'admin.packages' },
+              activeIn: ['admin.packages', 'admin.packages.create', 'admin.packages.edit']
+            },
           ],
           endNav: [
             {
