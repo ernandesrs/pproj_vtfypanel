@@ -1,4 +1,5 @@
 import { useAppStore } from '@/store/app';
+import { useUserStore } from '@/store/user';
 import axios from '../plugins/axios';
 import token from '../services/token';
 import alert from '../services/alert';
@@ -27,7 +28,7 @@ export default {
         }
 
         axios.request('/me', {}, 'get').then((resp) => {
-            useAppStore().updateAppUser(resp.data.user);
+            useUserStore().addUser(resp.data.user);
 
             next()
         }).catch((resp) => {
@@ -43,7 +44,8 @@ export default {
     redirectIfUnauthenticatedOrNotAdmin: (to, from, next) => {
         let adminLevels = [8, 9];
         let route = null;
-        if (!adminLevels.includes(useAppStore().appUser.level)) {
+
+        if (!adminLevels.includes(useUserStore().getLevel)) {
             alert.add('Você não possui permissão para acessar esta área!', 'warning', null, null, true);
             route = { name: 'app.home' };
         } else {

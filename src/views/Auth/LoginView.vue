@@ -28,6 +28,7 @@
 import token from '@/services/token';
 import axios from '@/plugins/axios';
 import { useAppStore } from '@/store/app';
+import { useUserStore } from '@/store/user';
 import alert from '@/services/alert';
 
 export default {
@@ -84,7 +85,7 @@ export default {
                             'Login efetuado', 5, true
                         );
                         token.add(resp.data?.access.full, resp.data?.access.expire_in_minutes);
-                        useAppStore().updateAppUser(resp.data.user);
+                        useUserStore().addUser(resp.data.user);
                         this.$router.push({ name: 'app.home' });
                     }
                 },

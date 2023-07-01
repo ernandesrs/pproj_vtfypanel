@@ -8,8 +8,6 @@ export const useAppStore = defineStore('app', {
       appName: 'PANEL',
     },
     appBreadcrumbs: [],
-    appUser: {
-    },
     appFlashAlert: {
       message: null,
       color: null
@@ -18,9 +16,6 @@ export const useAppStore = defineStore('app', {
   actions: {
     updateBreadcrumbs(appBreadcrumbs) {
       this.appBreadcrumbs = appBreadcrumbs;
-    },
-    updateAppUser(appUser) {
-      this.appUser = appUser;
     },
     updateAppFlashAlert(appFlashAlert) {
       this.appFlashAlert = appFlashAlert;

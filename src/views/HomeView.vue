@@ -2,9 +2,9 @@
   <loading-elem v-if="loadingContent" />
 
   <template v-else>
-    <v-sheet v-if="!computedUserApp.email_verified_at || !hasActiveSubscription" class="py-5">
+    <v-sheet v-if="!computedUserApp.isVerified || !hasActiveSubscription" class="py-5">
       <v-row>
-        <v-col v-if="!computedUserApp.email_verified_at" cols="12">
+        <v-col v-if="!computedUserApp.isVerified" cols="12">
           <v-alert :title="verification.resended ? 'Novo link enviado!' : 'Verifique sua conta!'" variant="outlined"
             :type="verification.resended ? 'success' : 'warning'" border="top">
             Um link de verificação foi enviado para o email cadastrado, acesse-o e clique no link para confirmar. <span
@@ -43,6 +43,7 @@
 <script>
 
 import { useAppStore } from '@/store/app';
+import { useUserStore } from '@/store/user';
 import axios from '@/plugins/axios';
 import LoadingElem from '@/components/LoadingElem.vue';
 
@@ -82,6 +83,10 @@ export default {
   },
   methods: {
     methodResendLink() {
+      if (this.computedUserApp.isVerified) {
+        return;
+      }
+
       this.verification.verificationLinkResending = true;
       axios.req({
         action: '/auth/resend-verification',
@@ -97,7 +102,7 @@ export default {
   },
   computed: {
     computedUserApp() {
-      return useAppStore().appUser;
+      return useUserStore();
     }
   }
 }

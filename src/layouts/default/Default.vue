@@ -34,9 +34,8 @@
               <template v-slot:activator="{ props: tooltip }">
                 <v-btn color="primary" v-bind="mergeProps(menu, tooltip)">
                   <v-avatar size="36" color="primary">
-                    <v-img v-if="computedUserFromStore.photo_url" :src="computedUserFromStore.photo_url"></v-img>
-                    <span v-else class="text-h8">{{ computedUserFromStore.first_name[0] }}{{
-                      computedUserFromStore.last_name[0] }}</span>
+                    <v-img v-if="computedUserStore.getPhotoUrl" :src="computedUserStore.getPhotoUrl"></v-img>
+                    <span v-else class="text-h8">{{ computedUserStore.getInitials }}</span>
                   </v-avatar>
                 </v-btn>
               </template>
@@ -47,17 +46,16 @@
               <v-card>
                 <v-card-text>
                   <v-avatar size="100" color="primary">
-                    <v-img v-if="computedUserFromStore.photo_url" :src="computedUserFromStore.photo_url"></v-img>
-                    <span v-else class="text-h4">{{ computedUserFromStore.first_name[0] }}{{
-                      computedUserFromStore.last_name[0] }}</span>
+                    <v-img v-if="computedUserStore.getPhotoUrl" :src="computedUserStore.getPhotoUrl"></v-img>
+                    <span v-else class="text-h4">{{ computedUserStore.getInitials }}</span>
                   </v-avatar>
                   <div class="pt-1 pb-3">
-                    <h3 class="text-h6 font-weight-bold">{{ computedUserFromStore.username.substring(0, 9) }}</h3>
-                    <p>{{ computedUserFromStore.email }}</p>
+                    <h3 class="text-h6 font-weight-bold">{{ computedUserStore.getUsername.substring(0, 9) }}</h3>
+                    <p>{{ computedUserStore.getEmail }}</p>
                   </div>
                   <div class="d-flex justify-center">
-                    <v-btn elevation="0" prepend-icon="mdi-account" size="small" text="Perfil" class="ma-1"
-                      :to="{ name: 'app.profile' }"></v-btn>
+                    <v-btn elevation="0" prepend-icon="mdi-account" size="small" text="Perfil" color="primary" variant="outlined" class="ma-1"
+                      :to="{ name: 'app.profile' }" :disabled="this.$route.name == 'app.profile'"></v-btn>
                     <v-btn @click.stop="methodLogout" elevation="0" color="red" prepend-icon="mdi-logout" size="small"
                       :loading="logouting" text="Sair" class="ma-1"></v-btn>
                   </div>
@@ -82,6 +80,7 @@
 
 import token from '@/services/token';
 import { useAppStore } from '@/store/app';
+import { useUserStore } from '@/store/user';
 import { mergeProps } from 'vue';
 import AlertElem from '@/components/AlertElem.vue';
 
@@ -183,8 +182,8 @@ export default {
     computedBreadcrumbsFromStore() {
       return useAppStore().appBreadcrumbs;
     },
-    computedUserFromStore() {
-      return useAppStore().appUser;
+    computedUserStore() {
+      return useUserStore();
     },
     computedFlashAlertFromStore() {
       return useAppStore().appFlashAlert;

@@ -75,6 +75,7 @@
 <script>
 
 import { useAppStore } from '@/store/app';
+import { useUserStore } from '@/store/user';
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
 import ActionsBar from '@/components/ActionsBar.vue';
@@ -111,7 +112,7 @@ export default {
       }
     ]);
 
-    this.formUser.data = useAppStore().appUser;
+    this.formUser.data = useUserStore().getUser;
   },
   methods: {
     methodUpdateUser() {
@@ -159,7 +160,7 @@ export default {
         success: (resp) => {
           alert.add('Sua foto de perfil foi atualizada!', 'info', null, 5, false);
           this.formUser.data.photo_url = resp.data.user.photo_url;
-          useAppStore().updateAppUser(resp.data.user);
+          useUserStore().updateUser(resp.data.user);
         },
         fail: (resp) => {
           this.photoUpload.errors = resp.response.data?.errors;
