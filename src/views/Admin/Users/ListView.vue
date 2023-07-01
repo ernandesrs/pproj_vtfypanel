@@ -9,7 +9,9 @@
 		}"></actions-bar>
 		<list-group-elem @changePage="methodChangePage" :items="users.list" :pages="users.pages" v-slot="{ item }"
 			:action-edit="methodEditUser" :action-delete="methodDeleteUserConfirmed"
-			actionDeleteDialogTitle="Excluir usuário definitivamente?">
+			actionDeleteDialogTitle="Excluir usuário definitivamente?" :action-filter="(event) => {
+				return methodGetUsers(1, event.search);
+			}">
 			<v-row>
 				<v-col cols="12" sm="2" md="1" class="d-none d-sm-flex justify-center align-center">
 					<v-avatar size="50">
@@ -110,9 +112,9 @@ export default {
 		this.methodGetUsers(1);
 	},
 	methods: {
-		methodGetUsers(page) {
-			axios.req({
-				action: '/admin/users?page=' + page + '&limit=' + this.users.limit,
+		methodGetUsers(page, search = null) {
+			return axios.req({
+				action: '/admin/users?page=' + page + '&limit=' + this.users.limit + (search ? '&search=' + search : ''),
 				method: 'get',
 				success: (resp) => {
 					this.users.list = resp.data.data.data;

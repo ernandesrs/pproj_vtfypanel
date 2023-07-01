@@ -1,11 +1,20 @@
 <template>
+    <v-row v-if="actionFilter">
+        <v-col></v-col>
+        <v-col cols="12" md="4" lg="3">
+            <v-text-field v-model="filter.form.search" append-icon="mdi-magnify" label="Buscar por..." type="text"
+                density="compact" variant="outlined" clear-icon="mdi-close-circle" clearable @click:append="methodFilter"
+                @click:clear="methodClearFilterField" :loading="filter.form.submitting"
+                :readonly="filter.form.submitting"></v-text-field>
+        </v-col>
+    </v-row>
     <div v-if="listItems.length">
-        <v-table>
+        <v-table class="border">
             <thead>
                 <tr>
-                    <th class="font-weight-bold d-none d-md-table-cell">ID</th>
-                    <th class="font-weight-bold">Informações</th>
-                    <th v-if="computedHasAction" class="font-weight-bold">Ações</th>
+                    <th>ID</th>
+                    <th>Informações</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody style="position: relative;">
@@ -66,6 +75,13 @@ export default {
     components: { ConfirmationButton, LoadingElem },
     data() {
         return {
+            filter: {
+                filter: false,
+                form: {
+                    search: null,
+                    submitting: false
+                }
+            },
             listItems: [],
             listPages: [],
             loadingList: false
@@ -101,6 +117,10 @@ export default {
         },
         actionDeleteDialogTitle: {
             type: String,
+            default: null
+        },
+        actionFilter: {
+            type: [Function],
             default: null
         }
     },
@@ -160,6 +180,27 @@ export default {
         methodPaginationUpdateModelValue(currentPage) {
             this.loadingList = true;
             this.$emit('changePage', { page: currentPage, url: this.listPages[currentPage] });
+        },
+        methodFilter() {
+            if (!this.actionFilter) {
+                return;
+            }
+
+            this.filter.form.submitting = true;
+            if (typeof this.actionFilter == 'function') {
+                let callback = this.actionFilter(this.filter.form);
+
+                try {
+                    callback.finally(() => {
+                        this.filter.form.submitting = false;
+                    });
+                } catch (e) {
+                    // 
+                }
+            }
+        },
+        methodClearFilterField() {
+            // 
         }
     }
 }
