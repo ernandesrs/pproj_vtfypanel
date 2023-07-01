@@ -54,10 +54,10 @@
 
 import { useAppStore } from '@/store/app';
 import axios from '@/plugins/axios';
+import alert from '@/services/alert';
 import LoadingElem from '@/components/LoadingElem.vue';
 import ActionsBar from '@/components/ActionsBar.vue';
 import ListGroupElem from '@/components/ListGroupElem.vue';
-import alert from '@/services/alert';
 
 export default {
 	components: { LoadingElem, ActionsBar, ListGroupElem },
