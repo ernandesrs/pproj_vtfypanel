@@ -57,6 +57,7 @@ import axios from '@/plugins/axios';
 import LoadingElem from '@/components/LoadingElem.vue';
 import ActionsBar from '@/components/ActionsBar.vue';
 import ListGroupElem from '@/components/ListGroupElem.vue';
+import alert from '@/services/alert';
 
 export default {
 	components: { LoadingElem, ActionsBar, ListGroupElem },
@@ -135,7 +136,18 @@ export default {
 		},
 		methodDeleteUserConfirmed(event) {
 			let id = event.target.getAttribute('data-identificator');
-			console.log('Deletar ' + id);
+			let index = this.users.list.findIndex((user) => {
+				return user.id == id;
+			});
+
+			axios.req({
+				action: '/admin/users/' + id,
+				method: 'delete',
+				success: (resp) => {
+					this.users.list.splice(index, 1);
+					alert.add('Usuário foi excluído definitivamente.', 'warning', 'Excluído!', null, false);
+				}
+			});
 		}
 	}
 }
