@@ -13,9 +13,14 @@
             action-delete-dialog-title="Tem certeza de que quer excluir esta função?">
 
             <v-row>
-                <v-col>
+                <v-col cols="12" sm="8" md="4" lg="3">
                     <p class="text-subtitle-2 font-weight-light">Nome da função</p>
                     <p class="font-weight-medium">{{ item.display_name }}</p>
+                    <p></p>
+                </v-col>
+                <v-col cols="12" sm="4" md="3">
+                    <p class="text-subtitle-2 font-weight-light">Nome único</p>
+                    <p class="font-weight-medium">{{ item.name }}</p>
                     <p></p>
                 </v-col>
             </v-row>
