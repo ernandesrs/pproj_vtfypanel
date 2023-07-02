@@ -1,10 +1,15 @@
 <template>
     <v-app-bar elevation="0" density="default" color="#f2f2f2">
         <v-app-bar-title v-if="barTitle" :text="barTitle"></v-app-bar-title>
-        <v-btn @click.stop="methodActionCreateClick"
-            v-if="actionButtonCreate.url || actionButtonCreate.to || actionButtonCreate.callback"
-            :prepend-icon="actionButtonCreate.icon ?? 'mdi-plus'" :text="actionButtonCreate.text" color="success" size="large"
-            variant="flat" class="text-none"></v-btn>
+
+        <v-btn-group density="compact" elevation="1" class="mr-4">
+            <v-btn @click.stop="$router.back()" prepend-icon="mdi-arrow-left" text="Voltar" color="blue-grey-lighten-5"
+                variant="flat" class="text-none"></v-btn>
+            <v-btn @click.stop="methodActionCreateClick"
+                v-if="actionButtonCreate.url || actionButtonCreate.to || actionButtonCreate.callback"
+                :prepend-icon="actionButtonCreate.icon ?? 'mdi-plus'" :text="actionButtonCreate.text" color="success"
+                variant="flat" class="text-none"></v-btn>
+        </v-btn-group>
     </v-app-bar>
 </template>
 
