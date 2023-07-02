@@ -104,6 +104,11 @@ const routes = [
         path: 'funcoes/:role_id/editar',
         name: 'admin.roles.edit',
         component: () => import('@/views/Admin/Roles/FormView.vue')
+      },
+      {
+        path: 'assinaturas',
+        name: 'admin.subscriptions',
+        component: () => import('@/views/Admin/Subscriptions/ListView.vue')
       }
     ]
   },

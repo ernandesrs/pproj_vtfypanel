@@ -106,6 +106,12 @@ export default {
               to: { name: 'admin.roles' },
               activeIn: ['admin.roles', 'admin.roles.create', 'admin.roles.edit']
             },
+            {
+              text: 'Assinaturas',
+              icon: 'mdi-check-decagram-outline',
+              to: { name: 'admin.subscriptions' },
+              activeIn: ['admin.subscriptions', 'admin.subscriptions.show']
+            },
           ],
           endNav: [
             {
