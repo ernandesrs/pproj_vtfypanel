@@ -26,12 +26,7 @@
 
     <app-bar v-model="drawer"></app-bar>
 
-    <v-main>
-      <v-container>
-        <alert-elem></alert-elem>
-        <router-view />
-      </v-container>
-    </v-main>
+    <app-view></app-view>
   </v-layout>
 </template>
 
@@ -39,15 +34,14 @@
 
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
-import AlertElem from '@/components/AlertElem.vue';
 import AppBar from './AppBar.vue';
+import AppView from './AppView.vue';
 
 export default {
-  components: { AlertElem, AppBar },
+  components: { AppBar, AppView },
   data() {
     return {
       drawer: false,
-      flashAlert: null,
       navs: {
         app: {
           mainNav: [
@@ -132,9 +126,6 @@ export default {
   computed: {
     computedUserStore() {
       return useUserStore();
-    },
-    computedFlashAlertFromStore() {
-      return useAppStore().appFlashAlert;
     },
     computedAppConfigFromStore() {
       return useAppStore().appConfig;

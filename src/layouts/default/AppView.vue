@@ -1,0 +1,29 @@
+<template>
+  <v-main>
+    <v-container>
+      <alert-elem></alert-elem>
+      <router-view />
+    </v-container>
+  </v-main>
+</template>
+
+<script>
+
+import { useAppStore } from '@/store/app';
+import AlertElem from '@/components/AlertElem.vue';
+
+export default {
+  components: { AlertElem },
+  data() {
+    return {
+      flashAlert: null,
+    };
+  },
+  computed: {
+    computedFlashAlertFromStore() {
+      return useAppStore().appFlashAlert;
+    }
+  }
+}
+
+</script>
