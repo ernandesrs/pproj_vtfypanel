@@ -119,9 +119,9 @@
 
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
-import LoadingElem from '@/components/LoadingElem.vue';
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
+import LoadingElem from '@/components/LoadingElem.vue';
 
 export default {
   components: { LoadingElem },
@@ -187,7 +187,7 @@ export default {
       }
     ]);
 
-    if (!useUserStore.isVerified) {
+    if (!useUserStore().isVerified) {
       alert.add('É preciso verificar sua conta antes de fazer uma assinatura.', 'warning', 'Verifique sua conta', 10, true);
       this.$router.push({ name: 'app.home' });
     } else {
@@ -213,7 +213,7 @@ export default {
         action: '/dash/packages',
         method: 'get',
         success: (resp) => {
-          this.packages.list = resp.data.packages;
+          this.packages.list = resp.data.packages.list;
         },
         finally: () => {
           this.packages.loaded = true;
@@ -224,7 +224,7 @@ export default {
         action: '/dash/credit-cards',
         method: 'get',
         success: (resp) => {
-          this.cards.list = resp.data.data.data;
+          this.cards.list = resp.data.cards.list;
         },
         finally: () => {
           this.cards.loaded = true;
