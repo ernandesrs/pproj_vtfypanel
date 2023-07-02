@@ -26,7 +26,7 @@
                     </div>
                 </div>
 
-                <tr v-for="item, index in items">
+                <tr v-for="item, index in items" :key="index">
                     <td v-if="item?.id" class="text-right d-none d-md-table-cell">
                         {{ item.id }}
                     </td>
@@ -97,11 +97,11 @@ export default {
         },
         items: {
             type: Array,
-            default: []
+            default: Array
         },
         pages: {
             type: Array,
-            default: []
+            default: Array
         },
         actionShow: {
             type: [String, Object, Function],
@@ -128,7 +128,7 @@ export default {
         items: {
             deep: true,
             immediate: true,
-            handler(nv, ov) {
+            handler(nv) {
                 this.listItems = nv;
                 if (this.loadingList) {
                     this.loadingList = false;
@@ -138,7 +138,7 @@ export default {
         pages: {
             deep: true,
             immediate: true,
-            handler(nv, ov) {
+            handler(nv) {
                 this.listPages = nv;
             }
         }
@@ -195,12 +195,12 @@ export default {
                         this.filter.form.submitting = false;
                     });
                 } catch (e) {
-                    // 
+                    this.filter.form.submitting = false;
                 }
             }
         },
         methodClearFilterField() {
-            // 
+            this.methodFilter();
         }
     }
 }

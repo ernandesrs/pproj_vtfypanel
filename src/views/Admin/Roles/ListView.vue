@@ -10,7 +10,7 @@
 
         <list-group-elem @changePage="methodChangePage" :items="roles.list" :pages="roles.pages" v-slot="{ item }"
             :action-edit="methodEdit" :action-delete="methodDeleteConfirmed"
-            action-delete-dialog-title="Tem certeza de que quer excluir esta função?">
+            action-delete-dialog-title="Tem certeza de que quer excluir esta função?" :action-filter="methodFilter">
 
             <v-row>
                 <v-col cols="12" sm="8" md="4" lg="3">
@@ -73,7 +73,7 @@ export default {
         methodGetRoles(page, search = null) {
             let action = '/admin/roles?page=' + page + '&limit=' + this.roles.limit + (search ? '&search=' + search : '');
 
-            axios.req({
+            return axios.req({
                 action: action,
                 method: 'get',
                 success: (resp) => {
@@ -106,6 +106,9 @@ export default {
                     this.roles.list.splice(this.roles.list.findIndex((role) => role.id == id), 1);
                 }
             });
+        },
+        methodFilter(event) {
+            return this.methodGetRoles(1, event.search);
         }
     }
 }
