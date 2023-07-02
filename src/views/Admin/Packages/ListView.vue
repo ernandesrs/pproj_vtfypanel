@@ -111,7 +111,7 @@ export default {
             });
         },
         methodEditPackage(event) {
-
+            this.$router.push({ name: 'admin.packages.edit', params: { package_id: event.target.getAttribute('data-identificator') } });
         },
         methodDeletePackageConfirmed(event) {
             let id = event.target.getAttribute('data-identificator');
