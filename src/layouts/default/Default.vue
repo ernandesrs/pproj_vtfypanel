@@ -100,6 +100,12 @@ export default {
               to: { name: 'admin.packages' },
               activeIn: ['admin.packages', 'admin.packages.create', 'admin.packages.edit']
             },
+            {
+              text: 'Funções',
+              icon: 'mdi-shield-outline',
+              to: { name: 'admin.roles' },
+              activeIn: ['admin.roles', 'admin.roles.create', 'admin.roles.edit']
+            },
           ],
           endNav: [
             {
