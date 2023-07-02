@@ -188,8 +188,8 @@ export default {
         action: action,
         method: 'get',
         success: (resp) => {
-          this.cards.list = resp.data.data.data;
-          this.cards.pages = resp.data.data.meta.links;
+          this.cards.list = resp.data.cards.list;
+          this.cards.pages = resp.data.cards.meta.links;
         },
         finally: () => {
           this.loadingContent = false;

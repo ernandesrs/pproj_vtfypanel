@@ -117,8 +117,9 @@ export default {
 				action: '/admin/users?page=' + page + '&limit=' + this.users.limit + (search ? '&search=' + search : ''),
 				method: 'get',
 				success: (resp) => {
-					this.users.list = resp.data.data.data;
-					this.users.pages = resp.data.data.meta.links;
+					console.log(resp);
+					this.users.list = resp.data.users.list;
+					this.users.pages = resp.data.users.meta.links;
 				},
 				finally: () => {
 					this.loadingContent = false;

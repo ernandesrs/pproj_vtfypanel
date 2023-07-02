@@ -186,8 +186,8 @@ export default {
         action: action,
         method: 'get',
         success: (resp) => {
-          this.subscriptions.list = resp.data.data.data;
-          this.subscriptions.pages = resp.data.data.meta.links;
+          this.subscriptions.list = resp.data.subscriptions.list;
+          this.subscriptions.pages = resp.data.subscriptions.meta.links;
         },
         finally: () => {
           this.loadingContent = false;

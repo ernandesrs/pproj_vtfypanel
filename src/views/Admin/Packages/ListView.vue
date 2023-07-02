@@ -87,7 +87,7 @@ export default {
     },
     methods: {
         methodChangePage(page) {
-
+            this.methodGetPackages(page.page);
         },
         methodGetPackages(page, search = null) {
             let action = '/admin/packages?page=' + page + '&limit=' + this.packages.limit + (search ? '&search=' + search : '');
@@ -95,8 +95,8 @@ export default {
                 action: action,
                 method: 'get',
                 success: (resp) => {
-                    this.packages.list = resp.data.data.data;
-                    this.packages.pages = resp.data.data.meta.links;
+                    this.packages.list = resp.data.packages.list;
+                    this.packages.pages = resp.data.packages.meta.links;
                 },
                 finally: () => {
                     this.loadingContent = false;
