@@ -1,4 +1,7 @@
 import { defineStore } from 'pinia';
+import token from '@/services/token';
+import router from '@/router';
+import axios from '@/plugins/axios';
 
 export const useUserStore = defineStore('user', {
     state: () => {
@@ -13,6 +16,16 @@ export const useUserStore = defineStore('user', {
         },
         updateUser(user) {
             this.user = user;
+        },
+        logout() {
+            axios.req({
+                action: '/auth/logout',
+                method: 'get',
+                success: () => {
+                    token.remove();
+                    router.push({ name: 'auth.login' });
+                }
+            });
         }
     },
     getters: {

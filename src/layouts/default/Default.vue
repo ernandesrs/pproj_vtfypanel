@@ -24,49 +24,7 @@
       </template>
     </v-navigation-drawer>
 
-    <v-app-bar>
-      <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
-      <template #append>
-        <v-menu>
-          <template v-slot:activator="{ props: menu }">
-            <v-tooltip location="top">
-              <template v-slot:activator="{ props: tooltip }">
-                <v-btn color="primary" v-bind="mergeProps(menu, tooltip)">
-                  <v-avatar size="36" color="primary">
-                    <v-img v-if="computedUserStore.getPhotoUrl" :src="computedUserStore.getPhotoUrl"></v-img>
-                    <span v-else class="text-h8">{{ computedUserStore.getInitials }}</span>
-                  </v-avatar>
-                </v-btn>
-              </template>
-            </v-tooltip>
-          </template>
-          <v-list class="text-center">
-            <v-list-item>
-              <v-card>
-                <v-card-text>
-                  <v-avatar size="100" color="primary">
-                    <v-img v-if="computedUserStore.getPhotoUrl" :src="computedUserStore.getPhotoUrl"></v-img>
-                    <span v-else class="text-h4">{{ computedUserStore.getInitials }}</span>
-                  </v-avatar>
-                  <div class="pt-1 pb-3">
-                    <h3 class="text-h6 font-weight-bold">{{ computedUserStore.getUsername.substring(0, 9) }}</h3>
-                    <p>{{ computedUserStore.getEmail }}</p>
-                  </div>
-                  <div class="d-flex justify-center">
-                    <v-btn elevation="0" prepend-icon="mdi-account" size="small" text="Perfil" color="primary"
-                      variant="outlined" class="ma-1" :to="{ name: 'app.profile' }"
-                      :disabled="this.$route.name == 'app.profile'"></v-btn>
-                    <v-btn @click.stop="methodLogout" elevation="0" color="red" prepend-icon="mdi-logout" size="small"
-                      :loading="logouting" text="Sair" class="ma-1"></v-btn>
-                  </div>
-                </v-card-text>
-              </v-card>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </template>
-    </v-app-bar>
+    <app-bar v-model="drawer"></app-bar>
 
     <v-main>
       <v-container>
@@ -79,20 +37,17 @@
 
 <script>
 
-import token from '@/services/token';
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
-import { mergeProps } from 'vue';
 import AlertElem from '@/components/AlertElem.vue';
+import AppBar from './AppBar.vue';
 
 export default {
-  components: { mergeProps, AlertElem },
+  components: { AlertElem, AppBar },
   data() {
     return {
       drawer: false,
-      breadcrumbs: [],
       flashAlert: null,
-      logouting: false,
       navs: {
         app: {
           mainNav: [
@@ -174,24 +129,7 @@ export default {
   created() {
     this.methodDefineNavigationDrawerStatus()
   },
-  watch: {
-    computedBreadcrumbsFromStore: {
-      deep: true,
-      handler(nv, ov) {
-        this.breadcrumbs = nv;
-      }
-    },
-    computedFlashAlertFromStore: {
-      deep: true,
-      handler(nv, ov) {
-        this.flashAlert = nv;
-      }
-    }
-  },
   computed: {
-    computedBreadcrumbsFromStore() {
-      return useAppStore().appBreadcrumbs;
-    },
     computedUserStore() {
       return useUserStore();
     },
@@ -210,11 +148,8 @@ export default {
         this.drawer = true;
       }
     },
-    mergeProps,
     methodLogout() {
-      this.logouting = true;
-      token.remove();
-      this.$router.push({ name: 'auth.login' });
+      this.computedUserStore.logout();
     }
   }
 }
