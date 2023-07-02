@@ -55,6 +55,7 @@
 
 import { useAppStore } from '@/store/app';
 import axios from '@/plugins/axios.js';
+import alert from '@/services/alert';
 import LoadingElem from '@/components/LoadingElem.vue';
 import ActionsBar from '@/components/ActionsBar.vue';
 import ListGroupElem from '@/components/ListGroupElem.vue';
@@ -107,7 +108,36 @@ export default {
 
         },
         methodDeletePackageConfirmed(event) {
+            let id = event.target.getAttribute('data-identificator');
+            let pack = this.packages.list.find((pack) => {
+                return pack.id == id;
+            });
 
+            if (pack.subscriptions.active) {
+                alert.add(
+                    'Este pacote possui ' + pack.subscriptions.active + ' assinaturas ativas e não pode ser excluído.',
+                    'warning',
+                    'Não pode excluir!',
+                    null,
+                    false
+                );
+                return;
+            }
+
+            return axios.req({
+                action: '/admin/packages/' + id,
+                method: 'delete',
+                success: () => {
+                    alert.add(
+                        'O pacote foi excluído definitivamente.',
+                        'warning',
+                        'Excluído!',
+                        null,
+                        false
+                    );
+                    this.packages.list.splice(this.packages.list.indexOf(pack), 1);
+                }
+            });
         }
     }
 }

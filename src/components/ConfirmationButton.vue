@@ -86,7 +86,7 @@ export default {
                         this.dialog = false;
                     });
                 } catch (e) {
-                    // 
+                    this.dialog = false;
                 }
             } else if (this.confirmRoute) {
                 this.$router.push(this.confirmRoute);
