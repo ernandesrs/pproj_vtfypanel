@@ -10,14 +10,14 @@
       </div>
 
       <v-list class="pa-3">
-        <v-list-item v-for="item in navs[computedAppConfigFromStore.app].mainNav" :title="item.text"
+        <v-list-item v-for="item in navs[computedAppConfigFromStore.app].mainNav" :key="item" :title="item.text"
           :prepend-icon="item.icon" :to="item.to" :active="item.activeIn.includes(this.$route.name)"
           rounded></v-list-item>
       </v-list>
 
       <template v-slot:append>
         <v-list class="pa-3">
-          <v-list-item @click="item.callback" v-for="item in navs[computedAppConfigFromStore.app].endNav"
+          <v-list-item @click="item.callback" v-for="item in navs[computedAppConfigFromStore.app].endNav" :key="item"
             :color="item.color ?? null" :title="item.text" :prepend-icon="item.icon" :to="item.to ?? null"
             :active="item.activeIn.includes(this.$route.name)" rounded></v-list-item>
         </v-list>
@@ -101,17 +101,17 @@ export default {
               activeIn: ['admin.packages', 'admin.packages.create', 'admin.packages.edit']
             },
             {
-              text: 'Funções',
-              icon: 'mdi-shield-outline',
-              to: { name: 'admin.roles' },
-              activeIn: ['admin.roles', 'admin.roles.create', 'admin.roles.edit']
-            },
-            {
               text: 'Assinaturas',
               icon: 'mdi-check-decagram-outline',
               to: { name: 'admin.subscriptions' },
               activeIn: ['admin.subscriptions', 'admin.subscriptions.show']
             },
+            {
+              text: 'Funções',
+              icon: 'mdi-shield-outline',
+              to: { name: 'admin.roles' },
+              activeIn: ['admin.roles', 'admin.roles.create', 'admin.roles.edit']
+            }
           ],
           endNav: [
             {
