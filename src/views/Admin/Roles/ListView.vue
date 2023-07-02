@@ -86,7 +86,7 @@ export default {
         },
         methodEdit(event) {
             let id = event.target.getAttribute('data-identificator');
-            console.log('Edit: ' + id);
+            this.$router.push({ name: 'admin.roles.edit', params: { role_id: id } });
         },
         methodDeleteConfirmed(event) {
             let id = event.target.getAttribute('data-identificator');
