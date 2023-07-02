@@ -2,7 +2,11 @@
     <loading-elem v-if="loadingContent"></loading-elem>
 
     <template v-else>
-        <actions-bar bar-title="Pacotes"></actions-bar>
+        <actions-bar bar-title="Pacotes" :action-button-create="{
+            text: 'Novo pacote',
+            icon: 'mdi-package-variant-closed-plus',
+            to: { name: 'admin.packages.create' }
+        }"></actions-bar>
 
         <list-group-elem @changePage="methodChangePage" :pages="packages.pages" :items="packages.list" v-slot="{ item }"
             :action-edit="methodEditPackage" :action-delete="methodDeletePackageConfirmed"
@@ -11,12 +15,14 @@
             }">
 
             <v-row>
-                <v-col cols="12" sm="6" md="4" lg="3">
+                <v-col cols="12" sm="6" md="4">
                     <p class="text-subtitle-2 font-weight-light">
                         Nome:
                     </p>
                     <p class="font-weight-medium">
-                        {{ item.name }}
+                        <v-icon :icon="'mdi-' + (item.show ? 'eye-check-outline' : 'eye-remove-outline')"
+                            :color="(item.show ? 'success' : 'warning')"
+                            :title="(item.show ? 'Mostrando' : 'Ocultando')"></v-icon> {{ item.name }}
                     </p>
                 </v-col>
 
