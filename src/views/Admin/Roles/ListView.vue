@@ -33,6 +33,7 @@
 
 import { useAppStore } from '@/store/app';
 import axios from '@/plugins/axios.js';
+import alert from '@/services/alert.js';
 import LoadingElem from '@/components/LoadingElem.vue';
 import ActionsBar from '@/components/ActionsBar.vue';
 import ListGroupElem from '@/components/ListGroupElem.vue';
@@ -90,7 +91,21 @@ export default {
         },
         methodDeleteConfirmed(event) {
             let id = event.target.getAttribute('data-identificator');
-            console.log('Delete: ' + id);
+
+            return axios.req({
+                action: '/admin/roles/' + id,
+                method: 'delete',
+                success: () => {
+                    alert.add('Função excluída com sucesso!',
+                        'warning',
+                        'Excluída!',
+                        null,
+                        false
+                    );
+
+                    this.roles.list.splice(this.roles.list.findIndex((role) => role.id == id), 1);
+                }
+            });
         }
     }
 }
