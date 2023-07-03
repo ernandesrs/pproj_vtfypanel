@@ -10,9 +10,17 @@
       </div>
 
       <v-list class="pa-3">
-        <v-list-item v-for="item in navs[computedAppConfigFromStore.app].mainNav" :key="item" :title="item.text"
-          :prepend-icon="item.icon" :to="item.to" :active="item.activeIn.includes(this.$route.name)"
-          rounded></v-list-item>
+        <template v-for="item in navs[computedAppConfigFromStore.app].mainNav" :key="item">
+          <v-list-group v-if="item?.items" :title="item.text">
+            <template v-slot:activator="{ props }">
+              <v-list-item v-bind="props" :prepend-icon="item.icon" :title="item.text"></v-list-item>
+            </template>
+            <v-list-item v-for="subItem in item.items" :key="subItem" :prepend-icon="subItem.icon" :title="subItem.text" :to="subItem.to"
+            :active="subItem.activeIn.includes(this.$route.name)" rounded></v-list-item>
+          </v-list-group>
+          <v-list-item v-else :title="item.text" :prepend-icon="item.icon" :to="item.to"
+            :active="item.activeIn.includes(this.$route.name)" rounded></v-list-item>
+        </template>
       </v-list>
 
       <template v-slot:append>
@@ -89,22 +97,32 @@ export default {
               activeIn: ['admin.home']
             },
             {
+              text: 'App',
+              icon: 'mdi-store-outline',
+              activeIn: [
+                'admin.packages', 'admin.packages.create', 'admin.packages.edit',
+                'admin.subscriptions', 'admin.subscriptions.show'
+              ],
+              items: [
+                {
+                  text: 'Pacotes',
+                  icon: 'mdi-package-variant-closed',
+                  to: { name: 'admin.packages' },
+                  activeIn: ['admin.packages', 'admin.packages.create', 'admin.packages.edit']
+                },
+                {
+                  text: 'Assinaturas',
+                  icon: 'mdi-check-decagram-outline',
+                  to: { name: 'admin.subscriptions' },
+                  activeIn: ['admin.subscriptions', 'admin.subscriptions.show']
+                },
+              ]
+            },
+            {
               text: 'Usuários',
               icon: 'mdi-account-group-outline',
               to: { name: 'admin.users' },
               activeIn: ['admin.users', 'admin.users.create', 'admin.users.edit']
-            },
-            {
-              text: 'Pacotes',
-              icon: 'mdi-package-variant-closed',
-              to: { name: 'admin.packages' },
-              activeIn: ['admin.packages', 'admin.packages.create', 'admin.packages.edit']
-            },
-            {
-              text: 'Assinaturas',
-              icon: 'mdi-check-decagram-outline',
-              to: { name: 'admin.subscriptions' },
-              activeIn: ['admin.subscriptions', 'admin.subscriptions.show']
             },
             {
               text: 'Funções',
