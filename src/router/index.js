@@ -137,17 +137,17 @@ const routes = [
   },
   {
     path: '/oops',
-    component: () => import('@/layouts/Oops/Default.vue'),
+    component: () => import('@/layouts/oops/Default.vue'),
     children: [
       {
         path: 'unauthorized',
         name: 'oops.unauthorized',
-        component: () => import('@/views/Oops/UnauthorizedView.vue')
+        component: () => import('@/views/oops/UnauthorizedView.vue')
       },
       {
         path: '/:pathMatch(.*)*',
         name: 'oops.notfound',
-        component: () => import('@/views/Oops/NotFoundView.vue')
+        component: () => import('@/views/oops/NotFoundView.vue')
       }
     ]
   },
