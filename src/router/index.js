@@ -142,10 +142,15 @@ const routes = [
       {
         path: 'unauthorized',
         name: 'oops.unauthorized',
-        component: () => import('@/views/Oops/UnauthorizedView.vue'),
+        component: () => import('@/views/Oops/UnauthorizedView.vue')
+      },
+      {
+        path: '/:pathMatch(.*)*',
+        name: 'oops.notfound',
+        component: () => import('@/views/Oops/NotFoundView.vue')
       }
     ]
-  }
+  },
 ]
 
 const router = createRouter({

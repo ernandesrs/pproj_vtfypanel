@@ -1,9 +1,14 @@
 <template>
-  <v-layout class="rounded rounded-md">
+  <v-layout>
     <v-main>
-      <v-container>
+      <v-container
+        style="min-height: 100vh; display: flex; flex-direction: column; justify-content: center;align-items: center;">
         <alert-elem />
         <router-view />
+        <div class="text-center py-5">
+          <v-btn @click.stop="this.$router.go(this.$route.name == 'oops.notfound' ? -1 : -2)" prepend-icon="mdi-history"
+            text="Voltar" variant="outlined" color="primary" size="x-large"></v-btn>
+        </div>
       </v-container>
     </v-main>
   </v-layout>
