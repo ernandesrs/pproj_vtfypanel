@@ -8,26 +8,25 @@
             v-slot="{ item }" :action-show="methodShow" :action-filter="methodFilter">
 
             <v-row>
-                <v-col cols="12" sm="4" md="3">
-                    <p class="text-subtitle-2 font-weight-light">Cliente</p>
-                    <p class="font-weight-medium">{{ item.user.first_name }} {{ item.user.last_name }}</p>
-                </v-col>
-
                 <v-col cols="12" sm="8" md="4" lg="3">
-                    <p class="text-subtitle-2 font-weight-light">Nome do pacote</p>
-                    <v-badge :content="{
-                        active: 'Ativo',
-                        pending: 'Pendente',
-                        canceled: 'Cancelado',
-                        ended: 'Finalizdao'
-                    }[item.status]" :color="{
-    active: 'success',
-    pending: 'info',
-    canceled: 'danger',
-    ended: 'warning'
-}[item.status]">
-                        <p class="font-weight-medium">{{ item.package_metadata.name }}</p>
-                    </v-badge>
+                    <p class="text-subtitle-2 font-weight-light">Pacote</p>
+                    <p>{{ item.package_metadata.name }}</p>
+                </v-col>
+                <v-col cols="12" sm="8" md="4" lg="3">
+                    <p class="text-subtitle-2 font-weight-light">Status</p>
+                    <v-chip :color="{
+                        active: 'success',
+                        pending: 'info',
+                        canceled: 'danger',
+                        ended: 'warning'
+                    }[item.status]">
+                        {{ {
+                            active: 'Ativo',
+                            pending: 'Pendente',
+                            canceled: 'Cancelado',
+                            ended: 'Finalizdao'
+                        }[item.status] }}
+                    </v-chip>
                     <p></p>
                 </v-col>
             </v-row>
@@ -95,7 +94,7 @@ export default {
             return this.methodGetSubscriptions(1, event.search);
         },
         methodShow(event) {
-            console.log(event);
+            this.$router.push({ name: 'admin.subscriptions.show', params: { subscription_id: event.target.getAttribute('data-identificator') } });
         }
     }
 }

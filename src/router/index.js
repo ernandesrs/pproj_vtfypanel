@@ -109,6 +109,11 @@ const routes = [
         path: 'assinaturas',
         name: 'admin.subscriptions',
         component: () => import('@/views/Admin/Subscriptions/ListView.vue')
+      },
+      {
+        path: 'assinaturas/:subscription_id/mostrar',
+        name: 'admin.subscriptions.show',
+        component: () => import('@/views/Admin/Subscriptions/ShowView.vue')
       }
     ]
   },
