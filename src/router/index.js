@@ -134,6 +134,17 @@ const routes = [
         component: () => import('@/views/Auth/VerifyView.vue'),
       }
     ]
+  },
+  {
+    path: '/oops',
+    component: () => import('@/layouts/Oops/Default.vue'),
+    children: [
+      {
+        path: 'unauthorized',
+        name: 'oops.unauthorized',
+        component: () => import('@/views/Oops/UnauthorizedView.vue'),
+      }
+    ]
   }
 ]
 
