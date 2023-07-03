@@ -15,8 +15,8 @@
             <template v-slot:activator="{ props }">
               <v-list-item v-bind="props" :prepend-icon="item.icon" :title="item.text"></v-list-item>
             </template>
-            <v-list-item v-for="subItem in item.items" :key="subItem" :prepend-icon="subItem.icon" :title="subItem.text" :to="subItem.to"
-            :active="subItem.activeIn.includes(this.$route.name)" rounded></v-list-item>
+            <v-list-item v-for="subItem in item.items" :key="subItem" :prepend-icon="subItem.icon" :title="subItem.text"
+              :to="subItem.to" :active="subItem.activeIn.includes(this.$route.name)" rounded></v-list-item>
           </v-list-group>
           <v-list-item v-else :title="item.text" :prepend-icon="item.icon" :to="item.to"
             :active="item.activeIn.includes(this.$route.name)" rounded></v-list-item>
@@ -97,6 +97,12 @@ export default {
               activeIn: ['admin.home']
             },
             {
+              text: 'Usuários',
+              icon: 'mdi-account-group-outline',
+              to: { name: 'admin.users' },
+              activeIn: ['admin.users', 'admin.users.create', 'admin.users.edit']
+            },
+            {
               text: 'App',
               icon: 'mdi-store-outline',
               activeIn: [
@@ -119,16 +125,17 @@ export default {
               ]
             },
             {
-              text: 'Usuários',
-              icon: 'mdi-account-group-outline',
-              to: { name: 'admin.users' },
-              activeIn: ['admin.users', 'admin.users.create', 'admin.users.edit']
-            },
-            {
-              text: 'Funções',
-              icon: 'mdi-shield-outline',
-              to: { name: 'admin.roles' },
-              activeIn: ['admin.roles', 'admin.roles.create', 'admin.roles.edit']
+              text: 'Configurações',
+              icon: 'mdi-cogs',
+              activeIn: ['admin.roles', 'admin.roles.create', 'admin.roles.edit'],
+              items: [
+                {
+                  text: 'Funções',
+                  icon: 'mdi-shield-outline',
+                  to: { name: 'admin.roles' },
+                  activeIn: ['admin.roles', 'admin.roles.create', 'admin.roles.edit']
+                }
+              ],
             }
           ],
           endNav: [
@@ -180,5 +187,13 @@ export default {
 <style>
 button>span {
   pointer-events: none;
+}
+
+.v-list-item__prepend>.v-icon {
+  margin-right: 15px;
+}
+
+.v-list-group__items .v-list-item {
+    padding-inline-start: 35px !important;
 }
 </style>
