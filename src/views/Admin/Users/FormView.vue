@@ -2,7 +2,7 @@
 	<loading-elem v-if="loadingContent"></loading-elem>
 	<template v-else>
 		<actions-bar :bar-title="this.user.create ? 'Novo usuário' : 'Editar usuário'"></actions-bar>
-		<v-row class="justify-center pa-8">
+		<v-row class="justify-center pa-md-8">
 			<v-col v-if="!this.user.create" cols="12" sm="10" lg="4" class="text-center">
 				<v-avatar size="175">
 					<v-img v-if="user.form.data?.photo_url" :src="user.form.data?.photo_url"></v-img>
