@@ -145,7 +145,7 @@ export default {
 			return axios.req({
 				action: '/admin/users/' + id,
 				method: 'delete',
-				success: (resp) => {
+				success: () => {
 					this.users.list.splice(index, 1);
 					alert.add('Usuário foi excluído definitivamente.', 'warning', 'Excluído!', null, false);
 				}

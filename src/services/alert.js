@@ -1,5 +1,5 @@
 import { useAppStore } from '@/store/app';
-import messages from '../services/messages';
+import messages from './messages';
 
 const FLASH_ALERT_KEY = 'flash_alert';
 

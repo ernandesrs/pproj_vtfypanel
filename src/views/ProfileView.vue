@@ -142,7 +142,7 @@ export default {
       axios.req({
         action: '/me/photo-delete',
         method: 'delete',
-        success: (resp) => {
+        success: () => {
           alert.add('Sua foto foi excluída!', 'warning', 'Pronto!', null, 5, false);
           this.formUser.data.photo_url = null;
         }

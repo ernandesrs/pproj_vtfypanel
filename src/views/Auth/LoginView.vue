@@ -27,7 +27,6 @@
 
 import token from '@/services/token';
 import axios from '@/plugins/axios';
-import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
 import alert from '@/services/alert';
 

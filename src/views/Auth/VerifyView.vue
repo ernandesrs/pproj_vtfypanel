@@ -18,9 +18,9 @@
 </template>
 
 <script>
+
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
-
 
 export default {
     data() {
@@ -48,7 +48,7 @@ export default {
             axios.req({
                 action: '/auth/verify-account?token=' + verificationToken,
                 method: 'get',
-                success: (resp) => {
+                success: () => {
                     alert.add('Sua conta foi verificada com sucesso!', 'success', 'Verificado!', 5, true);
                     this.$router.push({ name: 'app.home' });
                 },

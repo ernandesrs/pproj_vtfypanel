@@ -229,7 +229,7 @@ export default {
       axios.req({
         action: '/dash/subscriptions/' + id + '/cancel',
         method: 'patch',
-        success: (resp) => {
+        success: () => {
           alert.add('Assinatura cancelada com sucesso!', 'warning', 'CANCELADA :(!', 5, true);
           this.$router.push({ name: 'app.home' });
         },

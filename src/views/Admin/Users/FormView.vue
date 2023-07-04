@@ -161,7 +161,7 @@ export default {
 				action: action,
 				method: method,
 				data: data,
-				success: (resp) => {
+				success: () => {
 					alert.add(this.user.create ? 'Novo usuário criado com sucesso!' : 'Usuário atualizado com sucesso!', this.user.create ? 'success' : 'info', this.user.create ? 'Usuário criado!' : 'Usuário atualizado!', null, this.user.create ? true : false);
 
 					if (this.user.create) {
@@ -182,7 +182,7 @@ export default {
 			axios.req({
 				action: action,
 				method: 'delete',
-				success: (resp) => {
+				success: () => {
 					alert.add('Foto excluída com sucesso!', 'warning', 'Pronto!');
 					this.user.form.data.photo_url = null;
 				}

@@ -12,7 +12,7 @@
 <script>
 
 import { useAppStore } from '@/store/app';
-import alertService from '@/services/alert';
+import alert from '@/services/alert';
 
 const TITLES = {
     error: 'ERRO',
@@ -69,7 +69,7 @@ export default {
     watch: {
         computedAlertMessage: {
             deep: true,
-            handler(nv, ov) {
+            handler(nv) {
                 if (nv) {
                     this.snackbar = true;
                 }
@@ -77,7 +77,7 @@ export default {
         },
         computedAlertFromStore: {
             deep: true,
-            handler(nv, ov) {
+            handler(nv) {
                 if (nv) {
                     this.alert = nv;
                 }
@@ -90,7 +90,7 @@ export default {
                 }
 
                 setTimeout(() => {
-                    alertService.flash();
+                    alert.flash();
                 }, 50);
             }
         }
@@ -125,7 +125,7 @@ export default {
         }
     },
     created() {
-        alertService.flash();
+        alert.flash();
     }
 }
 
