@@ -3,7 +3,7 @@
 	<template v-else>
 		<actions-bar :bar-title="this.user.create ? 'Novo usuário' : 'Editar usuário'"></actions-bar>
 		<v-row class="justify-center pa-8">
-			<v-col v-if="!this.user.create" cols="12" sm="10" lg="3" class="text-center">
+			<v-col v-if="!this.user.create" cols="12" sm="10" lg="4" class="text-center">
 				<v-avatar size="175">
 					<v-img v-if="user.form.data?.photo_url" :src="user.form.data?.photo_url"></v-img>
 					<div v-else
@@ -11,11 +11,29 @@
 						{{ user.create ? 'U' : user.form.data?.first_name[0] }}
 					</div>
 				</v-avatar>
-				<div class="py-3">
+				<v-sheet v-if="user.form.data?.photo_url" class="py-3">
 					<confirmation-button v-if="user.form.data?.photo_url" icon="mdi-trash-can-outline" text="Excluir foto"
-						color="red" size="small" dialog-title="Excluir sua foto?"
+						color="danger" size="small" dialog-title="Excluir sua foto?"
 						:confirm-callback="methodDeleteUserPhoto"></confirmation-button>
-				</div>
+				</v-sheet>
+				<v-sheet class="py-3">
+					<v-card>
+						<v-card-item>
+							<v-select v-model="user.form.data.level" :items="(Object.values(user.levels)).map((level) => {
+								return {
+									text: level.text,
+									value: level.key
+								};
+							})" item-title="text" item-value="value" label="Nível de acesso" density="compact"
+								:loading="user.form.submitting" :readonly="user.form.submitting"></v-select>
+
+							<v-select v-if="[8, 9].includes(user.form.data.level)" @update:modelValue="methodUpdateRoles"
+								v-model="user.form.data.roles" :items="roles.list" item-title="text" item-value="value"
+								label="Funções atribuídas" chips multiple :loading="roles.loading || user.form.submitting"
+								:readonly="roles.loading || user.form.submitting" density="compact"></v-select>
+						</v-card-item>
+					</v-card>
+				</v-sheet>
 			</v-col>
 			<v-col cols="12" sm="10" lg="6">
 				<v-card>
@@ -100,6 +118,41 @@ export default {
 					data: {},
 					errors: {},
 					submitting: false
+				},
+				levels: {
+					0: {
+						key: 0,
+						text: 'Usuário/Cliente',
+						color: ''
+					},
+					8: {
+						key: 8,
+						text: 'Administrativo',
+						color: 'info'
+					},
+					9: {
+						key: 9,
+						text: 'Super usuário',
+						color: 'success'
+					}
+				}
+			},
+			roles: {
+				loading: true,
+				list: []
+			}
+		}
+	},
+	watch: {
+		'user.form.data.level': {
+			deep: true,
+			handler(nv, ov) {
+				if (ov == undefined) {
+					return;
+				}
+
+				if (nv != ov) {
+					this.methodUpdateLevel();
 				}
 			}
 		}
@@ -108,6 +161,7 @@ export default {
 		if (this.$route.params?.user_id) {
 			this.user.create = false;
 			this.methodGetUser();
+			this.methodGetRoles();
 		} else {
 			this.loadingContent = false;
 		}
@@ -137,9 +191,33 @@ export default {
 				method: 'get',
 				success: (resp) => {
 					this.user.form.data = resp.data.user;
+					this.user.form.data.roles = this.user.form.data.roles.map((role) => {
+						return {
+							'text': role.display_name,
+							'value': role.id
+						};
+					});
 				},
 				finally: () => {
 					this.loadingContent = false;
+				}
+			});
+		},
+		methodGetRoles() {
+			this.roles.loading = true;
+			axios.req({
+				action: '/admin/roles',
+				method: 'get',
+				success: (resp) => {
+					this.roles.list = resp.data.roles.list.map((role) => {
+						return {
+							'text': role.display_name,
+							'value': role.id
+						};
+					});
+				},
+				finally: () => {
+					this.roles.loading = false;
 				}
 			});
 		},
@@ -185,6 +263,66 @@ export default {
 				success: () => {
 					alert.add('Foto excluída com sucesso!', 'warning', 'Pronto!');
 					this.user.form.data.photo_url = null;
+				}
+			});
+		},
+		methodUpdateLevel() {
+			this.user.form.submitting = true;
+
+			return axios.req({
+				action: '/admin/users/' + this.user.form.data.id + '/update-level',
+				method: 'put',
+				data: {
+					level: this.user.form.data.level
+				},
+				success: (resp) => {
+					alert.add('Nível administrativo do usuário atualizado.', 'success', 'Pronto!');
+					this.user.form.data = resp.data.user;
+
+				},
+				finally: () => {
+					this.user.form.submitting = false;
+				}
+			});
+		},
+		methodUpdateRoles(event) {
+			let action = null;
+			let method = null;
+
+			this.user.form.submitting = true;
+
+			let added = event.filter((roleId) => {
+				let index = (this.user.form.data.roles ?? []).findIndex((role) => {
+					return role.value == roleId;
+				});
+
+				return index != -1 ? false : true;
+			});
+
+			let removed = (this.user.form.data.roles ?? []).filter((role) => {
+				let index = event.findIndex((roleId) => {
+					return roleId == role.value;
+				});
+
+				return index == -1;
+			});
+
+			if (added.length) {
+				action = '/admin/users/roles/' + this.user.form.data.id + '/' + added[0];
+				method = 'put';
+			} else if (removed.length) {
+				action = '/admin/users/roles/' + this.user.form.data.id + '/' + removed[0].value;
+				method = 'delete';
+			}
+
+			return axios.req({
+				action: action,
+				method: method,
+				success: () => {
+					this.methodGetUser();
+				},
+				finally: () => {
+					this.user.form.submitting = false;
 				}
 			});
 		}

@@ -29,6 +29,10 @@ export default {
         };
     },
     props: {
+        config: {
+            type: Object,
+            default: null
+        },
         dataIdentificator: {
             type: [String, Number],
             default: null
