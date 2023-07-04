@@ -114,6 +114,7 @@ export default {
             let action = this.computedIsCreating ? '/admin/roles' : '/admin/roles/' + data.id;
             let method = this.computedIsCreating ? 'post' : 'put';
 
+            this.role.form.submitting = true;
             axios.req({
                 action: action,
                 method: method,

@@ -109,6 +109,7 @@ export default {
             let action = this.computedIsCreating ? '/admin/packages' : '/admin/packages/' + data.id;
             let method = this.computedIsCreating ? 'post' : 'put';
 
+            this.pack.form.submitting = true;
             axios.req({
                 action: action,
                 method: method,
