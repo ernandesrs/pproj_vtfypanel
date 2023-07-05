@@ -19,7 +19,8 @@ const errors = {
     HasActiveSubscriptionException: 'Você tem uma assinatura ativa.',
     RefundPaymentFailException: 'Falha ao estornar.',
     RefundedPaymentException: 'Pagamento estornado.',
-    
+    RegisterCardAttemptsLimitException: 'Limite de tentativas de registro atingido.',
+
     RefusedPaymentException: 'Pagamento recusado.',
     PaymentFailException: 'Falha no pagamento.',
     ChargebackPaymentException: 'Pagamento retornado.'

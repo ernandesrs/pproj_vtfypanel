@@ -78,13 +78,12 @@
 import { useAppStore } from '@/store/app';
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
-import ConfirmationButton from '@/components/ConfirmationButton.vue';
 import ActionsBar from '@/components/ActionsBar.vue';
 import LoadingElem from '@/components/LoadingElem.vue';
 import ListGroupElem from '@/components/ListGroupElem.vue';
 
 export default {
-  components: { ConfirmationButton, ActionsBar, LoadingElem, ListGroupElem },
+  components: { ActionsBar, LoadingElem, ListGroupElem },
   data() {
     return {
       loadingContent: true,
@@ -182,7 +181,7 @@ export default {
   },
   methods: {
     methodGetCards(page) {
-      let action = '/dash/credit-cards?page=' + page + '&limit=' + this.cards.limit;
+      let action = '/dash/cards?page=' + page + '&limit=' + this.cards.limit;
 
       axios.req({
         action: action,
@@ -217,7 +216,7 @@ export default {
 
       let data = this.card.form.data;
       let creating = data?.id ? false : true;
-      let action = creating ? '/dash/credit-cards' : '/dash/credit-cards/' + data.id;
+      let action = creating ? '/dash/cards' : '/dash/cards/' + data.id;
       let method = creating ? 'post' : 'put';
 
       this.card.form.submitting = true;
@@ -257,7 +256,7 @@ export default {
       });
 
       return axios.req({
-        action: '/dash/credit-cards/' + id,
+        action: '/dash/cards/' + id,
         method: 'delete',
         success: (resp) => {
           if (resp.data?.success) {
