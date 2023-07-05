@@ -155,7 +155,7 @@
 
                                         <v-col cols="12" lg="8" class="text-center">
                                             <v-btn @click.stop="card.form.data = {}" prepend-icon="mdi-close" text="Limpar"
-                                                color="danger" class="mx-1" :disabled="card.form.submitting"></v-btn>
+                                                color="danger" class="mx-1" :disabled="card.form.submitting || !card.form.data?.id"></v-btn>
                                             <v-btn @click.stop="methodSaveCard" prepend-icon="mdi-check"
                                                 :text="card.form.data?.id ? 'Atualizar' : 'Cadastrar'" color="primary"
                                                 :loading="card.form.submitting" :disabled="card.form.submitting"
