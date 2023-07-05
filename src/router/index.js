@@ -39,9 +39,9 @@ const routes = [
         component: () => import('@/views/App/Subscriptions/SubscribeView.vue')
       },
       {
-        path: 'cartoes',
-        name: 'app.cards',
-        component: () => import('@/views/App/Cards/CardsView.vue')
+        path: 'configuracoes/pagamentos',
+        name: 'app.paymentMethods',
+        component: () => import('@/views/App/Settings/PaymentMethodsView.vue')
       },
       {
         path: 'perfil',

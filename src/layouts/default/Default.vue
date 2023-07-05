@@ -66,10 +66,17 @@ export default {
               activeIn: ['app.subscriptions', 'app.subscriptions.new']
             },
             {
-              text: 'Cartões',
-              icon: 'mdi-credit-card-multiple-outline',
-              to: { name: 'app.cards' },
-              activeIn: ['app.cards']
+              text: 'Configurações',
+              icon: 'mdi-cogs',
+              activeIn: [],
+              items: [
+                {
+                  text: 'Pagamentos',
+                  icon: 'mdi-cash',
+                  to: { name: 'app.paymentMethods' },
+                  activeIn: ['app.paymentMethods']
+                }
+              ]
             }
           ],
           endNav: [
@@ -194,6 +201,6 @@ button>span {
 }
 
 .v-list-group__items .v-list-item {
-    padding-inline-start: 35px !important;
+  padding-inline-start: 35px !important;
 }
 </style>
