@@ -117,45 +117,13 @@
                                 <v-card-item>
                                     <v-row justify="center">
                                         <v-col cols="12" lg="8">
-                                            <v-card border>
-                                                <v-card-item class="px-6 py-8">
-                                                    <v-row>
-                                                        <v-col cols="12" sm="6">
-                                                            <v-text-field v-model="card.form.data.name"
-                                                                label="Nome do cartão" density="compact"
-                                                                :error-messages="card.form.errors?.name"></v-text-field>
-                                                        </v-col>
-                                                        <v-col cols="12" sm="6">
-                                                            <v-text-field v-model="card.form.data.holder_name"
-                                                                label="Nome do titular" density="compact"
-                                                                :disabled="card.form.data?.id"
-                                                                :error-messages="card.form.errors?.holder_name"></v-text-field>
-                                                        </v-col>
-                                                        <v-col cols="12">
-                                                            <v-text-field v-model="card.form.data.secure_number"
-                                                                label="Número" density="compact"
-                                                                :disabled="card.form.data?.id"
-                                                                :error-messages="card.form.errors?.number"></v-text-field>
-                                                        </v-col>
-                                                        <v-col cols="12" sm="6">
-                                                            <v-text-field v-model="card.form.data.secure_cvv" label="CVV"
-                                                                density="compact" :disabled="card.form.data?.id"
-                                                                :error-messages="card.form.errors?.cvv"></v-text-field>
-                                                        </v-col>
-                                                        <v-col cols="12" sm="6">
-                                                            <v-text-field v-model="card.form.data.expiration_date"
-                                                                label="Data de expiração" density="compact"
-                                                                :disabled="card.form.data?.id"
-                                                                :error-messages="card.form.errors?.expiration_date"></v-text-field>
-                                                        </v-col>
-                                                    </v-row>
-                                                </v-card-item>
-                                            </v-card>
+                                            <card-form v-model="card.form.data" :errors="card.form.errors"></card-form>
                                         </v-col>
 
                                         <v-col cols="12" lg="8" class="text-center">
                                             <v-btn @click.stop="card.form.data = {}" prepend-icon="mdi-close" text="Limpar"
-                                                color="danger" class="mx-1" :disabled="card.form.submitting || !card.form.data?.id"></v-btn>
+                                                color="danger" class="mx-1"
+                                                :disabled="card.form.submitting || !card.form.data?.id"></v-btn>
                                             <v-btn @click.stop="methodSaveCard" prepend-icon="mdi-check"
                                                 :text="card.form.data?.id ? 'Atualizar' : 'Cadastrar'" color="primary"
                                                 :loading="card.form.submitting" :disabled="card.form.submitting"
@@ -181,9 +149,10 @@ import LoadingElem from '@/components/LoadingElem.vue';
 import ActionsBar from '@/components/ActionsBar.vue';
 import TinyTextElem from '@/components/TinyTextElem.vue';
 import ConfirmationButton from '@/components/ConfirmationButton.vue';
+import CardForm from './CardForm.vue';
 
 export default {
-    components: { LoadingElem, ActionsBar, TinyTextElem, ConfirmationButton },
+    components: { LoadingElem, ActionsBar, TinyTextElem, ConfirmationButton, CardForm },
     data() {
         return {
             loadingContent: true,
@@ -274,6 +243,9 @@ export default {
         },
         methodEditCard(event) {
             let cardId = event.target.getAttribute('data-identificator');
+
+            this.card.form.errors = {};
+
             if (this.card.form.data?.id == cardId) {
                 this.card.form.data = {};
                 return;
