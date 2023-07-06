@@ -14,7 +14,7 @@
 
     <!-- packages -->
     <v-row justify="center">
-      <v-col cols="12" sm="4" md="3" v-for="pack in packages.list" class="text-center">
+      <v-col cols="12" sm="6" md="4" v-for="pack in packages.list" :key="pack.id" class="text-center">
         <v-card :title="pack.name" :color="pack.id == subscription.form.data.package_id ? 'primary' : ''">
           <v-card-text>
             <div class="text-h4 font-weight-bold">
@@ -43,29 +43,42 @@
 
     <!-- payment -->
     <v-row justify="center">
-      <v-col cols="12" sm="6" md="4" lg="3">
-        <v-card>
-          <v-card-text>
-            <v-select v-model="subscription.form.data.card_id" label="Cartão de crédito" :items="cards.list.map((item, index) => {
-              return {
-                text: item.name + '',
-                value: item.id
-              };
-            })" item-title="text" item-value="value" variant="outlined"></v-select>
-          </v-card-text>
-        </v-card>
-      </v-col>
-      <v-col cols="12" sm="6" md="3">
-        <v-card>
-          <v-card-text>
+      <v-col cols="12" md="8" lg="6">
+        <v-row justify="center">
+          <v-col cols="12">
+            <v-select v-model="subscription.form.data.method_preferred" label="Sua forma preferencial" :items="[
+              {
+                text: 'Não definido',
+                value: 'undefined'
+              },
+              {
+                text: 'Cartão de débito',
+                value: 'debit_card'
+              },
+              {
+                text: 'Cartão de crédito',
+                value: 'credit_card'
+              }
+            ]" item-title="text" item-value="value"></v-select>
+          </v-col>
+          <v-col cols="6">
+            <v-select v-model="subscription.form.data.card_id"
+              label="Seu cartão preferencial" :items="paymentMethod.data.cards.map((item, index) => {
+                return {
+                  text: item.name + '',
+                  value: item.id
+                };
+              })" item-title="text" item-value="value"></v-select>
+          </v-col>
+          <v-col cols="6">
             <v-select v-model="subscription.form.data.installments" label="Parcelas" :items="installments.map((item, index) => {
               return {
                 text: item + ' parcela' + (item > 1 ? 's' : ''),
                 value: item
               }
-            })" item-title="text" item-value="value" variant="outlined"></v-select>
-          </v-card-text>
-        </v-card>
+            })" item-title="text" item-value="value"></v-select>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
 
@@ -132,9 +145,9 @@ export default {
         loaded: false,
         list: []
       },
-      cards: {
+      paymentMethod: {
         loaded: false,
-        list: []
+        data: {}
       },
       installments: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
       subscription: {
@@ -142,7 +155,7 @@ export default {
           data: {
             package_id: null,
             card_id: null,
-            installments: null
+            installments: 1
           },
           errors: {},
           submitting: false
@@ -154,14 +167,16 @@ export default {
     packages: {
       deep: true,
       handler(nv) {
-        if (nv.loaded && this.cards.loaded) {
+        if (nv.loaded && this.paymentMethod.loaded) {
           this.loadingContent = false;
         }
       }
     },
-    cards: {
+    paymentMethod: {
       deep: true,
       handler(nv) {
+        this.subscription.form.data.card_id = this.paymentMethod.data?.preferred_card_id ?? null;
+        this.subscription.form.data.method_preferred = this.paymentMethod.data?.method_preferred ?? null;
         if (nv.loaded && this.packages.loaded) {
           this.loadingContent = false;
         }
@@ -221,13 +236,13 @@ export default {
       });
 
       axios.req({
-        action: '/dash/credit-cards',
+        action: '/dash/payment-methods',
         method: 'get',
         success: (resp) => {
-          this.cards.list = resp.data.cards.list;
+          this.paymentMethod.data = resp.data.payment_methods;
         },
         finally: () => {
-          this.cards.loaded = true;
+          this.paymentMethod.loaded = true;
         }
       });
     },
@@ -252,7 +267,7 @@ export default {
           package_id: data.package_id,
           installments: data.installments
         },
-        success: (resp) => {
+        success: () => {
           alert.add('Aproveite sua assinatura PRO por ' + this.computedPackageSelected.expiration_month + ' mes(es).', 'success', 'Parabéns, você é PRO!', 5, true);
           this.$router.push({ name: 'app.home' });
         },
@@ -267,7 +282,7 @@ export default {
       return this.packages.list.find((item) => { return item.id == this.subscription.form.data?.package_id });
     },
     computedCardSelected() {
-      return this.cards.list.find((item) => { return item.id == this.subscription.form.data?.card_id });
+      return this.paymentMethod.data.cards.find((item) => { return item.id == this.subscription.form.data?.card_id });
     }
   }
 }
