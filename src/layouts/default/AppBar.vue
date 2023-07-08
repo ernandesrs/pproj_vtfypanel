@@ -9,7 +9,7 @@
       <!-- user avatar -->
       <v-menu>
         <template v-slot:activator="{ props: menu }">
-          <v-tooltip location="top">
+          <v-tooltip location="bottom" text="Usuário logado">
             <template v-slot:activator="{ props: tooltip }">
               <v-btn color="primary" v-bind="mergeProps(menu, tooltip)">
                 <v-avatar size="32" color="primary">
@@ -45,6 +45,7 @@
         </v-list>
       </v-menu>
       <!-- /user avatar -->
+
     </template>
   </v-app-bar>
 </template>
@@ -56,7 +57,6 @@ import { useUserStore } from '@/store/user';
 import { mergeProps } from 'vue';
 
 export default {
-  components: { mergeProps },
   data() {
     return {
       breadcrumbs: []
@@ -74,14 +74,8 @@ export default {
   watch: {
     computedBreadcrumbsFromStore: {
       deep: true,
-      handler(nv, ov) {
+      handler(nv) {
         this.breadcrumbs = nv;
-      }
-    },
-    computedFlashAlertFromStore: {
-      deep: true,
-      handler(nv, ov) {
-        this.flashAlert = nv;
       }
     }
   },
