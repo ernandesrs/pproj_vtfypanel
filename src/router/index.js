@@ -128,6 +128,12 @@ const routes = [
         component: () => import('@/views/Auth/LoginView.vue'),
       },
       {
+        path: 'register',
+        name: 'auth.register',
+        beforeEnter: middleware.redirectIfAuthenticated,
+        component: () => import('@/views/Auth/RegisterView.vue'),
+      },
+      {
         path: 'verify-account',
         name: 'auth.verify',
         beforeEnter: middleware.redirectIfUnauthenticated,

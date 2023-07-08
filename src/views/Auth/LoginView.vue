@@ -16,7 +16,7 @@
 									:error-messages="formLogin.errors?.password" variant="outlined"></v-text-field>
 							</v-col>
 							<v-col cols="12" class="d-flex justify-space-between">
-								<v-btn color="primary" size="large" variant="outlined" append-icon="mdi-arrow-right"
+								<v-btn :to="{name: 'auth.register'}" color="primary" size="large" variant="outlined" append-icon="mdi-arrow-right"
 									class="text-none">
 									Registrar conta
 								</v-btn>
