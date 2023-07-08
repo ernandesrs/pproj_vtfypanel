@@ -15,8 +15,9 @@
 					<template v-slot:activator="{ props }">
 						<v-list-item v-bind="props" :prepend-icon="item.icon" :title="item.text"></v-list-item>
 					</template>
-					<v-list-item v-for="subItem in item.items" :key="subItem" :prepend-icon="subItem.icon" :title="subItem.text"
-						:to="subItem.to" :active="subItem.activeIn.includes(this.$route.name)" rounded></v-list-item>
+					<v-list-item v-for="subItem in item.items" :key="subItem" :prepend-icon="subItem.icon"
+						:title="subItem.text" :to="subItem.to" :active="subItem.activeIn.includes(this.$route.name)"
+						rounded></v-list-item>
 				</v-list-group>
 				<v-list-item v-else :title="item.text" :prepend-icon="item.icon" :to="item.to"
 					:active="item.activeIn.includes(this.$route.name)" rounded></v-list-item>
@@ -36,6 +37,7 @@
 <script>
 
 import { useAppStore } from '@/store/app';
+import { useUserStore } from '@/store/user';
 
 export default {
 	data() {
@@ -186,6 +188,9 @@ export default {
 	computed: {
 		computedAppConfigFromStore() {
 			return useAppStore().appConfig;
+		},
+		computedUserStore() {
+			return useUserStore();
 		}
 	},
 	methods: {
@@ -195,6 +200,9 @@ export default {
 			} else {
 				this.drawer = true;
 			}
+		},
+		methodLogout() {
+			this.computedUserStore.logout();
 		}
 	}
 }
