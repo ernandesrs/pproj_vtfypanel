@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <v-container>
+    <v-container class="py-10">
       <alert-elem></alert-elem>
       <router-view />
     </v-container>

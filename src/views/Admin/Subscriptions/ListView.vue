@@ -40,7 +40,7 @@
 import { useAppStore } from '@/store/app';
 import axios from '@/plugins/axios.js';
 import LoadingElem from '@/components/LoadingElem.vue';
-import ActionsBar from '@/components/ActionsBar.vue';
+import ActionsBar from '@/layouts/default/ActionsBar.vue';
 import ListGroupElem from '@/components/ListGroupElem.vue';
 
 export default {

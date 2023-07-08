@@ -80,7 +80,7 @@ import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
-import ActionsBar from '@/components/ActionsBar.vue';
+import ActionsBar from '@/layouts/default/ActionsBar.vue';
 import ConfirmationButton from '@/components/ConfirmationButton.vue';
 
 export default {

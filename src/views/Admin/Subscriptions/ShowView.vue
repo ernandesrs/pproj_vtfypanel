@@ -102,7 +102,7 @@
 import axios from "@/plugins/axios";
 import alert from "@/services/alert";
 import LoadingElem from "@/components/LoadingElem.vue";
-import ActionsBar from "@/components/ActionsBar.vue";
+import ActionsBar from "@/layouts/default/ActionsBar.vue";
 
 export default {
   components: { LoadingElem, ActionsBar },

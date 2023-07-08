@@ -135,7 +135,7 @@ import { useAppStore } from '@/store/app';
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
 import LoadingElem from '@/components/LoadingElem.vue';
-import ActionsBar from '@/components/ActionsBar.vue';
+import ActionsBar from '@/layouts/default/ActionsBar.vue';
 import TinyTextElem from '@/components/TinyTextElem.vue';
 import ConfirmationButton from '@/components/ConfirmationButton.vue';
 import CardForm from './CardForm.vue';
