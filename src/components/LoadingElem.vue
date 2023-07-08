@@ -1,31 +1,31 @@
 <template>
-    <div class="text-center py-5">
-        <v-progress-circular indeterminate size="45" color="secondary"></v-progress-circular>
-        <div v-if="text" class="text-h6 text-lg-h5 text-grey-lighten-4 text-shadow-drop-center pt-2">{{ text }}</div>
-    </div>
+	<div class="text-center py-5">
+		<v-progress-circular indeterminate size="45" color="secondary"></v-progress-circular>
+		<div v-if="text" class="text-h6 text-lg-h5 text-grey-lighten-4 text-shadow-drop-center pt-2">{{ text }}</div>
+	</div>
 </template>
 
 <script>
 
 export default {
-    data() {
-        return {
-        }
-    },
-    props: {
-        text: {
-            type: String,
-            default: null
-        }
-    }
+	data() {
+		return {
+		}
+	},
+	props: {
+		text: {
+			type: String,
+			default: null
+		}
+	}
 }
 
 </script>
 
 <style>
 .text-shadow-drop-center {
-    -webkit-animation: text-shadow-drop-center 0.5s infinite alternate both;
-    animation: text-shadow-drop-center 0.5s infinite alternate both;
+	-webkit-animation: text-shadow-drop-center 0.5s infinite alternate both;
+	animation: text-shadow-drop-center 0.5s infinite alternate both;
 }
 
 /* ----------------------------------------------
@@ -41,22 +41,22 @@ export default {
  * ----------------------------------------
  */
 @-webkit-keyframes text-shadow-drop-center {
-    0% {
-        text-shadow: 0 0 0 rgba(0, 0, 0, 0.5);
-    }
+	0% {
+		text-shadow: 0 0 0 rgba(0, 0, 0, 0.5);
+	}
 
-    100% {
-        text-shadow: 0 6px 0 rgba(0, 0, 0, 0.75);
-    }
+	100% {
+		text-shadow: 0 6px 0 rgba(0, 0, 0, 0.75);
+	}
 }
 
 @keyframes text-shadow-drop-center {
-    0% {
-        text-shadow: 0 0 0 rgba(0, 0, 0, 0.5);
-    }
+	0% {
+		text-shadow: 0 0 0 rgba(0, 0, 0, 0.5);
+	}
 
-    100% {
-        text-shadow: 0 0 8px rgba(0, 0, 0, 0.75);
-    }
+	100% {
+		text-shadow: 0 0 8px rgba(0, 0, 0, 0.75);
+	}
 }
 </style>

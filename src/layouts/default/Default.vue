@@ -12,9 +12,9 @@
 
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
-import AppBar from './AppBar.vue';
-import AppView from './AppView.vue';
-import AppNavigation from './AppNavigation.vue';
+import AppBar from './Partials/AppBar.vue';
+import AppView from './Partials/AppView.vue';
+import AppNavigation from './Partials/AppNavigation.vue';
 
 export default {
   components: { AppBar, AppView, AppNavigation },
