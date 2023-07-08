@@ -3,17 +3,19 @@
 		@click="dialog = true"></v-btn>
 	<v-dialog v-model="dialog" width="100%" max-width="375px">
 		<v-card>
-			<v-card-text class="text-center">
-				<div class="text-h6" :class="'text-' + color">
-					{{ dialogTitle }}
-				</div>
-				<div class="py-3">
-					<v-btn @click.stop="dialog = false" class="mx-1" prepend-icon="mdi-close" text="Cancelar" size="small"
-						color="default" :disabled="confirmLoading"></v-btn>
-					<v-btn @click.stop="methodConfirmAction" class="mx-1" prepend-icon="mdi-check" text="Confirmar" size="small"
-						:color="color" :data-identificator="dataIdentificator" :loading="confirmLoading"></v-btn>
-				</div>
+			<v-card-title v-if="dialogTitle" :class="['text-' + color, 'text-left pt-4 px-6']">
+				{{ dialogTitle }}
+			</v-card-title>
+			<v-card-text v-if="dialogText" :class="['text-' + color, 'text-left px-6 py-2']">
+				{{ dialogText }}
 			</v-card-text>
+			<v-card-actions class="justify-space-between pb-4 px-6">
+				<v-btn @click.stop="dialog = false" prepend-icon="mdi-close" text="Cancelar" size="small"
+					:color="color" :disabled="confirmLoading" variant="outlined"></v-btn>
+				<v-btn @click.stop="methodConfirmAction" prepend-icon="mdi-check" text="Confirmar" size="small"
+					:color="color" :data-identificator="dataIdentificator" :loading="confirmLoading"
+					variant="elevated"></v-btn>
+			</v-card-actions>
 		</v-card>
 	</v-dialog>
 </template>
@@ -61,6 +63,10 @@ export default {
 			default: 'primary'
 		},
 		dialogTitle: {
+			type: [String, null],
+			default: null
+		},
+		dialogText: {
 			type: [String, null],
 			default: null
 		},

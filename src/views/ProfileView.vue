@@ -10,8 +10,9 @@
         </div>
       </v-avatar>
       <div class="py-3">
-        <confirmation-button v-if="formUser.data?.photo_url" icon="mdi-trash-can-outline" text="Excluir foto" color="red" size="small"
-          dialog-title="Excluir sua foto?" :confirm-callback="methodDeleteUserPhoto"></confirmation-button>
+        <confirmation-button v-if="formUser.data?.photo_url" icon="mdi-trash-can-outline" text="Excluir foto" color="red"
+          size="small" dialog-title="Excluir sua foto?" dialog-text="A foto não poderá ser recuperada."
+          :confirm-callback="methodDeleteUserPhoto"></confirmation-button>
         <v-file-input @update:model-value="methodUploadUserPhoto" v-model="photoUpload.photo" v-else
           accept="image/png, image/jpeg, image/bmp" placeholder="Enviar foto" prepend-icon="mdi-account" label="Foto"
           :error-messages="photoUpload.errors?.photo"></v-file-input>
@@ -62,7 +63,8 @@
                   :error-messages="formUser.errors?.password_confirmation" type="password"></v-text-field>
               </v-col>
               <v-col cols="12" class="text-center">
-                <v-btn @click.stop="methodUpdateUser" prepend-icon="mdi-check" text="Atualizar" color="primary" :loading="formUser.submitting"></v-btn>
+                <v-btn @click.stop="methodUpdateUser" prepend-icon="mdi-check" text="Atualizar" color="primary"
+                  :loading="formUser.submitting || photoUpload.uploading"></v-btn>
               </v-col>
             </v-row>
           </v-form>
@@ -93,6 +95,7 @@ export default {
         submitting: false
       },
       photoUpload: {
+        uploading: false,
         photo: null,
         errors: {}
       }
@@ -125,7 +128,7 @@ export default {
         data: data,
         success: (resp) => {
           if (resp.data?.success) {
-            alert.add('Seu perfil foi atualizado!', 'info', null, 5, false);
+            alert.addInfo('Seu perfil foi atualizado com sucesso!', 'Atualizado!');
 
             this.formUser.errors = {};
           }
@@ -139,11 +142,11 @@ export default {
       });
     },
     methodDeleteUserPhoto() {
-      axios.req({
+      return axios.req({
         action: '/me/photo-delete',
         method: 'delete',
         success: () => {
-          alert.add('Sua foto foi excluída!', 'warning', 'Pronto!', null, 5, false);
+          alert.addWarning('Sua foto foi excluída!', 'Excluída!');
           this.formUser.data.photo_url = null;
         }
       })
@@ -153,17 +156,21 @@ export default {
 
       data.append('photo', event[0]);
 
-      axios.req({
+      this.photoUpload.uploading = true;
+      return axios.req({
         action: '/me/photo-upload',
         method: 'post',
         data: data,
         success: (resp) => {
-          alert.add('Sua foto de perfil foi atualizada!', 'info', null, 5, false);
+          alert.addInfo('Sua foto de perfil foi atualizada!', 'Foto atualizada!');
           this.formUser.data.photo_url = resp.data.user.photo_url;
           useUserStore().updateUser(resp.data.user);
         },
         fail: (resp) => {
           this.photoUpload.errors = resp.response.data?.errors;
+        },
+        finally: () => {
+          this.photoUpload.uploading = false;
         }
       })
     }
