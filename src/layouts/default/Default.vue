@@ -164,6 +164,17 @@ export default {
       }
     };
   },
+  watch: {
+    computedAppBreadcrumbs: {
+      deep: true,
+      immediate: true,
+      handler(nv, ov) {
+        if (nv != ov) {
+          this.methodUpdateAppTitle(nv);
+        }
+      }
+    }
+  },
   created() {
     this.methodDefineNavigationDrawerStatus()
   },
@@ -173,6 +184,9 @@ export default {
     },
     computedAppConfigFromStore() {
       return useAppStore().appConfig;
+    },
+    computedAppBreadcrumbs() {
+      return useAppStore().appBreadcrumbs;
     }
   },
   methods: {
@@ -185,6 +199,9 @@ export default {
     },
     methodLogout() {
       this.computedUserStore.logout();
+    },
+    methodUpdateAppTitle(newBreadcrumbs) {
+      document.title = '[VTFY' + this.computedAppConfigFromStore.appName + '] ' + newBreadcrumbs.map((i) => { return i.title ?? i.text; }).join(' » ');
     }
   }
 }
