@@ -128,6 +128,12 @@ const routes = [
         component: () => import('@/views/Auth/LoginView.vue'),
       },
       {
+        path: 'forgot',
+        name: 'auth.forgot',
+        beforeEnter: middleware.redirectIfAuthenticated,
+        component: () => import('@/views/Auth/ForgotView.vue'),
+      },
+      {
         path: 'register',
         name: 'auth.register',
         beforeEnter: middleware.redirectIfAuthenticated,

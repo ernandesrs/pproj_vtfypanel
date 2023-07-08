@@ -14,10 +14,11 @@
 								<v-text-field type="password" v-model="formLogin.data.password"
 									:rules="formLogin.rules.passwordRules" label="Senha:"
 									:error-messages="formLogin.errors?.password" variant="outlined"></v-text-field>
+								<router-link :to="{ name: 'auth.forgot' }" class="text-primary">Esquecia senha</router-link>
 							</v-col>
 							<v-col cols="12" class="d-flex justify-space-between">
-								<v-btn :to="{name: 'auth.register'}" color="primary" size="large" variant="outlined" append-icon="mdi-arrow-right"
-									class="text-none">
+								<v-btn :to="{ name: 'auth.register' }" color="primary" size="large" variant="outlined"
+									prepend-icon="mdi-arrow-right" class="text-none">
 									Registrar conta
 								</v-btn>
 
