@@ -28,12 +28,56 @@ const add = (message, type = null, title = null, duration = null, session = fals
 };
 
 /**
+ * 
+ * @param {String} message 
+ * @param {String|null} title 
+ * @param {Number|null} duration 
+ * @param {Boolean} session 
+ */
+const addSuccess = (message, title = null, session = false, duration = null) => {
+    add(message, 'success', title, duration, session, 'success');
+};
+
+/**
+ * 
+ * @param {String} message 
+ * @param {String|null} title 
+ * @param {Number|null} duration 
+ * @param {Boolean} session 
+ */
+const addInfo = (message, title = null, session = false, duration = null) => {
+    add(message, 'info', title, duration, session, 'info');
+};
+
+/**
+ * 
+ * @param {String} message 
+ * @param {String|null} title 
+ * @param {Number|null} duration 
+ * @param {Boolean} session 
+ */
+const addWarning = (message, title = null, session = false, duration = null) => {
+    add(message, 'warning', title, duration, session, 'warning');
+};
+
+/**
+ * 
+ * @param {String} message 
+ * @param {String|null} title 
+ * @param {Number|null} duration 
+ * @param {Boolean} session 
+ */
+const addDanger = (message, title = null, session = false, duration = null) => {
+    add(message, 'danger', title, duration, session, 'danger');
+};
+
+/**
  * Add Error
  * @param {String} errorName the name of the error to get a specific message defined in /services/messages
  * @param {String} session indicates whether the message should be add the session to be displayed in the next view
  */
-const addError = (errorName, session = false) => {
-    add(messages.get(errorName), 'error', 'Houve um erro', 5, session, 'red');
+const addError = (errorName, session = false, title = null) => {
+    add(messages.get(errorName), 'error', title ?? 'Houve um erro', 5, session, 'error');
 };
 
 /**
@@ -59,6 +103,10 @@ const has = () => {
 
 export default {
     add: add,
+    addSuccess: addSuccess,
+    addInfo: addInfo,
+    addWarning: addWarning,
+    addDanger: addDanger,
     addError: addError,
     flash: flash,
     has: has

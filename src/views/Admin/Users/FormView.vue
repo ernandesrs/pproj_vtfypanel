@@ -53,23 +53,25 @@
 										:error-messages="user.form.errors?.username"></v-text-field>
 								</v-col>
 								<v-col cols="12" sm="6">
-									<v-select v-model="user.form.data.gender" label="Gênero" item-title="text" item-value="value" :items="[
-										{
-											text: 'Masculino',
-											value: 'm'
-										},
-										{
-											text: 'Feminino',
-											value: 'f'
-										},
-										{
-											text: 'Não definir',
-											value: 'n'
-										}
-									]"></v-select>
+									<v-select v-model="user.form.data.gender" label="Gênero" item-title="text"
+										item-value="value" :items="[
+											{
+												text: 'Masculino',
+												value: 'm'
+											},
+											{
+												text: 'Feminino',
+												value: 'f'
+											},
+											{
+												text: 'Não definir',
+												value: 'n'
+											}
+										]"></v-select>
 								</v-col>
 								<v-col cols="12">
-									<v-text-field v-model="user.form.data.email" label="Email" :error-messages="user.form.errors?.email"
+									<v-text-field v-model="user.form.data.email" label="Email"
+										:error-messages="user.form.errors?.email"
 										:readonly="this.user.create ? false : true"></v-text-field>
 								</v-col>
 								<v-col cols="12" sm="6">
@@ -78,7 +80,8 @@
 								</v-col>
 								<v-col cols="12" sm="6">
 									<v-text-field v-model="user.form.data.password_confirmation" label="Confirmar senha"
-										:error-messages="user.form.errors?.password_confirmation" type="password"></v-text-field>
+										:error-messages="user.form.errors?.password_confirmation"
+										type="password"></v-text-field>
 								</v-col>
 								<v-col cols="12" class="text-center">
 									<v-btn @click.stop="methodSubmitForm" prepend-icon="mdi-check"
@@ -237,10 +240,11 @@ export default {
 				method: method,
 				data: data,
 				success: () => {
-					alert.add(this.user.create ? 'Novo usuário criado com sucesso!' : 'Usuário atualizado com sucesso!', this.user.create ? 'success' : 'info', this.user.create ? 'Usuário criado!' : 'Usuário atualizado!', null, this.user.create ? true : false);
-
 					if (this.user.create) {
+						alert.addSuccess('Novo usuário registrado com sucesso!', 'Registrado!', true);
 						this.$router.push({ name: 'admin.users' });
+					} else {
+						alert.addInfo('Usuário atualizado com sucesso!', 'Atualizado!', false);
 					}
 				},
 				fail: (resp) => {

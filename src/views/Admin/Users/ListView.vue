@@ -147,7 +147,7 @@ export default {
 				method: 'delete',
 				success: () => {
 					this.users.list.splice(index, 1);
-					alert.add('Usuário foi excluído definitivamente.', 'warning', 'Excluído!', null, false);
+					alert.addWarning('O usuário(a) foi excluído definitivamente.', 'Excluído!');
 				}
 			});
 		}
