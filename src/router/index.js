@@ -163,12 +163,20 @@ const routes = [
         component: () => import('@/views/oops/UnauthorizedView.vue')
       },
       {
-        path: '/:pathMatch(.*)*',
+        path: 'notfound',
         name: 'oops.notfound',
         component: () => import('@/views/oops/NotFoundView.vue')
       }
     ]
   },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'notfound',
+    beforeEnter: (to, from, next) => {
+      sessionStorage.setItem('APP_NOTFOUND', to.fullPath);
+      next({ name: 'oops.notfound' });
+    }
+  }
 ]
 
 const router = createRouter({
