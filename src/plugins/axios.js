@@ -1,7 +1,6 @@
 import axios from 'axios';
 import token from './../services/token';
 import alert from '@/services/alert';
-import router from '@/router';
 
 axios.defaults.baseURL = 'http://127.0.0.1:8000/api/v1';
 
@@ -39,12 +38,6 @@ export default {
             }
         }).catch((response) => {
             let error = response.response?.data?.error;
-
-            if (['UnauthorizedException', 'UnauthorizedActionException'].includes(error)) {
-                alert.addError(error, true);
-                router.push({ name: 'oops.unauthorized' });
-                return;
-            }
 
             alert.addError(error);
 

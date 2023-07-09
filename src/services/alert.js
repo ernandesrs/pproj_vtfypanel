@@ -77,7 +77,7 @@ const addDanger = (message, title = null, session = false, duration = null) => {
  * @param {String} session indicates whether the message should be add the session to be displayed in the next view
  */
 const addError = (errorName, session = false, title = null) => {
-    add(messages.get(errorName), 'error', title ?? 'Houve um erro', 5, session, 'error');
+    add(messages.get(errorName) + '.', 'error', title ?? messages.getTitle(errorName) + '!', 10, session, 'error');
 };
 
 /**

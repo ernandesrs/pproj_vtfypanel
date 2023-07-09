@@ -1,6 +1,6 @@
 <template>
 	<v-snackbar location="top right" v-model="snackbar" :timeout="computedAlertDuration" multi-line
-		:color="computedAlertColor" transition="slide-x-reverse-transition">
+		:color="computedAlertColor" transition="slide-x-reverse-transition" width="100%" max-width="425px">
 		<div v-if="computedAlertTitle" class="text-subtitle-1 pb-2 font-weight-medium">{{ computedAlertTitle.toUpperCase()
 		}}</div>
 		<p>{{ computedAlertMessage }}</p>
