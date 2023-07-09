@@ -13,21 +13,30 @@
 				</v-avatar>
 				<v-sheet v-if="user.form.data?.photo_url" class="py-3">
 					<confirmation-button v-if="user.form.data?.photo_url" icon="mdi-trash-can-outline" text="Excluir foto"
-						color="danger" size="small" dialog-title="Excluir sua foto?"
+						color="danger" size="small" dialog-title="Excluir a foto do usuário?"
+						dialog-text="A exclusão não poderá ser revertida."
 						:confirm-callback="methodDeleteUserPhoto"></confirmation-button>
 				</v-sheet>
 				<v-sheet class="py-3">
 					<v-card>
 						<v-card-item>
-							<v-select v-model="user.form.data.level" :items="(Object.values(user.levels)).map((level) => {
-								return {
-									text: level.text,
-									value: level.key
-								};
-							})" item-title="text" item-value="value" label="Nível de acesso" density="compact"
+							<v-alert v-if="[8, 9].includes(user.form.data.level)"
+								:type="[8].includes(user.form.data.level) ? 'info' : [9].includes(user.form.data.level) ? 'warning' : ''"
+								:text="[8].includes(user.form.data.level) ? 'Este usuário possui acesso ao administrativo deste sistema.' : [9].includes(user.form.data.level) ? (computedAuthUserFromStore.getUser.id == user.form.data.id ? 'Você' : 'Este usuário') + ' possui todos os tipos de permissões neste sistema.' : ''"
+								variant="outlined"
+								:class="[computedAuthUserFromStore.getUser.id != user.form.data.id ? 'mb-4' : '']"></v-alert>
+							<v-select v-if="computedAuthUserFromStore.getUser.id != user.form.data.id"
+								v-model="user.form.data.level" :items="(Object.values(user.levels)).map((level) => {
+									return {
+										text: level.text,
+										value: level.key
+									};
+								})" item-title="text" item-value="value" label="Nível de acesso" density="compact"
 								:loading="user.form.submitting" :readonly="user.form.submitting"></v-select>
+						</v-card-item>
 
-							<v-select v-if="[8, 9].includes(user.form.data.level)" @update:modelValue="methodUpdateRoles"
+						<v-card-item>
+							<v-select v-if="[8].includes(user.form.data.level)" @update:modelValue="methodUpdateRoles"
 								v-model="user.form.data.roles" :items="roles.list" item-title="display_name" item-value="id"
 								label="Funções atribuídas" chips multiple :loading="roles.loading || user.form.submitting"
 								:readonly="roles.loading || user.form.submitting" density="compact"></v-select>
@@ -105,11 +114,13 @@ import alert from '@/services/alert';
 import LoadingElem from '@/components/LoadingElem.vue';
 import ActionsBar from '@/layouts/default/ActionsBar.vue';
 import ConfirmationButton from '@/components/ConfirmationButton.vue';
+import { useUserStore } from '@/store/user';
 
 export default {
 	components: { LoadingElem, ActionsBar, ConfirmationButton },
 	data() {
 		return {
+			dialog: true,
 			loadingContent: true,
 			user: {
 				create: true,
@@ -314,6 +325,11 @@ export default {
 					this.user.form.submitting = false;
 				}
 			});
+		}
+	},
+	computed: {
+		computedAuthUserFromStore() {
+			return useUserStore();
 		}
 	}
 }
