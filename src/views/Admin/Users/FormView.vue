@@ -28,7 +28,7 @@
 								:loading="user.form.submitting" :readonly="user.form.submitting"></v-select>
 
 							<v-select v-if="[8, 9].includes(user.form.data.level)" @update:modelValue="methodUpdateRoles"
-								v-model="user.form.data.roles" :items="roles.list" item-title="text" item-value="value"
+								v-model="user.form.data.roles" :items="roles.list" item-title="display_name" item-value="id"
 								label="Funções atribuídas" chips multiple :loading="roles.loading || user.form.submitting"
 								:readonly="roles.loading || user.form.submitting" density="compact"></v-select>
 						</v-card-item>
@@ -191,12 +191,6 @@ export default {
 				method: 'get',
 				success: (resp) => {
 					this.user.form.data = resp.data.user;
-					this.user.form.data.roles = this.user.form.data.roles.map((role) => {
-						return {
-							'text': role.display_name,
-							'value': role.id
-						};
-					});
 				},
 				finally: () => {
 					this.loadingContent = false;
@@ -209,12 +203,7 @@ export default {
 				action: '/admin/roles',
 				method: 'get',
 				success: (resp) => {
-					this.roles.list = resp.data.roles.list.map((role) => {
-						return {
-							'text': role.display_name,
-							'value': role.id
-						};
-					});
+					this.roles.list = resp.data.roles.list;
 				},
 				finally: () => {
 					this.roles.loading = false;
@@ -279,7 +268,6 @@ export default {
 				success: (resp) => {
 					alert.add('Nível administrativo do usuário atualizado.', 'success', 'Pronto!');
 					this.user.form.data = resp.data.user;
-
 				},
 				finally: () => {
 					this.user.form.submitting = false;
@@ -294,7 +282,7 @@ export default {
 
 			let added = event.filter((roleId) => {
 				let index = (this.user.form.data.roles ?? []).findIndex((role) => {
-					return role.value == roleId;
+					return role.id == roleId;
 				});
 
 				return index != -1 ? false : true;
@@ -302,17 +290,17 @@ export default {
 
 			let removed = (this.user.form.data.roles ?? []).filter((role) => {
 				let index = event.findIndex((roleId) => {
-					return roleId == role.value;
+					return roleId == role.id;
 				});
 
 				return index == -1;
 			});
 
 			if (added.length) {
-				action = '/admin/users/roles/' + this.user.form.data.id + '/' + added[0];
+				action = '/admin/users/roles/' + this.user.form.data.id + '/' + added;
 				method = 'put';
 			} else if (removed.length) {
-				action = '/admin/users/roles/' + this.user.form.data.id + '/' + removed[0].value;
+				action = '/admin/users/roles/' + this.user.form.data.id + '/' + removed[0].id;
 				method = 'delete';
 			}
 
