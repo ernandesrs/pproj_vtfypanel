@@ -158,11 +158,6 @@ const routes = [
     component: () => import('@/layouts/oops/Default.vue'),
     children: [
       {
-        path: 'unauthorized',
-        name: 'oops.unauthorized',
-        component: () => import('@/views/oops/UnauthorizedView.vue')
-      },
-      {
         path: 'notfound',
         name: 'oops.notfound',
         component: () => import('@/views/oops/NotFoundView.vue')
