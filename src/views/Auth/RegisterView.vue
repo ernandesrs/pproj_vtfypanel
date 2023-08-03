@@ -2,7 +2,7 @@
 	<v-row class="justify-center">
 		<v-col cols="12" sm="10" md="8">
 			<v-form v-model="formRegister.valid">
-				<v-card>
+				<v-card elevation="0">
 					<v-card-item>
 						<v-row class="pa-5">
 							<v-col cols="12" sm="6">

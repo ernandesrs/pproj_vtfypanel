@@ -2,7 +2,7 @@
 	<v-row class="justify-center">
 		<v-col cols="12" sm="8" md="6" lg="5">
 			<v-form v-model="formForgot.valid">
-				<v-card>
+				<v-card elevation="0">
 					<v-card-item>
 						<v-row class="pa-5">
 							<v-col v-if="sended" cols="12">
