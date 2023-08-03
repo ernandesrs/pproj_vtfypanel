@@ -29,21 +29,6 @@ const routes = [
         component: () => import('@/views/App/HomeView.vue'),
       },
       {
-        path: 'assinaturas',
-        name: 'app.subscriptions',
-        component: () => import('@/views/App/Subscriptions/SubscriptionsView.vue')
-      },
-      {
-        path: 'assinaturas/nova-assinatura',
-        name: 'app.subscriptions.new',
-        component: () => import('@/views/App/Subscriptions/SubscribeView.vue')
-      },
-      {
-        path: 'configuracoes/pagamentos',
-        name: 'app.paymentMethods',
-        component: () => import('@/views/App/Settings/PaymentMethodsView.vue')
-      },
-      {
         path: 'perfil',
         name: 'app.profile',
         component: () => import('@/views/ProfileView.vue')
@@ -76,21 +61,6 @@ const routes = [
         component: () => import('@/views/Admin/Users/FormView.vue'),
       },
       {
-        path: 'pacotes',
-        name: 'admin.packages',
-        component: () => import('@/views/Admin/Packages/ListView.vue')
-      },
-      {
-        path: 'pacotes/criar',
-        name: 'admin.packages.create',
-        component: () => import('@/views/Admin/Packages/FormView.vue')
-      },
-      {
-        path: 'pacotes/:package_id/editar',
-        name: 'admin.packages.edit',
-        component: () => import('@/views/Admin/Packages/FormView.vue')
-      },
-      {
         path: 'funcoes',
         name: 'admin.roles',
         component: () => import('@/views/Admin/Roles/ListView.vue')
@@ -104,16 +74,6 @@ const routes = [
         path: 'funcoes/:role_id/editar',
         name: 'admin.roles.edit',
         component: () => import('@/views/Admin/Roles/FormView.vue')
-      },
-      {
-        path: 'assinaturas',
-        name: 'admin.subscriptions',
-        component: () => import('@/views/Admin/Subscriptions/ListView.vue')
-      },
-      {
-        path: 'assinaturas/:subscription_id/mostrar',
-        name: 'admin.subscriptions.show',
-        component: () => import('@/views/Admin/Subscriptions/ShowView.vue')
       }
     ]
   },
@@ -160,7 +120,7 @@ const routes = [
       {
         path: 'notfound',
         name: 'oops.notfound',
-        component: () => import('@/views/oops/NotFoundView.vue')
+        component: () => import('@/views/Oops/NotFoundView.vue')
       }
     ]
   },

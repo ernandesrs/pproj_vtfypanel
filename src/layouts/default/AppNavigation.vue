@@ -51,25 +51,6 @@ export default {
 							icon: 'mdi-home',
 							to: { name: 'app.home' },
 							activeIn: ['app.home']
-						},
-						{
-							text: 'Assinaturas',
-							icon: 'mdi-check-decagram-outline',
-							to: { name: 'app.subscriptions' },
-							activeIn: ['app.subscriptions', 'app.subscriptions.new']
-						},
-						{
-							text: 'Configurações',
-							icon: 'mdi-cogs',
-							activeIn: [],
-							items: [
-								{
-									text: 'Pagamentos',
-									icon: 'mdi-cash',
-									to: { name: 'app.paymentMethods' },
-									activeIn: ['app.paymentMethods']
-								}
-							]
 						}
 					],
 					endNav: [
@@ -103,39 +84,17 @@ export default {
 							activeIn: ['admin.users', 'admin.users.create', 'admin.users.edit']
 						},
 						{
-							text: 'App',
-							icon: 'mdi-store-outline',
-							activeIn: [
-								'admin.packages', 'admin.packages.create', 'admin.packages.edit',
-								'admin.subscriptions', 'admin.subscriptions.show'
-							],
-							items: [
-								{
-									text: 'Pacotes',
-									icon: 'mdi-package-variant-closed',
-									to: { name: 'admin.packages' },
-									activeIn: ['admin.packages', 'admin.packages.create', 'admin.packages.edit']
-								},
-								{
-									text: 'Assinaturas',
-									icon: 'mdi-check-decagram-outline',
-									to: { name: 'admin.subscriptions' },
-									activeIn: ['admin.subscriptions', 'admin.subscriptions.show']
-								},
-							]
-						},
-						{
 							text: 'Configurações',
-							icon: 'mdi-cogs',
-							activeIn: ['admin.roles', 'admin.roles.create', 'admin.roles.edit'],
+							icon: 'mdi-cog-outline',
+							activeIn: ['admin.users', 'admin.users.create', 'admin.users.edit'],
 							items: [
 								{
 									text: 'Funções',
-									icon: 'mdi-shield-outline',
+									icon: 'mdi-shield-account-variant-outline',
 									to: { name: 'admin.roles' },
 									activeIn: ['admin.roles', 'admin.roles.create', 'admin.roles.edit']
 								}
-							],
+							]
 						}
 					],
 					endNav: [
@@ -211,7 +170,7 @@ export default {
 
 <style lang="css" scoped>
 .v-list-item__prepend>.v-icon {
-	margin-right: 15px;
+	margin-right: 10px;
 }
 
 .v-list-group__items .v-list-item {

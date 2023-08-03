@@ -42,17 +42,19 @@ export default {
         },
         packages: {
           icon: 'mdi-package-variant-closed',
-          title: 'Pacotes',
+          title: 'Example #1',
           color: 'info',
-          to: { name: 'admin.packages' },
-          items: {}
+          items: {
+            total: 902
+          }
         },
         subscriptions: {
           icon: 'mdi-check-decagram-outline',
-          title: 'Assinaturas',
+          title: 'Example #2',
           color: 'success',
-          to: { name: 'admin.subscriptions' },
-          items: {}
+          items: {
+            total: 902
+          }
         },
       },
       cardsTermsConfig: {
@@ -92,14 +94,6 @@ export default {
           this.cards.users.items.total = resp.data.users.total;
           this.cards.users.items.verified = resp.data.users.verified;
           this.cards.users.items.not_verified = resp.data.users.not_verified;
-
-          this.cards.packages.items.total = resp.data.packages.total;
-          this.cards.packages.items.showing = resp.data.packages.showing;
-          this.cards.packages.items.hiding = resp.data.packages.hiding;
-
-          this.cards.subscriptions.items.total = resp.data.subscriptions.total;
-          this.cards.subscriptions.items.active = resp.data.subscriptions.active;
-          this.cards.subscriptions.items.pending = resp.data.subscriptions.pending;
         },
         finally: () => {
           this.loadingContent = false;

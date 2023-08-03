@@ -13,16 +13,6 @@
                 :loading="verification.verificationLinkResending">clique aqui</v-btn> para reenviar.</span>
           </v-alert>
         </v-col>
-        <v-col v-else cols="12" class="text-center">
-          <v-alert variant="outlined" border="top" color="info" elevation="2">
-            <h1 class="text-h5 text-lg-h4">Seja PRO!</h1>
-            <p class="text-h7 text-lg-h6 mb-4">
-              Assine no plano PRO e Lorem, ipsum dolor sit amet consectetur adipisicing elit!
-            </p>
-            <v-btn text="Assinar agora" append-icon="mdi-arrow-right" color="primary" size="x-large"
-              :to="{ name: 'app.subscriptions.new' }"></v-btn>
-          </v-alert>
-        </v-col>
       </v-row>
     </v-sheet>
 
@@ -68,18 +58,7 @@ export default {
       }
     ]);
 
-    axios.req({
-      action: '/dash/subscriptions/show/active',
-      method: 'get',
-      success: (resp) => {
-        if (resp.data.subscription) {
-          this.hasActiveSubscription = true;
-        }
-      },
-      finally: () => {
-        this.loadingContent = false;
-      }
-    });
+    this.loadingContent = false;
   },
   methods: {
     methodResendLink() {
