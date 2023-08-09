@@ -7,9 +7,10 @@
 			icon: 'mdi-account-plus',
 			to: { name: 'admin.users.create' }
 		}"></actions-bar>
-		<list-group-elem @changePage="methodChangePage" permissible-name="App_Models_User" :items="users.list" :pages="users.pages" v-slot="{ item }"
-			:action-edit="methodEditUser" :action-delete="methodDeleteUserConfirmed"
-			action-delete-dialog-title="Excluir usuário?" action-delete-dialog-text="A exclusão deste usuário será definitiva e não poderá ser desfeita." :action-filter="(event) => {
+		<list-group-elem @changePage="methodChangePage" resource="user" :items="users.list"
+			:pages="users.pages" v-slot="{ item }" :action-edit="methodEditUser" :action-delete="methodDeleteUserConfirmed"
+			action-delete-dialog-title="Excluir usuário?"
+			action-delete-dialog-text="A exclusão deste usuário será definitiva e não poderá ser desfeita." :action-filter="(event) => {
 				return methodGetUsers(1, event.search);
 			}">
 			<v-row>

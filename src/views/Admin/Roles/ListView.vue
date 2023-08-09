@@ -8,7 +8,7 @@
 			to: { name: 'admin.roles.create' },
 		}"></actions-bar>
 
-		<list-group-elem @changePage="methodChangePage" :items="roles.list" :pages="roles.pages" v-slot="{ item }"
+		<list-group-elem @changePage="methodChangePage" resource="role" :items="roles.list" :pages="roles.pages" v-slot="{ item }"
 			:action-edit="methodEdit" :action-delete="methodDeleteConfirmed"
 			action-delete-dialog-title="Excluir esta função?" action-delete-dialog-text="A exclusão desta função será definitiva e não poderá ser desfeita." :action-filter="methodFilter">
 

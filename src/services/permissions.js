@@ -1,6 +1,73 @@
 import { useUserStore } from "@/store/user";
 
 /**
+ * Object functions
+ */
+const functions = {
+    resource: null,
+
+    /**
+     * @returns {Boolean}
+     */
+    canViewAny: () => {
+        return hasPermission('viewAny', functions.resource);
+    },
+
+    /**
+     * @returns {Boolean}
+     */
+    canView: () => {
+        return hasPermission('view', functions.resource);
+    },
+
+    /**
+     * @returns {Boolean}
+     */
+    canUpdate: () => {
+        return hasPermission('update', functions.resource);
+    },
+
+    /**
+     * @returns {Boolean}
+     */
+    canDelete: () => {
+        return hasPermission('delete', functions.resource);
+    },
+
+    /**
+     * @returns {Boolean}
+     */
+    canForceDelete: () => {
+        return hasPermission('forceDelete', functions.resource);
+    },
+
+    /**
+     * @returns {Boolean}
+     */
+    canRecovery: () => {
+        return hasPermission('recovery', functions.resource);
+    },
+
+    /**
+     * @param {String} action a valid action
+     * @param {String} resource  A valid resource unique name. Check the 'resources' const array on /services/permissions.js
+     * @returns {Boolean}
+     */
+    hasPermission: (action, resource) => {
+        return hasPermission(action, resource);
+    }
+};
+
+/**
+ * Allowed resources
+ * Check for more or new resources on API return
+ */
+const resources = {
+    user: 'App_Models_User',
+    role: 'App_Models_Role'
+};
+
+/**
  * @param {String} action 
  * @param {String} resource 
  * @returns {Boolean}
@@ -38,66 +105,15 @@ const hasPermission = (action, resource) => {
 
 export default {
     /**
-     * @param {String} resource A valid resource unique name. Example: App_Models_User
-     * @returns {Boolean}
+     * @param {String} resource A valid resource unique name. Check the 'resources' const array on /services/permissions.js
+     * @returns {null|Object}
      */
-    canViewAny: (resource) => {
-        return hasPermission('viewAny', resource);
-    },
-
-    /**
-     * @param {String} resource A valid resource unique name. Example: App_Models_User
-     * @returns {Boolean}
-     */
-    canView: (resource) => {
-        return hasPermission('view', resource);
-    },
-
-    /**
-     * @param {String} resource A valid resource unique name. Example: App_Models_User
-     * @returns {Boolean}
-     */
-    canUpdate: (resource) => {
-        return hasPermission('update', resource);
-    },
-
-    /**
-     * @param {String} resource A valid resource unique name. Example: App_Models_User
-     * @returns {Boolean}
-     */
-    canDelete: (resource) => {
-        return hasPermission('delete', resource);
-    },
-
-    /**
-     * @param {String} resource A valid resource unique name. Example: App_Models_User
-     * @returns {Boolean}
-     */
-    canForceDelete: (resource) => {
-        return hasPermission('forceDelete', resource);
-    },
-
-    /**
-     * @param {String} resource A valid resource unique name. Example: App_Models_User
-     * @returns {Boolean}
-     */
-    canRecovery: (resource) => {
-        return hasPermission('recovery', resource);
-    },
-
-    /**
-     * @param {String} resource A valid resource unique name. Example: App_Models_User
-     * @returns {Boolean}
-     */
-    canPromote: (resource) => {
-        return hasPermission('promote', resource);
-    },
-
-    /**
-     * @param {String} resource A valid resource unique name. Example: App_Models_User
-     * @returns {Boolean}
-     */
-    canDemote: (resource) => {
-        return hasPermission('demote', resource);
+    addResource: (resource) => {
+        try {
+            functions.resource = resources[resource];
+            return functions;
+        } catch {
+            return null;
+        }
     }
-}
+};

@@ -40,15 +40,16 @@
 							<!-- actions button -->
 							<v-btn v-if="actionShow" @click.stop="methodShowItem" text="Ver" prepend-icon="mdi-eye-outline"
 								size="small" color="secondary" :data-identificator="item?.id ?? index"
-								:disabled="!computedPermission.canView(permissibleName)" />
+								:disabled="!computedResourcePermission.canView()" />
 							<v-btn v-if="actionEdit" @click.stop="methodEditItem" text="Editar"
 								prepend-icon="mdi-square-edit-outline" size="small" color="primary"
-								:data-identificator="item?.id ?? index" :disabled="!computedPermission.canUpdate(permissibleName)" />
+								:data-identificator="item?.id ?? index"
+								:disabled="!computedResourcePermission.canUpdate()" />
 							<confirmation-button v-if="actionDelete" text="Excluir" icon="mdi-delete-outline" size="small"
 								color="danger" :dialog-title="actionDeleteDialogTitle ?? 'Confirmar exclusão?'"
 								:dialog-text="actionDeleteDialogText" :data-identificator="item?.id ?? index"
 								:confirm-callback="computedGetConfirmCallback" :confirm-route="computedGetConfirmRoute"
-								variant="outlined" :disabled="!computedPermission.canDelete(permissibleName)" />
+								variant="outlined" :disabled="!computedResourcePermission.canDelete()" />
 							<!-- /actions button -->
 						</v-btn-group>
 					</td>
@@ -71,9 +72,9 @@
 
 <script>
 
+import permissions from '@/services/permissions';
 import ConfirmationButton from './ConfirmationButton.vue';
 import LoadingElem from './LoadingElem.vue';
-import permissions from '@/services/permissions';
 
 export default {
 	components: { ConfirmationButton, LoadingElem },
@@ -91,15 +92,18 @@ export default {
 			loadingList: false
 		};
 	},
-	events: {
-		changePage: null
+	emits: {
+		'changePage': null
 	},
 	props: {
 		emptyListText: {
 			type: String,
 			default: null
 		},
-		permissibleName: {
+		/**
+		 * A valid resource unique name. Check the 'resources' const array on /services/permissions.js
+		 */
+		resource: {
 			type: [String, null],
 			default: null
 		},
@@ -168,8 +172,8 @@ export default {
 		computedGetConfirmRoute() {
 			return typeof this.actionDelete === 'object' ? this.actionDelete : null;
 		},
-		computedPermission() {
-			return permissions;
+		computedResourcePermission() {
+			return permissions.addResource(this.resource);
 		}
 	},
 	methods: {
