@@ -56,7 +56,7 @@
 			</tbody>
 		</v-table>
 
-		<v-pagination v-if="listPages.length" :length="listPages.length - 2" :total-visible="5"
+		<v-pagination v-if="listPages.length && listPages.length - 2 > 1" :length="listPages.length - 2" :total-visible="5"
 			@update:model-value="methodPaginationUpdateModelValue"></v-pagination>
 	</div>
 	<v-card v-else>
