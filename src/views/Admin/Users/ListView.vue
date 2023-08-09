@@ -9,7 +9,7 @@
 		}"></actions-bar>
 		<list-group-elem @changePage="methodChangePage" :items="users.list" :pages="users.pages" v-slot="{ item }"
 			:action-edit="methodEditUser" :action-delete="methodDeleteUserConfirmed"
-			actionDeleteDialogTitle="Excluir usuário definitivamente?" :action-filter="(event) => {
+			action-delete-dialog-title="Excluir usuário?" action-delete-dialog-text="A exclusão deste usuário será definitiva e não poderá ser desfeita." :action-filter="(event) => {
 				return methodGetUsers(1, event.search);
 			}">
 			<v-row>

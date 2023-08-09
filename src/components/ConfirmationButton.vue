@@ -1,15 +1,15 @@
 <template>
-	<v-btn :prepend-icon="icon" :text="text" :size="size" :color="color" :variant="variant" class="ma-1"
+	<v-btn :prepend-icon="icon" :text="text" :size="size" :color="color" :variant="variant"
 		@click="dialog = true"></v-btn>
 	<v-dialog v-model="dialog" width="100%" max-width="375px">
 		<v-card>
 			<v-card-title v-if="dialogTitle" :class="['text-' + color, 'text-left pt-4 px-6']">
 				{{ dialogTitle }}
 			</v-card-title>
-			<v-card-text v-if="dialogText" :class="['text-' + color, 'text-left px-6 py-2']">
+			<v-card-text v-if="dialogText" :class="['text-' + color, 'text-left px-6 pt-2 pb-4']">
 				{{ dialogText }}
 			</v-card-text>
-			<v-card-actions class="justify-space-between pb-4 px-6">
+			<v-card-actions class="justify-space-between pb-5 px-6">
 				<v-btn @click.stop="dialog = false" prepend-icon="mdi-close" text="Cancelar" size="small"
 					:color="color" :disabled="confirmLoading" variant="outlined"></v-btn>
 				<v-btn @click.stop="methodConfirmAction" prepend-icon="mdi-check" text="Confirmar" size="small"
@@ -44,7 +44,7 @@ export default {
 		},
 		text: {
 			type: String,
-			default: 'Buttont text'
+			default: null
 		},
 		size: {
 			type: String,

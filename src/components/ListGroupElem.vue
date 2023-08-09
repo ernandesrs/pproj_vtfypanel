@@ -36,20 +36,20 @@
 						<slot :item="item" :index="index" />
 					</td>
 					<td v-if="computedHasAction">
-						<div class="d-flex flex-column flex-sm-row align-center">
+						<v-btn-group density="compact">
 							<!-- actions button -->
 							<v-btn v-if="actionShow" @click.stop="methodShowItem" text="Ver" prepend-icon="mdi-eye-outline"
-								size="small" color="secondary" class="ma-1" :data-identificator="item?.id ?? index" />
-							<v-btn v-if="actionEdit" @click.stop="methodEditItem" text="Editar"
-								prepend-icon="mdi-square-edit-outline" size="small" color="primary" class="ma-1"
+								size="small" color="secondary" :data-identificator="item?.id ?? index" />
+							<v-btn v-if="actionEdit" @click.stop="methodEditItem" text="Editar" prepend-icon="mdi-square-edit-outline" size="small" color="primary"
 								:data-identificator="item?.id ?? index" />
 							<confirmation-button v-if="actionDelete" text="Excluir" icon="mdi-delete-outline" size="small"
-								color="danger" variant="outlined"
+								color="danger"
 								:dialog-title="actionDeleteDialogTitle ?? 'Confirmar exclusão?'"
+								:dialog-text="actionDeleteDialogText"
 								:data-identificator="item?.id ?? index" :confirm-callback="computedGetConfirmCallback"
-								:confirm-route="computedGetConfirmRoute" />
+								:confirm-route="computedGetConfirmRoute" variant="outlined" />
 							<!-- /actions button -->
-						</div>
+						</v-btn-group>
 					</td>
 				</tr>
 
@@ -118,6 +118,10 @@ export default {
 			default: null
 		},
 		actionDeleteDialogTitle: {
+			type: String,
+			default: null
+		},
+		actionDeleteDialogText: {
 			type: String,
 			default: null
 		},

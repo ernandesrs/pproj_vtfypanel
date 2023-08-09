@@ -10,7 +10,7 @@
 
 		<list-group-elem @changePage="methodChangePage" :items="roles.list" :pages="roles.pages" v-slot="{ item }"
 			:action-edit="methodEdit" :action-delete="methodDeleteConfirmed"
-			action-delete-dialog-title="Tem certeza de que quer excluir esta função?" :action-filter="methodFilter">
+			action-delete-dialog-title="Excluir esta função?" action-delete-dialog-text="A exclusão desta função será definitiva e não poderá ser desfeita." :action-filter="methodFilter">
 
 			<v-row>
 				<v-col cols="12" sm="8" md="4" lg="3">
