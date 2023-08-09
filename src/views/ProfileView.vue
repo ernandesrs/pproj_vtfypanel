@@ -1,5 +1,5 @@
 <template>
-  <actions-bar bar-title="Perfil"></actions-bar>
+  <actions-bar bar-title="Meu perfil"></actions-bar>
 
   <v-row class="justify-center pa-8">
     <v-col cols="12" sm="10" lg="3" class="text-center">
