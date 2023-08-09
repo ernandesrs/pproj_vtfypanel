@@ -3,6 +3,7 @@ import { useUserStore } from '@/store/user';
 import axios from '../plugins/axios';
 import token from '../services/token';
 import alert from '../services/alert';
+import permissions from './permissions';
 
 export default {
     redirectIfAuthenticated: (to, from, next) => {
@@ -51,5 +52,41 @@ export default {
         }
 
         next(route);
+    },
+    canAccessListView: (to, from, next) => {
+        let route = null;
+
+        if (!permissions.addResource(to.name).canViewAny()) {
+            alert.addDanger('Você não tem autorização para acessar esta área.', 'Sem autorização');
+            route = {
+                name: 'admin.home'
+            };
+        }
+
+        return next(route);
+    },
+    canAccessCreateView: (to, from, next) => {
+        let route = null;
+
+        if (!permissions.addResource(to.name).canCreate()) {
+            alert.addDanger('Você não tem autorização para acessar esta área.', 'Sem autorização');
+            route = {
+                name: 'admin.home'
+            };
+        }
+
+        return next(route);
+    },
+    canAccessUpdateView: (to, from, next) => {
+        let route = null;
+
+        if (!permissions.addResource(to.name).canUpdate()) {
+            alert.addDanger('Você não tem autorização para acessar esta área.', 'Sem autorização');
+            route = {
+                name: 'admin.home'
+            };
+        }
+
+        return next(route);
     }
 };

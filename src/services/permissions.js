@@ -1,6 +1,63 @@
 import { useUserStore } from "@/store/user";
 
 /**
+ * Allowed resources
+ * Check for more or new resources on API return
+ */
+const resources = {
+    'App_Models_User': ['user', 'admin.users', 'admin.users.create', 'admin.users.edit'],
+    'App_Models_Role': ['role', 'admin.roles', 'admin.roles.create', 'admin.roles.edit']
+};
+
+/**
+ * @param {String} action 
+ * @param {null|String} resource 
+ * @returns {Boolean}
+ */
+const hasPermission = (action, resource) => {
+    /**
+     * Superuser has all permissions
+     */
+    if (useUserStore().isSuperuser) {
+        return true;
+    }
+
+    if (!resource) {
+        return false;
+    }
+
+    const roles = useUserStore().roles;
+
+    /**
+     * Denie 'action' if is not set roles for the user
+     */
+    if (!roles) {
+        return false;
+    }
+
+    /**
+     * Finds a 'role' where 'action' is allowed over 'resource'
+     */
+    let role = roles.filter((role) => {
+        const permissibleActions = role.permissibles[resource] ?? null;
+        return (permissibleActions && (permissibleActions[action] ?? false));
+    });
+
+    /**
+     * If it finds one or more, 'action' is allowed
+     */
+    return role.length > 0;
+};
+
+const findResourceUniqueName = (resource) => {
+    const result = Object.entries(resources).find((r) => {
+        return r[1].includes(resource);
+    })
+
+    return result ? result[0] : null;
+}
+
+/**
  * Object functions
  */
 const functions = {
@@ -65,62 +122,13 @@ const functions = {
     }
 };
 
-/**
- * Allowed resources
- * Check for more or new resources on API return
- */
-const resources = {
-    user: 'App_Models_User',
-    role: 'App_Models_Role'
-};
-
-/**
- * @param {String} action 
- * @param {null|String} resource 
- * @returns {Boolean}
- */
-const hasPermission = (action, resource) => {
-    /**
-     * Superuser has all permissions
-     */
-    if (useUserStore().isSuperuser) {
-        return true;
-    }
-
-    if (!resource) {
-        return false;
-    }
-
-    const roles = useUserStore().roles;
-
-    /**
-     * Denie 'action' if is not set roles for the user
-     */
-    if (!roles) {
-        return false;
-    }
-
-    /**
-     * Finds a 'role' where 'action' is allowed over 'resource'
-     */
-    let role = roles.filter((role) => {
-        const permissibleActions = role.permissibles[resource] ?? null;
-        return (permissibleActions && (permissibleActions[action] ?? false));
-    });
-
-    /**
-     * If it finds one or more, 'action' is allowed
-     */
-    return role.length > 0;
-};
-
 export default {
     /**
      * @param {String} resource A valid resource unique name. Check the 'resources' const array on /services/permissions.js
      * @returns {null|Object}
      */
     addResource: (resource) => {
-        functions.resource = resources[resource] ?? null;
+        functions.resource = findResourceUniqueName(resource);
         return functions;
     }
 };

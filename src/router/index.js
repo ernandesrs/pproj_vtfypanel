@@ -48,31 +48,37 @@ const routes = [
       {
         path: 'usuarios',
         name: 'admin.users',
+        beforeEnter: [middleware.canAccessListView],
         component: () => import('@/views/Admin/Users/ListView.vue'),
       },
       {
         path: 'usuarios/criar',
         name: 'admin.users.create',
+        beforeEnter: [middleware.canAccessCreateView],
         component: () => import('@/views/Admin/Users/FormView.vue'),
       },
       {
         path: 'usuarios/:user_id/editar',
         name: 'admin.users.edit',
+        beforeEnter: [middleware.canAccessUpdateView],
         component: () => import('@/views/Admin/Users/FormView.vue'),
       },
       {
         path: 'funcoes',
         name: 'admin.roles',
+        beforeEnter: [middleware.canAccessListView],
         component: () => import('@/views/Admin/Roles/ListView.vue')
       },
       {
         path: 'funcoes/criar',
         name: 'admin.roles.create',
+        beforeEnter: [middleware.canAccessCreateView],
         component: () => import('@/views/Admin/Roles/FormView.vue')
       },
       {
         path: 'funcoes/:role_id/editar',
         name: 'admin.roles.edit',
+        beforeEnter: [middleware.canAccessUpdateView],
         component: () => import('@/views/Admin/Roles/FormView.vue')
       }
     ]
