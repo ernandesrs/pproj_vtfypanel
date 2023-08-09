@@ -39,15 +39,16 @@
 						<v-btn-group density="compact">
 							<!-- actions button -->
 							<v-btn v-if="actionShow" @click.stop="methodShowItem" text="Ver" prepend-icon="mdi-eye-outline"
-								size="small" color="secondary" :data-identificator="item?.id ?? index" />
-							<v-btn v-if="actionEdit" @click.stop="methodEditItem" text="Editar" prepend-icon="mdi-square-edit-outline" size="small" color="primary"
-								:data-identificator="item?.id ?? index" />
+								size="small" color="secondary" :data-identificator="item?.id ?? index"
+								:disabled="!computedPermission.canView(permissibleName)" />
+							<v-btn v-if="actionEdit" @click.stop="methodEditItem" text="Editar"
+								prepend-icon="mdi-square-edit-outline" size="small" color="primary"
+								:data-identificator="item?.id ?? index" :disabled="!computedPermission.canUpdate(permissibleName)" />
 							<confirmation-button v-if="actionDelete" text="Excluir" icon="mdi-delete-outline" size="small"
-								color="danger"
-								:dialog-title="actionDeleteDialogTitle ?? 'Confirmar exclusão?'"
-								:dialog-text="actionDeleteDialogText"
-								:data-identificator="item?.id ?? index" :confirm-callback="computedGetConfirmCallback"
-								:confirm-route="computedGetConfirmRoute" variant="outlined" />
+								color="danger" :dialog-title="actionDeleteDialogTitle ?? 'Confirmar exclusão?'"
+								:dialog-text="actionDeleteDialogText" :data-identificator="item?.id ?? index"
+								:confirm-callback="computedGetConfirmCallback" :confirm-route="computedGetConfirmRoute"
+								variant="outlined" :disabled="!computedPermission.canDelete(permissibleName)" />
 							<!-- /actions button -->
 						</v-btn-group>
 					</td>
@@ -72,6 +73,7 @@
 
 import ConfirmationButton from './ConfirmationButton.vue';
 import LoadingElem from './LoadingElem.vue';
+import permissions from '@/services/permissions';
 
 export default {
 	components: { ConfirmationButton, LoadingElem },
@@ -95,6 +97,10 @@ export default {
 	props: {
 		emptyListText: {
 			type: String,
+			default: null
+		},
+		permissibleName: {
+			type: [String, null],
 			default: null
 		},
 		items: {
@@ -161,6 +167,9 @@ export default {
 		},
 		computedGetConfirmRoute() {
 			return typeof this.actionDelete === 'object' ? this.actionDelete : null;
+		},
+		computedPermission() {
+			return permissions;
 		}
 	},
 	methods: {

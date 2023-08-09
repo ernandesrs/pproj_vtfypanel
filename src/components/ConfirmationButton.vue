@@ -1,6 +1,6 @@
 <template>
 	<v-btn :prepend-icon="icon" :text="text" :size="size" :color="color" :variant="variant"
-		@click="dialog = true"></v-btn>
+		@click="dialog = true" :disabled="disabled"></v-btn>
 	<v-dialog v-model="dialog" width="100%" max-width="375px">
 		<v-card>
 			<v-card-title v-if="dialogTitle" :class="['text-' + color, 'text-left pt-4 px-6']">
@@ -57,6 +57,10 @@ export default {
 		variant: {
 			type: String,
 			default: 'elevated'
+		},
+		disabled: {
+			type: Boolean,
+			default: false
 		},
 		dialogColor: {
 			type: [String, null],

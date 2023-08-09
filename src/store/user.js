@@ -7,15 +7,18 @@ export const useUserStore = defineStore('user', {
     state: () => {
         return {
             user: {},
-            adminLevels: [8, 9]
+            adminLevels: [8, 9],
+            roles: null
         };
     },
     actions: {
         addUser(user) {
             this.user = user;
+            this.roles = user.roles
         },
         updateUser(user) {
             this.user = user;
+            this.roles = user.roles
         },
         logout() {
             axios.req({
@@ -49,6 +52,9 @@ export const useUserStore = defineStore('user', {
         },
         isVerified() {
             return this.user.email_verified_at ? true : false;
+        },
+        isSuperuser() {
+            return this.user.level === 9 ? true : false;
         },
         hasAdminAccess() {
             return this.adminLevels.includes(this.user.level);
