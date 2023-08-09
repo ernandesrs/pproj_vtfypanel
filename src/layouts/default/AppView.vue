@@ -1,5 +1,5 @@
 <template>
-  <v-main class="mx-6 mt-6">
+  <v-main class="ma-6">
     <alert-elem></alert-elem>
     <router-view />
   </v-main>
