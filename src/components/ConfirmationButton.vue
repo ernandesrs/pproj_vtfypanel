@@ -10,11 +10,11 @@
 				{{ dialogText }}
 			</v-card-text>
 			<v-card-actions class="justify-space-between pb-5 px-6">
-				<v-btn @click.stop="dialog = false" prepend-icon="mdi-close" text="Cancelar" size="small"
-					:color="color" :disabled="confirmLoading" variant="outlined"></v-btn>
-				<v-btn @click.stop="methodConfirmAction" prepend-icon="mdi-check" text="Confirmar" size="small"
+				<v-btn @click.stop="dialog = false" prepend-icon="mdi-close" text="Cancelar"
+					:color="color" :disabled="confirmLoading" variant="outlined" class="px-4"></v-btn>
+				<v-btn @click.stop="methodConfirmAction" prepend-icon="mdi-check" text="Confirmar"
 					:color="color" :data-identificator="dataIdentificator" :loading="confirmLoading"
-					variant="elevated"></v-btn>
+					variant="elevated" class="px-4"></v-btn>
 			</v-card-actions>
 		</v-card>
 	</v-dialog>
