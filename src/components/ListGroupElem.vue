@@ -2,14 +2,16 @@
 	<v-row v-if="actionFilter">
 		<v-col></v-col>
 		<v-col cols="12" md="4" lg="3">
-			<v-text-field v-model="filter.form.search" append-icon="mdi-magnify" label="Buscar por..." type="text"
-				density="compact" variant="outlined" clear-icon="mdi-close-circle" clearable @click:append="methodFilter"
-				@click:clear="methodClearFilterField" :loading="filter.form.submitting"
-				:readonly="filter.form.submitting"></v-text-field>
+			<v-form @submit.prevent="methodFilter">
+				<v-text-field v-model="filter.form.search" append-inner-icon="mdi-magnify" label="Buscar por..." type="text"
+					density="compact" variant="outlined" clear-icon="mdi-close-circle" clearable
+					@click:append-inner="methodFilter" @click:clear="methodClearFilterField"
+					:loading="filter.form.submitting" :readonly="filter.form.submitting"></v-text-field>
+			</v-form>
 		</v-col>
 	</v-row>
 	<div v-if="listItems.length">
-		<v-table class="border">
+		<v-table density="compact">
 			<thead>
 				<tr>
 					<th class="d-none d-md-table-cell">ID</th>
@@ -36,12 +38,14 @@
 					<td v-if="computedHasAction">
 						<div class="d-flex flex-column flex-sm-row align-center">
 							<!-- actions button -->
-							<v-btn v-if="actionShow" @click.stop="methodShowItem" text="Ver" prepend-icon="mdi-eye-outline" size="small"
-								color="secondary" class="ma-1" :data-identificator="item?.id ?? index" />
-							<v-btn v-if="actionEdit" @click.stop="methodEditItem" text="Editar" prepend-icon="mdi-square-edit-outline"
-								size="small" color="primary" class="ma-1" :data-identificator="item?.id ?? index" />
+							<v-btn v-if="actionShow" @click.stop="methodShowItem" text="Ver" prepend-icon="mdi-eye-outline"
+								size="small" color="secondary" class="ma-1" :data-identificator="item?.id ?? index" />
+							<v-btn v-if="actionEdit" @click.stop="methodEditItem" text="Editar"
+								prepend-icon="mdi-square-edit-outline" size="small" color="primary" class="ma-1"
+								:data-identificator="item?.id ?? index" />
 							<confirmation-button v-if="actionDelete" text="Excluir" icon="mdi-delete-outline" size="small"
-								color="danger" variant="outlined" :dialog-title="actionDeleteDialogTitle ?? 'Confirmar exclusão?'"
+								color="danger" variant="outlined"
+								:dialog-title="actionDeleteDialogTitle ?? 'Confirmar exclusão?'"
 								:data-identificator="item?.id ?? index" :confirm-callback="computedGetConfirmCallback"
 								:confirm-route="computedGetConfirmRoute" />
 							<!-- /actions button -->
