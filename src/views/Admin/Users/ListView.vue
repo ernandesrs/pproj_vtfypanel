@@ -3,6 +3,8 @@
 
 	<template v-else>
 		<actions-bar bar-title="Usuários" :action-button-create="{
+			show: true,
+			disabled: !$permission.addResource('user').canCreate(),
 			text: 'Novo usuário',
 			icon: 'mdi-account-plus',
 			to: { name: 'admin.users.create' }

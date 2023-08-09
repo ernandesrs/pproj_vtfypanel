@@ -6,9 +6,9 @@
 			<v-btn @click.stop="$router.back()" prepend-icon="mdi-arrow-left" text="Voltar" color="blue-grey-lighten-5"
 				variant="flat" class="text-none"></v-btn>
 			<v-btn @click.stop="methodActionCreateClick"
-				v-if="actionButtonCreate.url || actionButtonCreate.to || actionButtonCreate.callback"
+				v-if="actionButtonCreate.show"
 				:prepend-icon="actionButtonCreate.icon ?? 'mdi-plus'" :text="actionButtonCreate.text" color="success"
-				variant="flat" class="text-none"></v-btn>
+				variant="flat" class="text-none" :disabled="actionButtonCreate.disabled"></v-btn>
 		</v-btn-group>
 	</v-app-bar>
 </template>
@@ -25,6 +25,8 @@ export default {
 			type: [null, Object],
 			default: Object.create({
 				text: 'Novo',
+				show: false,
+				disabled: false,
 				icon: 'mdi-plus',
 				url: null,
 				to: null,

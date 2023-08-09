@@ -40,16 +40,16 @@
 							<!-- actions button -->
 							<v-btn v-if="actionShow" @click.stop="methodShowItem" text="Ver" prepend-icon="mdi-eye-outline"
 								size="small" color="secondary" :data-identificator="item?.id ?? index"
-								:disabled="!computedResourcePermission.canView()" />
+								:disabled="!$permission.addResource(this.resource).canView()" />
 							<v-btn v-if="actionEdit" @click.stop="methodEditItem" text="Editar"
 								prepend-icon="mdi-square-edit-outline" size="small" color="primary"
 								:data-identificator="item?.id ?? index"
-								:disabled="!computedResourcePermission.canUpdate()" />
+								:disabled="!$permission.addResource(this.resource).canUpdate()" />
 							<confirmation-button v-if="actionDelete" text="Excluir" icon="mdi-delete-outline" size="small"
 								color="danger" :dialog-title="actionDeleteDialogTitle ?? 'Confirmar exclusão?'"
 								:dialog-text="actionDeleteDialogText" :data-identificator="item?.id ?? index"
 								:confirm-callback="computedGetConfirmCallback" :confirm-route="computedGetConfirmRoute"
-								variant="outlined" :disabled="!computedResourcePermission.canDelete()" />
+								variant="outlined" :disabled="!$permission.addResource(this.resource).canDelete()" />
 							<!-- /actions button -->
 						</v-btn-group>
 					</td>
@@ -72,7 +72,6 @@
 
 <script>
 
-import permissions from '@/services/permissions';
 import ConfirmationButton from './ConfirmationButton.vue';
 import LoadingElem from './LoadingElem.vue';
 
@@ -171,9 +170,6 @@ export default {
 		},
 		computedGetConfirmRoute() {
 			return typeof this.actionDelete === 'object' ? this.actionDelete : null;
-		},
-		computedResourcePermission() {
-			return permissions.addResource(this.resource);
 		}
 	},
 	methods: {

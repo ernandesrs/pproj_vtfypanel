@@ -23,6 +23,13 @@ const functions = {
     /**
      * @returns {Boolean}
      */
+    canCreate: () => {
+        return hasPermission('create', functions.resource);
+    },
+
+    /**
+     * @returns {Boolean}
+     */
     canUpdate: () => {
         return hasPermission('update', functions.resource);
     },
@@ -69,7 +76,7 @@ const resources = {
 
 /**
  * @param {String} action 
- * @param {String} resource 
+ * @param {null|String} resource 
  * @returns {Boolean}
  */
 const hasPermission = (action, resource) => {
@@ -78,6 +85,10 @@ const hasPermission = (action, resource) => {
      */
     if (useUserStore().isSuperuser) {
         return true;
+    }
+
+    if (!resource) {
+        return false;
     }
 
     const roles = useUserStore().roles;
@@ -109,11 +120,7 @@ export default {
      * @returns {null|Object}
      */
     addResource: (resource) => {
-        try {
-            functions.resource = resources[resource];
-            return functions;
-        } catch {
-            return null;
-        }
+        functions.resource = resources[resource] ?? null;
+        return functions;
     }
 };
