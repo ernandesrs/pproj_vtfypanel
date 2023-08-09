@@ -1,9 +1,7 @@
 <template>
-  <v-main>
-    <v-container class="py-10">
-      <alert-elem></alert-elem>
-      <router-view />
-    </v-container>
+  <v-main class="mx-6 mt-6">
+    <alert-elem></alert-elem>
+    <router-view />
   </v-main>
 </template>
 
