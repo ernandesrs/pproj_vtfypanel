@@ -1,5 +1,5 @@
 <template>
-	<v-app-bar density="compact">
+	<v-app-bar density="compact" color="light-4" elevation="0" class="border-b">
 		<v-app-bar-nav-icon variant="text" @click.stop="navigationDrawerToggle"></v-app-bar-nav-icon>
 
 		<v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
