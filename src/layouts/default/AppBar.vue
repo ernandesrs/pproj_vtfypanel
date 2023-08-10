@@ -5,7 +5,6 @@
 		<v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
 
 		<template #append>
-
 			<!-- user avatar -->
 			<v-menu>
 				<template v-slot:activator="{ props: menu }">
@@ -13,7 +12,8 @@
 						<template v-slot:activator="{ props: tooltip }">
 							<v-btn color="primary" v-bind="mergeProps(menu, tooltip)">
 								<v-avatar size="32" color="primary">
-									<v-img v-if="computedUserStore.getPhotoUrl" :src="computedUserStore.getPhotoUrl"></v-img>
+									<v-img v-if="computedUserStore.getPhotoUrl"
+										:src="computedUserStore.getPhotoUrl"></v-img>
 									<span v-else class="text-h8">{{ computedUserStore.getInitials }}</span>
 								</v-avatar>
 							</v-btn>
@@ -25,7 +25,8 @@
 						<v-card>
 							<v-card-text>
 								<v-avatar size="125" color="primary">
-									<v-img v-if="computedUserStore.getPhotoUrl" :src="computedUserStore.getPhotoUrl"></v-img>
+									<v-img v-if="computedUserStore.getPhotoUrl"
+										:src="computedUserStore.getPhotoUrl"></v-img>
 									<span v-else class="text-h4">{{ computedUserStore.getInitials }}</span>
 								</v-avatar>
 								<div class="pt-1 pb-3">
@@ -34,11 +35,11 @@
 									<p>{{ computedUserStore.getEmail }}</p>
 								</div>
 								<div class="d-flex justify-center">
-									<v-btn elevation="0" prepend-icon="mdi-account" size="small" text="Perfil" color="primary"
-										variant="outlined" class="ma-1" :to="{ name: 'app.profile' }"
+									<v-btn elevation="0" prepend-icon="mdi-account" size="small" text="Perfil"
+										color="primary" variant="outlined" class="ma-1" :to="{ name: 'app.profile' }"
 										:disabled="this.$route.name == 'app.profile'"></v-btn>
-									<v-btn @click.stop="methodLogout" elevation="0" color="red" prepend-icon="mdi-logout" size="small"
-										text="Sair" class="ma-1"></v-btn>
+									<v-btn @click.stop="methodLogout" elevation="0" color="red" prepend-icon="mdi-logout"
+										size="small" text="Sair" class="ma-1"></v-btn>
 								</div>
 							</v-card-text>
 						</v-card>

@@ -14,16 +14,16 @@ import { createVuetify } from 'vuetify'
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
   theme: {
+    defaultTheme: 'light',
     themes: {
       light: {
         colors: {
-          // primary: '#1867C0',
-          primary: '#0277BD',
-          secondary: '#42A5F5',
-          success: '#66BB6A',
-          danger: '#EF5350',
-          warning: '#FF7043',
-          info: '#039BE5',
+          'primary': '#0277BD', // #1867C0
+          'secondary': '#42A5F5',
+          'success': '#66BB6A',
+          'danger': '#EF5350',
+          'warning': '#FF7043',
+          'info': '#039BE5',
 
           'dark-4': '#757575',
           'dark-3': '#616161',
@@ -36,7 +36,7 @@ export default createVuetify({
           'light-2': '#E0E0E0',
           'light-1': '#BDBDBD',
         },
-      },
+      }
     },
   },
   icons: {
