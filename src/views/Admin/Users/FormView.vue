@@ -32,14 +32,14 @@
 										value: level.key
 									};
 								})" item-title="text" item-value="value" label="Nível de acesso" density="compact"
-								:loading="user.form.submitting" :readonly="user.form.submitting"></v-select>
+								:loading="user.form.submitting" :readonly="user.form.submitting" :disabled="!$permission.addResource('user').canPromote()"></v-select>
 						</v-card-item>
 
 						<v-card-item>
 							<v-select v-if="[8].includes(user.form.data.level)" @update:modelValue="methodUpdateRoles"
 								v-model="user.form.data.roles" :items="roles.list" item-title="display_name" item-value="id"
 								label="Funções atribuídas" chips multiple :loading="roles.loading || user.form.submitting"
-								:readonly="roles.loading || user.form.submitting" density="compact"></v-select>
+								:readonly="roles.loading || user.form.submitting" density="compact" :disabled="!$permission.addResource('user').canPromote()"></v-select>
 						</v-card-item>
 					</v-card>
 				</v-sheet>

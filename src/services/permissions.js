@@ -113,6 +113,20 @@ const functions = {
     },
 
     /**
+     * @returns {Boolean}
+     */
+    canPromote: () => {
+        return hasPermission('promote', functions.resource);
+    },
+
+    /**
+     * @returns {Boolean}
+     */
+    canDemote: () => {
+        return hasPermission('demote', functions.resource);
+    },
+
+    /**
      * @param {String} action a valid action
      * @param {String} resource  A valid resource unique name. Check the 'resources' const array on /services/permissions.js
      * @returns {Boolean}
