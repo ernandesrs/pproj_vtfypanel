@@ -57,7 +57,7 @@ export default {
         let route = null;
 
         if (!permissions.addResource(to.name).canViewAny()) {
-            alert.addDanger('Você não tem autorização para acessar esta área.', 'Sem autorização');
+            alert.addDanger('Você não tem autorização para acessar esta área.', 'Sem autorização', from.name ? false : true);
             route = {
                 name: 'admin.home'
             };
@@ -69,7 +69,7 @@ export default {
         let route = null;
 
         if (!permissions.addResource(to.name).canCreate()) {
-            alert.addDanger('Você não tem autorização para acessar esta área.', 'Sem autorização');
+            alert.addDanger('Você não tem autorização para acessar esta área.', 'Sem autorização', from.name ? false : true);
             route = {
                 name: 'admin.home'
             };
@@ -81,7 +81,7 @@ export default {
         let route = null;
 
         if (!permissions.addResource(to.name).canUpdate()) {
-            alert.addDanger('Você não tem autorização para acessar esta área.', 'Sem autorização');
+            alert.addDanger('Você não tem autorização para acessar esta área.', 'Sem autorização', from.name ? false : true);
             route = {
                 name: 'admin.home'
             };
