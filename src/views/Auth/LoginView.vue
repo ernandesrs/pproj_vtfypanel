@@ -104,7 +104,13 @@ export default {
 						);
 						token.add(resp.data?.access.full, resp.data?.access.expire_in_minutes);
 						useUserStore().addUser(resp.data.user);
-						this.$router.push({ name: 'app.home' });
+
+						const route = { name: 'app.home' };
+						if (useUserStore().hasAdminAccess) {
+							route.name = 'admin.home';
+						}
+
+						this.$router.push(route);
 					}
 				},
 				fail: (resp) => {
