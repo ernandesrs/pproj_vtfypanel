@@ -1,17 +1,35 @@
 import { useUserStore } from "@/store/user";
 
 /**
- * Allowed resources
+ * Allowed resources/permissibles/manageable
  * Check for more or new resources on API return
  */
 const resources = {
-    'App_Models_User': ['user', 'admin.users', 'admin.users.create', 'admin.users.edit'],
-    'App_Models_Role': ['role', 'admin.roles', 'admin.roles.create', 'admin.roles.edit']
+    /**
+     * unique name received from backend
+     */
+    'App_Models_User': [
+        /**
+         * surnames accepted to be used in the frontend
+         * and that will be related to the unique name
+         */
+        'user',
+        'admin.users',
+        'admin.users.create',
+        'admin.users.edit'
+    ],
+    'App_Models_Role': [
+        'role',
+        'admin.roles',
+        'admin.roles.create',
+        'admin.roles.edit'
+    ]
 };
 
 /**
- * @param {String} action 
- * @param {null|String} resource 
+ * @param {String} action viewAny/view/create/update/delete/forceDelete/recovery
+ * @param {null|String} resource a valid resource unique name(Example: App_Models_User, App_Models_Role, ...),
+ * check const 'resources' in /services/permissions.js
  * @returns {Boolean}
  */
 const hasPermission = (action, resource) => {
@@ -31,7 +49,7 @@ const hasPermission = (action, resource) => {
     /**
      * Denie 'action' if is not set roles for the user
      */
-    if (!roles) {
+    if (!roles || roles.length == 0) {
         return false;
     }
 
@@ -49,6 +67,10 @@ const hasPermission = (action, resource) => {
     return role.length > 0;
 };
 
+/**
+ * @param {*} resource something like 'user', 'role', or route name
+ * @returns {String|null}
+ */
 const findResourceUniqueName = (resource) => {
     const result = Object.entries(resources).find((r) => {
         return r[1].includes(resource);
@@ -59,6 +81,8 @@ const findResourceUniqueName = (resource) => {
 
 /**
  * Object functions
+ * This object has the unique name of the resource/manageable/permissible
+ * and all functions for checking permissions
  */
 const functions = {
     resource: null,
@@ -127,8 +151,9 @@ const functions = {
     },
 
     /**
-     * @param {String} action a valid action
-     * @param {String} resource  A valid resource unique name. Check the 'resources' const array on /services/permissions.js
+     * @param {String} action viewAny/view/create/update/delete/forceDelete/recovery
+     * @param {null|String} resource a valid resource unique name(Example: App_Models_User, App_Models_Role, ...),
+     * check const 'resources' in /services/permissions.js
      * @returns {Boolean}
      */
     hasPermission: (action, resource) => {
@@ -138,7 +163,7 @@ const functions = {
 
 export default {
     /**
-     * @param {String} resource A valid resource unique name. Check the 'resources' const array on /services/permissions.js
+     * @param {String} resource A valid resource surname for a resource. See const 'resources' in /services/permissions.js
      * @returns {null|Object}
      */
     addResource: (resource) => {
