@@ -1,6 +1,9 @@
 <template>
 	<loading-elem v-if="loadingContent"></loading-elem>
 	<template v-else>
+		<confirmation-dialog v-model="superUserDialogConfirmation" dialog-color="danger" dialog-title="IMPORTANTE!"
+			dialog-text="Você está atribuindo a este usuário o nível de acesso 'Super usuário', isso o concede poder total sobre o sistema, incluindo permissões para alterar e excluir outros 'Super usuário'. Tem certeza de que quer prosseguir?"
+			:confirm-callback="methodUpdateLevelConfirmed" />
 		<actions-bar :bar-title="this.user.create ? 'Novo usuário' : 'Editar usuário'"></actions-bar>
 		<v-row class="justify-center pa-md-8">
 			<v-col v-if="!this.user.create" cols="12" sm="10" lg="4" class="text-center">
@@ -37,9 +40,9 @@
 						</v-card-item>
 
 						<v-card-item v-if="[8].includes(user.form.data.level)">
-							<v-select @update:modelValue="methodUpdateRoles"
-								v-model="user.form.data.roles" :items="roles.list" item-title="display_name" item-value="id"
-								label="Funções atribuídas" chips multiple :loading="roles.loading || user.form.submitting"
+							<v-select @update:modelValue="methodUpdateRoles" v-model="user.form.data.roles"
+								:items="roles.list" item-title="display_name" item-value="id" label="Funções atribuídas"
+								chips multiple :loading="roles.loading || user.form.submitting"
 								:readonly="roles.loading || user.form.submitting" density="compact"
 								:disabled="!$permission.addResource('user').canPromote()"></v-select>
 						</v-card-item>
@@ -111,18 +114,19 @@
 <script>
 
 import { useAppStore } from '@/store/app';
+import { useUserStore } from '@/store/user';
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
 import LoadingElem from '@/components/LoadingElem.vue';
 import ActionsBar from '@/layouts/default/ActionsBar.vue';
 import ConfirmationButton from '@/components/ConfirmationButton.vue';
-import { useUserStore } from '@/store/user';
+import ConfirmationDialog from '@/components/ConfirmationDialog.vue';
 
 export default {
-	components: { LoadingElem, ActionsBar, ConfirmationButton },
+	components: { LoadingElem, ActionsBar, ConfirmationButton, ConfirmationDialog },
 	data() {
 		return {
-			dialog: true,
+			superUserDialogConfirmation: false,
 			loadingContent: true,
 			user: {
 				create: true,
@@ -270,8 +274,15 @@ export default {
 			});
 		},
 		methodUpdateLevel() {
-			this.user.form.submitting = true;
+			if (this.user.form.data.level == 9) {
+				this.superUserDialogConfirmation = true;
+				return;
+			}
 
+			this.methodUpdateLevelConfirmed();
+		},
+		methodUpdateLevelConfirmed() {
+			this.user.form.submitting = true;
 			return axios.req({
 				action: '/admin/users/' + this.user.form.data.id + '/update-level',
 				method: 'put',
