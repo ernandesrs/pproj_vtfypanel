@@ -19,6 +19,7 @@
 </template>
 
 <script>
+
 export default {
     data() {
         return {
@@ -108,10 +109,13 @@ export default {
                     this.dialog = false;
                 }
             } else if (this.cancelRoute) {
-                this.cancelRoute(event);
+                this.$router.push(this.cancelRoute);
+            } else {
+                this.dialog = false;
             }
         }
     }
 
 }
+
 </script>
