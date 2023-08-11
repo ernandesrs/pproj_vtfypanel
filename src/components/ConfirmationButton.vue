@@ -2,7 +2,7 @@
 	<v-btn :prepend-icon="icon" :text="text" :size="size" :color="color" :variant="variant" @click="dialog = true"
 		:disabled="disabled"></v-btn>
 	<confirmation-dialog v-model="dialog" :dialog-color="color" :dialog-text="dialogText" :dialog-title="dialogTitle"
-		:data-identificator="dataIdentificator" :confirm-callback="confirmCallback" :confirm-route="confirmRoute" />
+		:data-identificator="dataIdentificator" :confirm-callback="confirmCallback" :confirm-route="confirmRoute" :cancel-callback="cancelCallback" :cancel-route="cancelRoute" />
 </template>
 
 <script>
@@ -62,6 +62,14 @@ export default {
 			default: null
 		},
 		confirmRoute: {
+			type: Object,
+			default: null
+		},
+		cancelCallback: {
+			type: Function,
+			default: null
+		},
+		cancelRoute: {
 			type: Object,
 			default: null
 		}

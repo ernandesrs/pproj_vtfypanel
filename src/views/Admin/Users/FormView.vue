@@ -1,9 +1,9 @@
 <template>
 	<loading-elem v-if="loadingContent"></loading-elem>
 	<template v-else>
-		<confirmation-dialog v-model="superUserDialogConfirmation" dialog-color="danger" dialog-title="IMPORTANTE!"
-			dialog-text="Você está atribuindo a este usuário o nível de acesso 'Super usuário', isso o concede poder total sobre o sistema, incluindo permissões para alterar e excluir outros 'Super usuário'. Tem certeza de que quer prosseguir?"
-			:confirm-callback="methodUpdateLevelConfirmed" />
+		<confirmation-dialog v-model="superUserDialogConfirmation" color="danger" title="IMPORTANTE!"
+			text="Você está atribuindo a este usuário o nível de acesso 'Super usuário', isso o concede poder total sobre o sistema, incluindo permissões para alterar e excluir outros 'Super usuário'. Tem certeza de que quer prosseguir?"
+			:confirm-callback="methodUpdateLevelConfirmed" :cancel-callback="methodUpdateLevelCanceled" />
 		<actions-bar :bar-title="this.user.create ? 'Novo usuário' : 'Editar usuário'"></actions-bar>
 		<v-row class="justify-center pa-md-8">
 			<v-col v-if="!this.user.create" cols="12" sm="10" lg="4" class="text-center">
@@ -297,6 +297,9 @@ export default {
 					this.user.form.submitting = false;
 				}
 			});
+		},
+		methodUpdateLevelCanceled() {
+			// 
 		},
 		methodUpdateRoles(event) {
 			let action = null;

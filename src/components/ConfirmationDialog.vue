@@ -1,16 +1,16 @@
 <template>
     <v-dialog v-model="dialog" width="100%" max-width="375px">
         <v-card>
-            <v-card-title v-if="dialogTitle" :class="['text-' + dialogColor, 'text-left pt-4 px-6']">
-                {{ dialogTitle }}
+            <v-card-title v-if="title" :class="['text-' + color, 'text-left pt-4 px-6']">
+                {{ title }}
             </v-card-title>
-            <v-card-text v-if="dialogText" :class="['text-' + dialogColor, 'text-left px-6 pt-2 pb-4']">
-                {{ dialogText }}
+            <v-card-text v-if="text" :class="['text-' + color, 'text-left px-6 pt-2 pb-4']">
+                {{ text }}
             </v-card-text>
             <v-card-actions class="justify-space-between pb-5 px-6">
-                <v-btn @click.stop="dialog = false" prepend-icon="mdi-close" text="Cancelar" :color="dialogColor"
+                <v-btn @click.stop="methodCancelAction" prepend-icon="mdi-close" text="Cancelar" :color="color"
                     :disabled="confirmLoading" variant="outlined" class="px-4"></v-btn>
-                <v-btn @click.stop="methodConfirmAction" prepend-icon="mdi-check" text="Confirmar" :color="dialogColor"
+                <v-btn @click.stop="methodConfirmAction" prepend-icon="mdi-check" text="Confirmar" :color="color"
                     :data-identificator="dataIdentificator" :loading="confirmLoading" variant="elevated"
                     class="px-4"></v-btn>
             </v-card-actions>
@@ -35,15 +35,15 @@ export default {
             type: [String, Number],
             default: null
         },
-        dialogColor: {
+        color: {
             type: [String, null],
             default: 'primary'
         },
-        dialogTitle: {
+        title: {
             type: [String, null],
             default: null
         },
-        dialogText: {
+        text: {
             type: [String, null],
             default: null
         },
@@ -52,6 +52,14 @@ export default {
             default: null
         },
         confirmRoute: {
+            type: Object,
+            default: null
+        },
+        cancelCallback: {
+            type: Function,
+            default: null
+        },
+        cancelRoute: {
             type: Object,
             default: null
         }
@@ -86,6 +94,21 @@ export default {
                 }
             } else if (this.confirmRoute) {
                 this.$router.push(this.confirmRoute);
+            }
+        },
+        methodCancelAction(event) {
+            if (this.cancelCallback) {
+                let promise = this.cancelCallback(event);
+
+                try {
+                    promise.finally(() => {
+                        this.dialog = false;
+                    })
+                } catch {
+                    this.dialog = false;
+                }
+            } else if (this.cancelRoute) {
+                this.cancelRoute(event);
             }
         }
     }
