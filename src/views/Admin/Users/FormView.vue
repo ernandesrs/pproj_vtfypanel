@@ -2,7 +2,7 @@
 	<loading-elem v-if="loadingContent"></loading-elem>
 	<template v-else>
 		<confirmation-dialog v-model="superUserDialogConfirmation" color="danger" title="IMPORTANTE!"
-			text="Você está atribuindo a este usuário o nível de acesso 'Super usuário', isso o concede poder total sobre o sistema, incluindo permissões para alterar e excluir outros 'Super usuário'. Tem certeza de que quer prosseguir?"
+			text="Você está atribuindo a este usuário o nível de acesso 'Super usuário', isso o concede poder total sobre o sistema, incluindo permissões para alterar e excluir outros 'super usuários'. Tem certeza de que quer prosseguir?"
 			:confirm-callback="methodUpdateLevelConfirmed" :cancel-callback="methodUpdateLevelCanceled" />
 		<actions-bar :bar-title="this.user.create ? 'Novo usuário' : 'Editar usuário'"></actions-bar>
 		<v-row class="justify-center pa-md-8">
@@ -130,6 +130,7 @@ export default {
 			loadingContent: true,
 			user: {
 				create: true,
+				old_level: null,
 				form: {
 					valid: false,
 					data: {},
@@ -164,11 +165,12 @@ export default {
 		'user.form.data.level': {
 			deep: true,
 			handler(nv, ov) {
-				if (ov == undefined) {
+				if (ov == undefined || nv == this.user.old_level) {
 					return;
 				}
 
 				if (nv != ov) {
+					this.user.old_level = ov;
 					this.methodUpdateLevel();
 				}
 			}
@@ -295,11 +297,12 @@ export default {
 				},
 				finally: () => {
 					this.user.form.submitting = false;
+					this.user.old_level = null;
 				}
 			});
 		},
 		methodUpdateLevelCanceled() {
-			// 
+			this.user.form.data.level = this.user.old_level;
 		},
 		methodUpdateRoles(event) {
 			let action = null;
