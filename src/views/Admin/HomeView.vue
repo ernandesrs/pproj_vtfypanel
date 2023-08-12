@@ -23,7 +23,6 @@
 
 <script>
 
-import { useAppStore } from '@/store/app';
 import axios from '@/plugins/axios';
 import LoadingElem from '@/components/LoadingElem.vue';
 
@@ -75,17 +74,14 @@ export default {
     };
   },
   created() {
-    useAppStore().updateBreadcrumbs([
-      {
-        title: 'Home',
-        disabled: true,
-        to: { name: 'admin.home' }
-      }
-    ]);
-
-    this.methodGetDashContent();
+    this.methodMain();
   },
   methods: {
+    methodMain() {
+      this.$util.app.breadcrumbs([]);
+
+      this.methodGetDashContent();
+    },
     methodGetDashContent() {
       axios.req({
         action: '/admin',
@@ -99,11 +95,6 @@ export default {
           this.loadingContent = false;
         }
       });
-    }
-  },
-  computed: {
-    computedUserApp() {
-      return useAppStore().appUser;
     }
   }
 }

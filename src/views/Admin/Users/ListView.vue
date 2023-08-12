@@ -9,8 +9,8 @@
 			icon: 'mdi-account-plus',
 			to: { name: 'admin.users.create' }
 		}"></actions-bar>
-		<list-group-elem @changePage="methodChangePage" resource="user" :items="users.list"
-			:pages="users.pages" v-slot="{ item }" :action-edit="methodEditUser" :action-delete="methodDeleteUserConfirmed"
+		<list-group-elem @changePage="methodChangePage" resource="user" :items="users.list" :pages="users.pages"
+			v-slot="{ item }" :action-edit="methodEditUser" :action-delete="methodDeleteUserConfirmed"
 			action-delete-dialog-title="Excluir usuário?"
 			action-delete-dialog-text="A exclusão deste usuário será definitiva e não poderá ser desfeita." :action-filter="(event) => {
 				return methodGetUsers(1, event.search);
@@ -57,7 +57,6 @@
 
 <script>
 
-import { useAppStore } from '@/store/app';
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
 import LoadingElem from '@/components/LoadingElem.vue';
@@ -99,22 +98,20 @@ export default {
 		};
 	},
 	created() {
-		useAppStore().updateBreadcrumbs([
-			{
-				title: 'Home',
-				disabled: false,
-				to: { name: 'admin.home' }
-			},
-			{
-				title: 'Usuários',
-				disabled: true,
-				to: { name: 'admin.users' }
-			}
-		]);
-
-		this.methodGetUsers(1);
+		this.methodMain();
 	},
 	methods: {
+		methodMain() {
+			this.$util.app.breadcrumbs([
+				{
+					title: 'Usuários',
+					disabled: true,
+					to: { name: 'admin.users' }
+				}
+			]);
+
+			this.methodGetUsers(1);
+		},
 		methodGetUsers(page, search = null) {
 			return axios.req({
 				action: '/admin/users?page=' + page + '&limit=' + this.users.limit + (search ? '&search=' + search : ''),

@@ -10,8 +10,8 @@
 			</v-col>
 			<v-col cols="12" md="9" lg="8" :class="{ 'd-none': computedIsCreating }">
 				<v-expansion-panels variant="accordion">
-					<v-expansion-panel v-for="permissible, permissibleIndex in role.form.data.permissibles" :key="permissibleIndex"
-						:title="role.permissiblesConfig[permissibleIndex] ?? permissibleIndex">
+					<v-expansion-panel v-for="permissible, permissibleIndex in role.form.data.permissibles"
+						:key="permissibleIndex" :title="role.permissiblesConfig[permissibleIndex] ?? permissibleIndex">
 
 						<v-expansion-panel-text>
 							<v-card elevation="0">
@@ -40,7 +40,6 @@
 
 <script>
 
-import { useAppStore } from '@/store/app';
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
 import LoadingElem from '@/components/LoadingElem.vue';
@@ -83,20 +82,21 @@ export default {
 		};
 	},
 	created() {
-		let id = this.$route.params?.role_id;
-
-		this.methodSetBreadcrumbs();
-
-		if (id) {
-			this.methodGetRole(id);
-		} else {
-			this.loadingContent = false;
-		}
+		this.methodMain();
 	},
 	updated() {
 		this.methodSetBreadcrumbs();
 	},
 	methods: {
+		methodMain() {
+			this.methodSetBreadcrumbs();
+
+			if (!this.computedIsCreating) {
+				this.methodGetRole(this.$route.params.role_id);
+			} else {
+				this.loadingContent = false;
+			}
+		},
 		methodGetRole(id) {
 			axios.req({
 				action: '/admin/roles/' + id,
@@ -149,12 +149,7 @@ export default {
 			});
 		},
 		methodSetBreadcrumbs() {
-			useAppStore().updateBreadcrumbs([
-				{
-					text: 'Home',
-					to: { name: 'admin.home' },
-					disabled: false
-				},
+			this.$util.app.breadcrumbs([
 				{
 					text: 'Funções',
 					to: { name: 'admin.roles' },
@@ -170,7 +165,7 @@ export default {
 	},
 	computed: {
 		computedIsCreating() {
-			return this.role.form.data?.id ? false : true;
+			return this.$route.params?.role_id ? false : true;
 		}
 	}
 }

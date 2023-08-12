@@ -4,14 +4,14 @@
 		<confirmation-dialog v-model="superUserDialogConfirmation" color="danger" title="IMPORTANTE!"
 			text="Você está atribuindo a este usuário o nível de acesso 'Super usuário', isso o concede poder total sobre o sistema, incluindo permissões para alterar e excluir outros 'super usuários'. Tem certeza de que quer prosseguir?"
 			:confirm-callback="methodUpdateLevelConfirmed" :cancel-callback="methodUpdateLevelCanceled" />
-		<actions-bar :bar-title="this.user.create ? 'Novo usuário' : 'Editar usuário'"></actions-bar>
+		<actions-bar :bar-title="this.computedIsCreating ? 'Novo usuário' : 'Editar usuário'"></actions-bar>
 		<v-row class="justify-center pa-md-8">
-			<v-col v-if="!this.user.create" cols="12" sm="10" lg="4" class="text-center">
+			<v-col v-if="!this.computedIsCreating" cols="12" sm="10" lg="4" class="text-center">
 				<v-avatar size="175">
 					<v-img v-if="user.form.data?.photo_url" :src="user.form.data?.photo_url"></v-img>
 					<div v-else
 						class="text-h2 font-weight-bold w-100 h-100 rounded-circle d-flex justify-center align-center border">
-						{{ user.create ? 'U' : user.form.data?.first_name[0] }}
+						{{ computedIsCreating ? 'U' : user.form.data?.first_name[0] }}
 					</div>
 				</v-avatar>
 				<v-sheet v-if="user.form.data?.photo_url" class="py-3">
@@ -86,7 +86,7 @@
 								<v-col cols="12">
 									<v-text-field v-model="user.form.data.email" label="Email"
 										:error-messages="user.form.errors?.email"
-										:readonly="this.user.create ? false : true"></v-text-field>
+										:readonly="this.computedIsCreating ? false : true"></v-text-field>
 								</v-col>
 								<v-col cols="12" sm="6">
 									<v-text-field v-model="user.form.data.password" label="Senha"
@@ -99,7 +99,7 @@
 								</v-col>
 								<v-col cols="12" class="text-center">
 									<v-btn @click.stop="methodSubmitForm" prepend-icon="mdi-check"
-										:text="this.user.create ? 'Criar usuário' : 'Atualizar'" color="primary"
+										:text="this.computedIsCreating ? 'Criar usuário' : 'Atualizar'" color="primary"
 										:loading="user.form.submitting"></v-btn>
 								</v-col>
 							</v-row>
@@ -113,7 +113,6 @@
 
 <script>
 
-import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
@@ -129,7 +128,6 @@ export default {
 			superUserDialogConfirmation: false,
 			loadingContent: true,
 			user: {
-				create: true,
 				old_level: null,
 				form: {
 					valid: false,
@@ -177,33 +175,30 @@ export default {
 		}
 	},
 	created() {
-		if (this.$route.params?.user_id) {
-			this.user.create = false;
-			this.methodGetUser();
-			this.methodGetRoles();
-		} else {
-			this.loadingContent = false;
-		}
-
-		useAppStore().updateBreadcrumbs([
-			{
-				title: 'Home',
-				disabled: false,
-				to: { name: 'admin.home' }
-			},
-			{
-				title: 'Usuários',
-				disabled: false,
-				to: { name: 'admin.users' }
-			},
-			{
-				title: this.user.create ? 'Novo' : 'Editar',
-				disabled: true,
-				to: { name: 'admin.users.create' }
-			},
-		]);
+		this.methodMain();
 	},
 	methods: {
+		methodMain() {
+			if (!this.computedIsCreating) {
+				this.methodGetUser();
+				this.methodGetRoles();
+			} else {
+				this.loadingContent = false;
+			}
+
+			this.$util.app.breadcrumbs([
+				{
+					title: 'Usuários',
+					disabled: false,
+					to: { name: 'admin.users' }
+				},
+				{
+					title: this.computedIsCreating ? 'Novo' : 'Editar',
+					disabled: true,
+					to: { name: 'admin.users.create' }
+				},
+			]);
+		},
 		methodGetUser() {
 			axios.req({
 				action: '/admin/users/' + this.$route.params?.user_id,
@@ -230,8 +225,8 @@ export default {
 			});
 		},
 		methodSubmitForm() {
-			let action = this.user.create ? '/admin/users' : '/admin/users/' + this.user.form.data.id;
-			let method = this.user.create ? 'post' : 'put';
+			let action = this.computedIsCreating ? '/admin/users' : '/admin/users/' + this.user.form.data.id;
+			let method = this.computedIsCreating ? 'post' : 'put';
 			let data = {
 				"first_name": this.user.form.data.first_name,
 				"last_name": this.user.form.data.last_name,
@@ -248,7 +243,7 @@ export default {
 				method: method,
 				data: data,
 				success: () => {
-					if (this.user.create) {
+					if (this.computedIsCreating) {
 						alert.addSuccess('Novo usuário registrado com sucesso!', 'Registrado!', true);
 						this.$router.push({ name: 'admin.users' });
 					} else {
@@ -347,6 +342,9 @@ export default {
 		}
 	},
 	computed: {
+		computedIsCreating() {
+			return this.$route.params?.user_id ? false : true;
+		},
 		computedAuthUserFromStore() {
 			return useUserStore();
 		}

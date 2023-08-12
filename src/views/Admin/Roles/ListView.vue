@@ -10,9 +10,11 @@
 			to: { name: 'admin.roles.create' },
 		}"></actions-bar>
 
-		<list-group-elem @changePage="methodChangePage" resource="role" :items="roles.list" :pages="roles.pages" v-slot="{ item }"
-			:action-edit="methodEdit" :action-delete="methodDeleteConfirmed"
-			action-delete-dialog-title="Excluir esta função?" action-delete-dialog-text="A exclusão desta função será definitiva e não poderá ser desfeita." :action-filter="methodFilter">
+		<list-group-elem @changePage="methodChangePage" resource="role" :items="roles.list" :pages="roles.pages"
+			v-slot="{ item }" :action-edit="methodEdit" :action-delete="methodDeleteConfirmed"
+			action-delete-dialog-title="Excluir esta função?"
+			action-delete-dialog-text="A exclusão desta função será definitiva e não poderá ser desfeita."
+			:action-filter="methodFilter">
 
 			<v-row>
 				<v-col cols="12" sm="8" md="4" lg="3">
@@ -33,7 +35,6 @@
 
 <script>
 
-import { useAppStore } from '@/store/app';
 import axios from '@/plugins/axios.js';
 import alert from '@/services/alert.js';
 import LoadingElem from '@/components/LoadingElem.vue';
@@ -53,22 +54,20 @@ export default {
 		};
 	},
 	created() {
-		useAppStore().updateBreadcrumbs([
-			{
-				text: 'Home',
-				to: { name: 'admin.home' },
-				disabled: false
-			},
-			{
-				text: 'Funções',
-				to: { name: 'admin.roles' },
-				disabled: true
-			}
-		]);
-
-		this.methodGetRoles(1);
+		this.methodMain();
 	},
 	methods: {
+		methodMain() {
+			this.$util.app.breadcrumbs([
+				{
+					text: 'Funções',
+					to: { name: 'admin.roles' },
+					disabled: true
+				}
+			]);
+
+			this.methodGetRoles(1);
+		},
 		methodChangePage(page) {
 			return this.methodGetRoles(page.page);
 		},
