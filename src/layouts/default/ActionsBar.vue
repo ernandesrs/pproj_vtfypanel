@@ -1,5 +1,5 @@
 <template>
-	<v-app-bar elevation="0" density="default" color="light-4" class="border-b">
+	<v-app-bar elevation="0" density="default" class="border-b">
 		<v-app-bar-title v-if="barTitle" :text="barTitle" class="ml-6"></v-app-bar-title>
 
 		<v-btn-group density="compact" elevation="1" class="mr-6">

@@ -1,10 +1,14 @@
 <template>
-	<v-app-bar density="compact" color="light-4" elevation="0" class="border-b">
+	<v-app-bar density="compact" elevation="0" class="border-b">
 		<v-app-bar-nav-icon variant="text" @click.stop="navigationDrawerToggle"></v-app-bar-nav-icon>
 
 		<v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
 
 		<template #append>
+			<!-- dark mode toggler -->
+			<v-btn @click="methodToggleTheme" prepend-icon="mdi-brightness-6"
+				:text="theme.global.current.value.dark ? 'Light' : 'Dark'" class="text-none" size="small" />
+
 			<!-- user avatar -->
 			<v-menu>
 				<template v-slot:activator="{ props: menu }">
@@ -57,8 +61,31 @@
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
 import { mergeProps } from 'vue';
+import { useTheme } from 'vuetify'
 
 export default {
+	setup() {
+		const theme = useTheme();
+		const methodAppTheme = (themeName = null) => {
+			if (themeName) {
+				theme.global.name.value = themeName;
+				localStorage.setItem('vtfy_theme_name', themeName);
+			} else {
+				let themeName = localStorage.getItem('vtfy_theme_name') ?? 'lightTheme';
+				theme.global.name.value = themeName;
+			}
+		};
+		const methodToggleTheme = () => {
+			let newTheme = theme.global.current.value.dark ? 'lightTheme' : 'darkTheme';
+			methodAppTheme(newTheme);
+		};
+
+		return {
+			theme,
+			methodToggleTheme: methodToggleTheme,
+			methodAppTheme: methodAppTheme
+		}
+	},
 	data() {
 		return {
 			breadcrumbs: []
@@ -80,6 +107,9 @@ export default {
 				this.breadcrumbs = nv;
 			}
 		}
+	},
+	created() {
+		this.methodAppTheme();
 	},
 	methods: {
 		mergeProps,

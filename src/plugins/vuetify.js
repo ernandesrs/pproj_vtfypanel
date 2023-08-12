@@ -11,30 +11,59 @@ import 'vuetify/styles'
 // Composables
 import { createVuetify } from 'vuetify'
 
+import colors from 'vuetify/lib/util/colors'
+
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
   theme: {
-    defaultTheme: 'light',
+    defaultTheme: 'lightTheme',
+    variations: {
+      colors: ['primary', 'secondary', 'success', 'danger', 'warning', 'info'],
+      lighten: 1,
+      darken: 2
+    },
     themes: {
-      light: {
+      lightTheme: {
         colors: {
-          'primary': '#0277BD', // #1867C0
-          'secondary': '#42A5F5',
-          'success': '#66BB6A',
-          'danger': '#EF5350',
-          'warning': '#FF7043',
-          'info': '#039BE5',
+          'primary': colors.lightBlue.darken3, // #1867C0
+          'secondary': colors.blue.lighten1,
+          'success': colors.green.lighten1,
+          'danger': colors.red.lighten1,
+          'warning': colors.deepOrange.lighten1,
+          'info': colors.lightBlue.darken1,
 
-          'dark-4': '#757575',
-          'dark-3': '#616161',
-          'dark-2': '#424242',
-          'dark-1': '#212121',
-          'dark': '#212121',
+          'dark-4': colors.grey.darken1,
+          'dark-3': colors.grey.darken2,
+          'dark-2': colors.grey.darken3,
+          'dark-1': colors.grey.darken4,
+          'dark': colors.grey.darken4,
 
-          'light-4': '#F5F5F5',
-          'light-3': '#EEEEEE',
-          'light-2': '#E0E0E0',
-          'light-1': '#BDBDBD',
+          'light-4': colors.grey.lighten4,
+          'light-3': colors.grey.lighten3,
+          'light-2': colors.grey.lighten2,
+          'light-1': colors.grey.lighten1
+        },
+      },
+      darkTheme: {
+        dark: true,
+        colors: {
+          'primary': colors.lightBlue.darken3, // #1867C0
+          'secondary': colors.blue.lighten1,
+          'success': colors.green.lighten1,
+          'danger': colors.red.lighten1,
+          'warning': colors.deepOrange.lighten1,
+          'info': colors.lightBlue.darken1,
+
+          'dark-4': colors.grey.darken1,
+          'dark-3': colors.grey.darken2,
+          'dark-2': colors.grey.darken3,
+          'dark-1': colors.grey.darken4,
+          'dark': colors.grey.darken4,
+
+          'light-4': colors.grey.lighten4,
+          'light-3': colors.grey.lighten3,
+          'light-2': colors.grey.lighten2,
+          'light-1': colors.grey.lighten1
         },
       }
     },
