@@ -36,7 +36,7 @@
 									};
 								})" item-title="text" item-value="value" label="Nível de acesso" density="compact"
 								:loading="user.form.submitting" :readonly="user.form.submitting"
-								:disabled="!$permission.addResource('user').canPromote()"></v-select>
+								:disabled="!$permissions.addResource('user').canPromote()"></v-select>
 						</v-card-item>
 
 						<v-card-item v-if="[8].includes(user.form.data.level)">
@@ -44,7 +44,7 @@
 								:items="roles.list" item-title="display_name" item-value="id" label="Funções atribuídas"
 								chips multiple :loading="roles.loading || user.form.submitting"
 								:readonly="roles.loading || user.form.submitting" density="compact"
-								:disabled="!$permission.addResource('user').canPromote()"></v-select>
+								:disabled="!$permissions.addResource('user').canPromote()"></v-select>
 						</v-card-item>
 					</v-card>
 				</v-sheet>
@@ -181,7 +181,7 @@ export default {
 				this.loadingContent = false;
 			}
 
-			this.$util.app.breadcrumbs([
+			this.$utils.app.breadcrumbs([
 				{
 					title: 'Usuários',
 					disabled: false,

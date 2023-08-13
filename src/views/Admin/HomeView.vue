@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     methodMain() {
-      this.$util.app.breadcrumbs([]);
+      this.$utils.app.breadcrumbs([]);
 
       this.methodGetDashContent();
     },

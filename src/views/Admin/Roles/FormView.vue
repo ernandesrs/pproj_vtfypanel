@@ -149,7 +149,7 @@ export default {
 			});
 		},
 		methodSetBreadcrumbs() {
-			this.$util.app.breadcrumbs([
+			this.$utils.app.breadcrumbs([
 				{
 					text: 'Funções',
 					to: { name: 'admin.roles' },

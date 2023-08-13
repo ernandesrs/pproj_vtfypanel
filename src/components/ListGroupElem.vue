@@ -21,7 +21,7 @@
 			</thead>
 			<tbody style="position: relative;">
 				<div v-if="loadingList"
-					:class="[$util.app.config.isDarkMode() ? 'dark-loading-list-background' : 'light-loading-list-background']"
+					:class="[$utils.app.config.isDarkMode() ? 'dark-loading-list-background' : 'light-loading-list-background']"
 					style="position: absolute; bottom: 0; right: 0; width: 100%; height: 100%; z-index: 1000;">
 					<div class="d-flex justify-center align-center w-100 h-100">
 						<loading-elem></loading-elem>
@@ -40,16 +40,16 @@
 							<!-- actions button -->
 							<v-btn v-if="actionShow" @click.stop="methodShowItem" text="Ver" prepend-icon="mdi-eye-outline"
 								size="small" color="secondary" :data-identificator="item?.id ?? index"
-								:disabled="!$permission.addResource(this.resource).canView()" />
+								:disabled="!$permissions.addResource(this.resource).canView()" />
 							<v-btn v-if="actionEdit" @click.stop="methodEditItem" text="Editar"
 								prepend-icon="mdi-square-edit-outline" size="small" color="primary"
 								:data-identificator="item?.id ?? index"
-								:disabled="!$permission.addResource(this.resource).canUpdate()" />
+								:disabled="!$permissions.addResource(this.resource).canUpdate()" />
 							<confirmation-button v-if="actionDelete" text="Excluir" icon="mdi-delete-outline" size="small"
 								color="danger" :dialog-title="actionDeleteDialogTitle ?? 'Confirmar exclusão?'"
 								:dialog-text="actionDeleteDialogText" :data-identificator="item?.id ?? index"
 								:confirm-callback="computedGetConfirmCallback" :confirm-route="computedGetConfirmRoute"
-								variant="outlined" :disabled="!$permission.addResource(this.resource).canDelete()" />
+								variant="outlined" :disabled="!$permissions.addResource(this.resource).canDelete()" />
 							<!-- /actions button -->
 						</v-btn-group>
 					</td>

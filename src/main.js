@@ -19,7 +19,7 @@ const app = createApp(App)
 
 registerPlugins(app)
 
-app.config.globalProperties.$util = utils;
-app.config.globalProperties.$permission = permissions;
+app.config.globalProperties.$utils = utils;
+app.config.globalProperties.$permissions = permissions;
 
 app.mount('#app')

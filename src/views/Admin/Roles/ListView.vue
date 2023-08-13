@@ -4,7 +4,7 @@
 	<template v-else>
 		<actions-bar bar-title="Funções" :action-button-create="{
 			show: true,
-			disabled: !$permission.addResource('role').canCreate(),
+			disabled: !$permissions.addResource('role').canCreate(),
 			text: 'Nova função',
 			icon: 'mdi-shield-plus-outline',
 			to: { name: 'admin.roles.create' },
@@ -58,7 +58,7 @@ export default {
 	},
 	methods: {
 		methodMain() {
-			this.$util.app.breadcrumbs([
+			this.$utils.app.breadcrumbs([
 				{
 					text: 'Funções',
 					to: { name: 'admin.roles' },

@@ -4,7 +4,7 @@
 	<template v-else>
 		<actions-bar bar-title="Usuários" :action-button-create="{
 			show: true,
-			disabled: !$permission.addResource('user').canCreate(),
+			disabled: !$permissions.addResource('user').canCreate(),
 			text: 'Novo usuário',
 			icon: 'mdi-account-plus',
 			to: { name: 'admin.users.create' }
@@ -102,7 +102,7 @@ export default {
 	},
 	methods: {
 		methodMain() {
-			this.$util.app.breadcrumbs([
+			this.$utils.app.breadcrumbs([
 				{
 					title: 'Usuários',
 					disabled: true,
