@@ -1,20 +1,16 @@
 <template>
-    <v-dialog v-model="dialog" width="100%" max-width="375px">
-        <v-card>
-            <v-card-title v-if="title" :class="['text-' + color, 'text-left pt-4 px-6']">
-                {{ title }}
-            </v-card-title>
-            <v-card-text v-if="text" :class="['text-' + color, 'text-left px-6 pt-2 pb-4']">
-                {{ text }}
-            </v-card-text>
-            <v-card-actions class="justify-space-between pb-5 px-6">
+    <v-dialog v-model="dialog" width="100%" max-width="475px">
+        <v-alert border="start" :icon="'mdi-' + iconConfig[color]" :border-color="color" :title="title"
+            :class="['text-' + color, $utils.app.config.themeIsDark() ? 'bg-grey-darken-3' : 'bg-grey-lighten-3']">
+            <p class="pt-3 pb-5" v-html="text"></p>
+
+            <div class="d-flex justify-space-between">
                 <v-btn @click.stop="methodCancelAction" prepend-icon="mdi-close" text="Cancelar" :color="color"
                     :disabled="confirmLoading" variant="outlined" class="px-4"></v-btn>
                 <v-btn @click.stop="methodConfirmAction" prepend-icon="mdi-check" text="Confirmar" :color="color"
-                    :data-identificator="dataIdentificator" :loading="confirmLoading" variant="elevated"
-                    class="px-4"></v-btn>
-            </v-card-actions>
-        </v-card>
+                    :data-identificator="dataIdentificator" :loading="confirmLoading" class="px-4"></v-btn>
+            </div>
+        </v-alert>
     </v-dialog>
 </template>
 
@@ -24,7 +20,14 @@ export default {
     data() {
         return {
             dialog: false,
-            confirmLoading: false
+            confirmLoading: false,
+            iconConfig: {
+                success: 'check-circle',
+                danger: 'alert-circle',
+                warning: 'alert-circle',
+                error: 'close-circle',
+                info: 'information'
+            }
         };
     },
     props: {

@@ -42,6 +42,7 @@ export default createVuetify({
           'secondary': colors.blue.lighten1,
           'success': colors.green.lighten1,
           'danger': colors.red.lighten1,
+          'error': colors.red.lighten1,
           'warning': colors.deepOrange.lighten1,
           'info': colors.lightBlue.darken1,
 
@@ -56,6 +57,7 @@ export default createVuetify({
           'secondary': colors.blue.lighten1,
           'success': colors.green.lighten1,
           'danger': colors.red.lighten1,
+          'error': colors.red.lighten1,
           'warning': colors.deepOrange.lighten1,
           'info': colors.lightBlue.darken1,
 
