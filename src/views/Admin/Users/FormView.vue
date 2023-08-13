@@ -50,62 +50,57 @@
 				</v-sheet>
 			</v-col>
 			<v-col cols="12" sm="10" lg="6">
-				<v-card>
-					<v-card-text>
-						<v-form v-model="user.form.valid">
-							<v-row>
-								<v-col cols="12" sm="6">
-									<v-text-field v-model="user.form.data.first_name" label="Nome"
-										:error-messages="user.form.errors?.first_name"></v-text-field>
-								</v-col>
-								<v-col cols="12" sm="6">
-									<v-text-field v-model="user.form.data.last_name" label="Sobrenome"
-										:error-messages="user.form.errors?.last_name"></v-text-field>
-								</v-col>
-								<v-col cols="12" sm="6">
-									<v-text-field v-model="user.form.data.username" label="Usuário"
-										:error-messages="user.form.errors?.username"></v-text-field>
-								</v-col>
-								<v-col cols="12" sm="6">
-									<v-select v-model="user.form.data.gender" label="Gênero" item-title="text"
-										item-value="value" :items="[
-											{
-												text: 'Masculino',
-												value: 'm'
-											},
-											{
-												text: 'Feminino',
-												value: 'f'
-											},
-											{
-												text: 'Não definir',
-												value: 'n'
-											}
-										]"></v-select>
-								</v-col>
-								<v-col cols="12">
-									<v-text-field v-model="user.form.data.email" label="Email"
-										:error-messages="user.form.errors?.email"
-										:readonly="this.computedIsCreating ? false : true"></v-text-field>
-								</v-col>
-								<v-col cols="12" sm="6">
-									<v-text-field v-model="user.form.data.password" label="Senha"
-										:error-messages="user.form.errors?.password" type="password"></v-text-field>
-								</v-col>
-								<v-col cols="12" sm="6">
-									<v-text-field v-model="user.form.data.password_confirmation" label="Confirmar senha"
-										:error-messages="user.form.errors?.password_confirmation"
-										type="password"></v-text-field>
-								</v-col>
-								<v-col cols="12" class="text-center">
-									<v-btn @click.stop="methodSubmitForm" prepend-icon="mdi-check"
-										:text="this.computedIsCreating ? 'Criar usuário' : 'Atualizar'" color="primary"
-										:loading="user.form.submitting"></v-btn>
-								</v-col>
-							</v-row>
-						</v-form>
-					</v-card-text>
-				</v-card>
+				<v-form v-model="user.form.valid">
+					<v-row>
+						<v-col cols="12" sm="6">
+							<v-text-field v-model="user.form.data.first_name" label="Nome"
+								:error-messages="user.form.errors?.first_name"></v-text-field>
+						</v-col>
+						<v-col cols="12" sm="6">
+							<v-text-field v-model="user.form.data.last_name" label="Sobrenome"
+								:error-messages="user.form.errors?.last_name"></v-text-field>
+						</v-col>
+						<v-col cols="12" sm="6">
+							<v-text-field v-model="user.form.data.username" label="Usuário"
+								:error-messages="user.form.errors?.username"></v-text-field>
+						</v-col>
+						<v-col cols="12" sm="6">
+							<v-select v-model="user.form.data.gender" label="Gênero" item-title="text" item-value="value"
+								:items="[
+									{
+										text: 'Masculino',
+										value: 'm'
+									},
+									{
+										text: 'Feminino',
+										value: 'f'
+									},
+									{
+										text: 'Não definir',
+										value: 'n'
+									}
+								]"></v-select>
+						</v-col>
+						<v-col cols="12">
+							<v-text-field v-model="user.form.data.email" label="Email"
+								:error-messages="user.form.errors?.email"
+								:readonly="this.computedIsCreating ? false : true"></v-text-field>
+						</v-col>
+						<v-col cols="12" sm="6">
+							<v-text-field v-model="user.form.data.password" label="Senha"
+								:error-messages="user.form.errors?.password" type="password"></v-text-field>
+						</v-col>
+						<v-col cols="12" sm="6">
+							<v-text-field v-model="user.form.data.password_confirmation" label="Confirmar senha"
+								:error-messages="user.form.errors?.password_confirmation" type="password"></v-text-field>
+						</v-col>
+						<v-col cols="12" class="text-center">
+							<v-btn @click.stop="methodSubmitForm" prepend-icon="mdi-check"
+								:text="this.computedIsCreating ? 'Criar usuário' : 'Atualizar'" color="primary"
+								:loading="user.form.submitting"></v-btn>
+						</v-col>
+					</v-row>
+				</v-form>
 			</v-col>
 		</v-row>
 	</template>

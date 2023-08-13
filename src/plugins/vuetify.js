@@ -15,6 +15,19 @@ import colors from 'vuetify/lib/util/colors'
 
 // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
+  defaults: {
+    global: {
+    },
+    VBtn: {
+      class: 'text-none'
+    },
+    VTextField: {
+      variant: 'outlined'
+    },
+    VSelect: {
+      variant: 'outlined'
+    }
+  },
   theme: {
     defaultTheme: 'lightTheme',
     variations: {
