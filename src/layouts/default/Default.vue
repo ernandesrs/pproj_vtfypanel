@@ -1,5 +1,5 @@
 <template>
-  <v-layout class="light-4">
+  <v-layout class="bg-background">
     <app-navigation v-model="drawer"></app-navigation>
 
     <app-bar v-model="drawer"></app-bar>

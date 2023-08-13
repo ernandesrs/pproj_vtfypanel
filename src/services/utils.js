@@ -1,5 +1,12 @@
 import { useAppStore } from "@/store/app";
 
+const config = {
+    isDarkMode: () => {
+        let theme = localStorage.getItem('vtfy_theme_name') ?? 'lightTheme';
+        return theme == 'darkTheme';
+    }
+};
+
 export default {
     app: {
         breadcrumbs: (breadcrumbs = []) => {
@@ -11,6 +18,7 @@ export default {
                 },
                 ...breadcrumbs
             ])
-        }
+        },
+        config: config
     }
 };

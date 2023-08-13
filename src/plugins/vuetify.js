@@ -32,16 +32,8 @@ export default createVuetify({
           'warning': colors.deepOrange.lighten1,
           'info': colors.lightBlue.darken1,
 
-          'dark-4': colors.grey.darken1,
-          'dark-3': colors.grey.darken2,
-          'dark-2': colors.grey.darken3,
-          'dark-1': colors.grey.darken4,
-          'dark': colors.grey.darken4,
-
-          'light-4': colors.grey.lighten4,
-          'light-3': colors.grey.lighten3,
-          'light-2': colors.grey.lighten2,
-          'light-1': colors.grey.lighten1
+          'navigation': colors.grey.darken4,
+          'background': colors.grey.lighten4,
         },
       },
       darkTheme: {
@@ -54,16 +46,8 @@ export default createVuetify({
           'warning': colors.deepOrange.lighten1,
           'info': colors.lightBlue.darken1,
 
-          'dark-4': colors.grey.darken1,
-          'dark-3': colors.grey.darken2,
-          'dark-2': colors.grey.darken3,
-          'dark-1': colors.grey.darken4,
-          'dark': colors.grey.darken4,
-
-          'light-4': colors.grey.lighten4,
-          'light-3': colors.grey.lighten3,
-          'light-2': colors.grey.lighten2,
-          'light-1': colors.grey.lighten1
+          'navigation': '#0F0F0F',
+          'background': '#141414',
         },
       }
     },

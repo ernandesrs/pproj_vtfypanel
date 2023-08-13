@@ -1,14 +1,12 @@
 <template>
-	<v-app-bar elevation="0" density="default" class="border-b">
+	<v-app-bar elevation="0" density="default" class="bg-background">
 		<v-app-bar-title v-if="barTitle" :text="barTitle" class="ml-6"></v-app-bar-title>
 
 		<v-btn-group density="compact" elevation="1" class="mr-6">
-			<v-btn @click.stop="$router.back()" prepend-icon="mdi-arrow-left" text="Voltar" color="blue-grey-lighten-5"
-				variant="flat" class="text-none"></v-btn>
-			<v-btn @click.stop="methodActionCreateClick"
-				v-if="actionButtonCreate.show"
+			<v-btn @click.stop="$router.back()" prepend-icon="mdi-arrow-left" text="Voltar" class="text-none"></v-btn>
+			<v-btn @click.stop="methodActionCreateClick" v-if="actionButtonCreate.show"
 				:prepend-icon="actionButtonCreate.icon ?? 'mdi-plus'" :text="actionButtonCreate.text" color="success"
-				variant="flat" class="text-none" :disabled="actionButtonCreate.disabled"></v-btn>
+				class="text-none" :disabled="actionButtonCreate.disabled"></v-btn>
 		</v-btn-group>
 	</v-app-bar>
 </template>

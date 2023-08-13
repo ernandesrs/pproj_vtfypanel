@@ -2,22 +2,20 @@
   <loading-elem v-if="loadingContent" />
 
   <template v-else>
-    <v-sheet class="py-5">
-      <v-row justify="center">
-        <v-col v-for="card, indexCard in cards" cols="12" sm="6" lg="4" :key="indexCard">
-          <v-card :title="card.title" :prepend-icon="card.icon" elevation="1" :color="card.color">
-            <v-card-item>
-              <v-chip size="small" class="mr-1" v-for="cardItem, cardItemKey in card.items" :key="cardItemKey">
-                {{ cardsTermsConfig[cardItemKey] }}: {{ cardItem }}
-              </v-chip>
-            </v-card-item>
-            <v-card-actions class="d-flex justify-end">
-              <v-btn text="Ver mais" append-icon="mdi-arrow-right" class="text-none" :to="card.to"></v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-sheet>
+    <v-row justify="center">
+      <v-col v-for="card, indexCard in cards" cols="12" sm="6" lg="4" :key="indexCard">
+        <v-card :title="card.title" :prepend-icon="card.icon" elevation="1" :color="card.color">
+          <v-card-item>
+            <v-chip size="small" class="mr-1" v-for="cardItem, cardItemKey in card.items" :key="cardItemKey">
+              {{ cardsTermsConfig[cardItemKey] }}: {{ cardItem }}
+            </v-chip>
+          </v-card-item>
+          <v-card-actions class="d-flex justify-end">
+            <v-btn text="Ver mais" append-icon="mdi-arrow-right" class="text-none" :to="card.to"></v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
   </template>
 </template>
 

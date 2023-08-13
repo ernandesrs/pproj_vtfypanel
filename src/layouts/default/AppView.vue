@@ -1,7 +1,10 @@
 <template>
-  <v-main class="ma-6">
-    <alert-elem></alert-elem>
-    <router-view />
+  <v-main>
+    <v-sheet class="mx-6 mb-6 pa-6" :class="[['admin.home', 'app.home'].includes($route.name) ? 'mt-6' : '']" border elevation="0"
+      rounded>
+      <alert-elem></alert-elem>
+      <router-view />
+    </v-sheet>
   </v-main>
 </template>
 

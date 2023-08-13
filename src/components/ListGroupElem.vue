@@ -11,7 +11,7 @@
 		</v-col>
 	</v-row>
 	<div v-if="listItems.length">
-		<v-table density="compact">
+		<v-table density="compact" class="bg-transparent rounded">
 			<thead>
 				<tr>
 					<th class="d-none d-md-table-cell">ID</th>
@@ -20,9 +20,9 @@
 				</tr>
 			</thead>
 			<tbody style="position: relative;">
-
 				<div v-if="loadingList"
-					style="position: absolute; bottom: 0; right: 0; width: 100%; height: 100%; background-color: rgba(246, 246, 246, 0.75); z-index: 1000; color: green;">
+					:class="[$util.app.config.isDarkMode() ? 'dark-loading-list-background' : 'light-loading-list-background']"
+					style="position: absolute; bottom: 0; right: 0; width: 100%; height: 100%; z-index: 1000;">
 					<div class="d-flex justify-center align-center w-100 h-100">
 						<loading-elem></loading-elem>
 					</div>
@@ -221,3 +221,13 @@ export default {
 }
 
 </script>
+
+<style scoped>
+.dark-loading-list-background {
+	background-color: rgba(35, 35, 35, 0.75);
+}
+
+.light-loading-list-background {
+	background-color: rgba(246, 246, 246, 0.75);
+}
+</style>

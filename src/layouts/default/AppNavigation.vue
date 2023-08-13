@@ -1,5 +1,5 @@
 <template>
-	<v-navigation-drawer v-model="drawer" color="dark" class="py-2 px-3">
+	<v-navigation-drawer v-model="drawer" elevation="5" color="navigation" class="py-2 px-3">
 		<div class="text-center pb-3">
 			<v-icon icon="$vuetify" :size="75"></v-icon>
 			<v-app-bar-title>
