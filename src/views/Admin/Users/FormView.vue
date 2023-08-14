@@ -34,7 +34,7 @@
 										text: level.text,
 										value: level.key
 									};
-								})" item-title="text" item-value="value" label="Nível de acesso" density="compact"
+								})" item-title="text" item-value="value" label="Nível de acesso" density="compact" variant="filled"
 								:loading="user.form.submitting" :readonly="user.form.submitting"
 								:disabled="!$permissions.addResource('user').canPromote()"></v-select>
 						</v-card-item>
@@ -43,64 +43,98 @@
 							<v-select @update:modelValue="methodUpdateRoles" v-model="user.form.data.roles"
 								:items="roles.list" item-title="display_name" item-value="id" label="Funções atribuídas"
 								chips multiple :loading="roles.loading || user.form.submitting"
-								:readonly="roles.loading || user.form.submitting" density="compact"
+								:readonly="roles.loading || user.form.submitting" density="compact" variant="filled"
 								:disabled="!$permissions.addResource('user').canPromote()"></v-select>
 						</v-card-item>
 					</v-card>
 				</v-sheet>
 			</v-col>
 			<v-col cols="12" sm="10" lg="6">
-				<v-form v-model="user.form.valid">
-					<v-row>
-						<v-col cols="12" sm="6">
-							<v-text-field v-model="user.form.data.first_name" label="Nome"
-								:error-messages="user.form.errors?.first_name"></v-text-field>
-						</v-col>
-						<v-col cols="12" sm="6">
-							<v-text-field v-model="user.form.data.last_name" label="Sobrenome"
-								:error-messages="user.form.errors?.last_name"></v-text-field>
-						</v-col>
-						<v-col cols="12" sm="6">
-							<v-text-field v-model="user.form.data.username" label="Usuário"
-								:error-messages="user.form.errors?.username"></v-text-field>
-						</v-col>
-						<v-col cols="12" sm="6">
-							<v-select v-model="user.form.data.gender" label="Gênero" item-title="text" item-value="value"
-								:items="[
-									{
-										text: 'Masculino',
-										value: 'm'
-									},
-									{
-										text: 'Feminino',
-										value: 'f'
-									},
-									{
-										text: 'Não definir',
-										value: 'n'
-									}
-								]"></v-select>
-						</v-col>
-						<v-col cols="12">
-							<v-text-field v-model="user.form.data.email" label="Email"
-								:error-messages="user.form.errors?.email"
-								:readonly="this.computedIsCreating ? false : true"></v-text-field>
-						</v-col>
-						<v-col cols="12" sm="6">
-							<v-text-field v-model="user.form.data.password" label="Senha"
-								:error-messages="user.form.errors?.password" type="password"></v-text-field>
-						</v-col>
-						<v-col cols="12" sm="6">
-							<v-text-field v-model="user.form.data.password_confirmation" label="Confirmar senha"
-								:error-messages="user.form.errors?.password_confirmation" type="password"></v-text-field>
-						</v-col>
-						<v-col cols="12" class="text-center">
-							<v-btn @click.stop="methodSubmitForm" prepend-icon="mdi-check"
-								:text="this.computedIsCreating ? 'Criar usuário' : 'Atualizar'" color="primary"
-								:loading="user.form.submitting"></v-btn>
-						</v-col>
-					</v-row>
-				</v-form>
+				<form-elem :submit-button="{
+					text: computedIsCreating ? 'Criar usuário' : 'Atualizar'
+				}" :submit-options="{
+	action: computedIsCreating ? '/admin/users' : '/admin/users/' + this.user.form.data.id,
+	method: computedIsCreating ? 'post' : 'put',
+	except: [
+		user.form.data?.password?.length == 0 ? 'password' : null,
+		user.form.data?.password_confirmation?.length == 0 ? 'password_confirmation' : null,
+	],
+	success: {
+		title: computedIsCreating ? 'Criado!' : 'Atualizado!',
+		message: computedIsCreating ? 'Um novo usuário foi criado com sucesso.' : 'Os dados do usuário foram atualizados com sucesso.'
+	},
+	redirect: {
+		success: computedIsCreating ? 'admin.users' : null
+	}
+}" :data="user.form.data" :fields="[
+	{
+		type: 'text',
+		label: 'Nome',
+		vModel: 'first_name',
+		sizes: {
+			sm: '6'
+		}
+	},
+	{
+		type: 'text',
+		label: 'Sobrenome',
+		vModel: 'last_name',
+		sizes: {
+			sm: '6'
+		}
+	},
+	{
+		type: 'text',
+		label: 'Usuário',
+		vModel: 'username',
+		sizes: {
+			sm: '6'
+		}
+	},
+	{
+		type: 'select',
+		label: 'Gênero',
+		vModel: 'gender',
+		sizes: {
+			sm: '6'
+		},
+		items: [
+			{
+				text: 'Masculino',
+				value: 'm'
+			},
+			{
+				text: 'Feminino',
+				value: 'f'
+			},
+			{
+				text: 'Não definir',
+				value: 'n'
+			}
+		],
+	},
+	{
+		type: 'email',
+		label: 'Email',
+		vModel: 'email'
+	},
+	{
+		type: 'password',
+		label: 'Senha',
+		vModel: 'password',
+		sizes: {
+			sm: '6'
+		}
+	},
+	{
+		type: 'password',
+		label: 'Confirmar senha',
+		vModel: 'password_confirmation',
+		sizes: {
+			sm: '6'
+		}
+	}
+]" />
 			</v-col>
 		</v-row>
 	</template>
@@ -115,9 +149,10 @@ import LoadingElem from '@/components/LoadingElem.vue';
 import ActionsBar from '@/layouts/default/ActionsBar.vue';
 import ConfirmationButton from '@/components/ConfirmationButton.vue';
 import ConfirmationDialog from '@/components/ConfirmationDialog.vue';
+import FormElem from '@/components/FormElem.vue';
 
 export default {
-	components: { LoadingElem, ActionsBar, ConfirmationButton, ConfirmationDialog },
+	components: { LoadingElem, ActionsBar, ConfirmationButton, ConfirmationDialog, FormElem },
 	data() {
 		return {
 			superUserDialogConfirmation: false,
@@ -216,40 +251,6 @@ export default {
 				},
 				finally: () => {
 					this.roles.loading = false;
-				}
-			});
-		},
-		methodSubmitForm() {
-			let action = this.computedIsCreating ? '/admin/users' : '/admin/users/' + this.user.form.data.id;
-			let method = this.computedIsCreating ? 'post' : 'put';
-			let data = {
-				"first_name": this.user.form.data.first_name,
-				"last_name": this.user.form.data.last_name,
-				"username": this.user.form.data.username,
-				"gender": this.user.form.data.gender,
-				"email": this.user.form.data.email,
-				"password": this.user.form.data.password,
-				"password_confirmation": this.user.form.data.password_confirmation
-			};
-
-			this.user.form.submitting = true;
-			axios.req({
-				action: action,
-				method: method,
-				data: data,
-				success: () => {
-					if (this.computedIsCreating) {
-						alert.addSuccess('Novo usuário registrado com sucesso!', 'Registrado!', true);
-						this.$router.push({ name: 'admin.users' });
-					} else {
-						alert.addInfo('Usuário atualizado com sucesso!', 'Atualizado!', false);
-					}
-				},
-				fail: (resp) => {
-					this.user.form.errors = resp.response.data.errors;
-				},
-				finally: () => {
-					this.user.form.submitting = false;
 				}
 			});
 		},

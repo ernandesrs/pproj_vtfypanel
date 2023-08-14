@@ -2,13 +2,15 @@
     <v-form v-model="valid">
         <v-row>
             <template v-for="field, key in fields" :key="key">
-                <v-col cols="12" :sm="field?.sizes?.sm" :md="field?.sizes?.md" :lg="field?.sizes?.lg" :xl="field?.sizes?.xl">
+                <v-col cols="12" :sm="field?.sizes?.sm" :md="field?.sizes?.md" :lg="field?.sizes?.lg"
+                    :xl="field?.sizes?.xl">
                     <v-text-field v-if="['text', 'number', 'email', 'password'].includes(field.type)"
-                        v-model="fdata[field.vModel]" :label="field.label"
+                        v-model="fdata[field.vModel]" :label="field.label" :type="field.type"
                         :error-messages="errors[field.vModel]"></v-text-field>
-                    <v-select v-else-if="['select'].includes(field.type)" :items="field.items" v-model="fdata[field.vModel]"
-                        item-title="text" item-value="value" :label="field.label"
-                        :error-messages="errors[field.vModel]"></v-select>
+                    <v-select v-else-if="['select', 'multiple_select'].includes(field.type)" :items="field.items"
+                        v-model="fdata[field.vModel]" item-title="text" item-value="value" :label="field.label"
+                        :error-messages="errors[field.vModel]"
+                        :multiple="field.type == 'multiple_select' ? true : false"></v-select>
                 </v-col>
             </template>
             <v-col cols="12" class="text-center">
@@ -42,39 +44,50 @@ export default {
             default: Object
         },
         /**
+         * Array containing the form inputs or input groups
          * 
-         * input text object example
          * {
-         *      type: 'text',
          *      label: 'First name',
-         *      vModel: 'first_name'
-         *      sizes: {
-         *          sm: 6,
-         *          md: 4
-         *      }
-         * }
          * 
-         * input select object example
-         * {
-         *      type: 'select',
-         *      label: 'Gender',
-         *      vModel: 'gender'
+         *      // can be: email, password, number, select, multiple_select, group
+         *      type: 'text',
+         * 
+         *      // when type is group(but is optional)
+         *      description: 'Group description',
+         *
+         *      // required, except when type is group
+         *      vModel: 'first_name',
+         * 
+         *      // field sizes
          *      sizes: {
          *          sm: 6,
          *          md: 4
          *      },
+         * 
+         *      // required when type is select, multiple_select or a group(see the examples)
          *      items: [
+         *          // select or multiple_select type example
          *          {
          *              text: 'Male',
          *              value: 'm'
          *          },
+         * 
+         *          // object example for this array when type is group
          *          {
-         *              text: 'Female',
-         *              value: 'f'
-         *          },
-         *          {
-         *              text: 'Not define',
-         *              value: 'n'
+         *              label: 'Agrouped input',
+         *              type: 'select',
+         *              vModel: 'agroup_input',
+         *              sizes: [],
+         *              items: [
+         *                  {
+         *                      text: 'Item #1',
+         *                      value: 1
+         *                  },
+         *                  {
+         *                      text: 'Item #2',
+         *                      value: 2
+         *                  }
+         *              ]
          *          }
          *      ]
          * }
@@ -102,9 +115,21 @@ export default {
          *      },
          *      // optional
          *      redirect: {
-         *          success: 'route name here',
-         *          fail: 'route name here'
-         *      } 
+         *          success: 'route name here', // or
+         *          success: {
+         *              name: 'route name here'
+         *          }, // or
+         *          success: (response) => {
+         *              // can be a callback function
+         *          },
+         *          fail: 'route name here', // or
+         *          fail: {
+         *              name: 'route name here'
+         *          }, // or
+         *          fail: (response) => {
+         *              // can be a callback function
+         *          },
+         *      }
          * }
          * 
          * Example #2:
@@ -119,8 +144,20 @@ export default {
          *      },
          *      // optional
          *      redirect: {
-         *          success: 'route name here',
-         *          fail: 'route name here'
+         *          success: 'route name here', // or
+         *          success: {
+         *              name: 'route name here'
+         *          }, // or
+         *          success: (response) => {
+         *              // can be a callback function
+         *          },
+         *          fail: 'route name here', // or
+         *          fail: {
+         *              name: 'route name here'
+         *          }, // or
+         *          fail: (response) => {
+         *              // can be a callback function
+         *          },
          *      } 
          * }
          */
@@ -155,9 +192,15 @@ export default {
                         this.errors = {};
 
                         if (successRedirect) {
-                            this.$router.push({
-                                name: successRedirect
-                            });
+                            if (typeof successRedirect == 'string') {
+                                this.$router.push({
+                                    name: successRedirect
+                                });
+                            } else if (typeof successRedirect == 'object') {
+                                this.$router.push(successRedirect);
+                            } else if (typeof successRedirect == 'function') {
+                                successRedirect(resp);
+                            }
                         }
                     }
                 },
