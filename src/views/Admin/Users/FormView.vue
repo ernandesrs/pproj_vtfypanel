@@ -68,71 +68,86 @@
 	}
 }" :data="user.form.data" :fields="[
 	{
-		type: 'text',
-		label: 'Nome',
-		vModel: 'first_name',
-		sizes: {
-			sm: '6'
-		}
-	},
-	{
-		type: 'text',
-		label: 'Sobrenome',
-		vModel: 'last_name',
-		sizes: {
-			sm: '6'
-		}
-	},
-	{
-		type: 'text',
-		label: 'Usuário',
-		vModel: 'username',
-		sizes: {
-			sm: '6'
-		}
-	},
-	{
-		type: 'select',
-		label: 'Gênero',
-		vModel: 'gender',
-		sizes: {
-			sm: '6'
-		},
+		type: 'group',
+		label: 'Dados da conta',
+		description: computedIsCreating ? 'Informe os dados da conta' : 'Atualize os dados da conta',
 		items: [
 			{
-				text: 'Masculino',
-				value: 'm'
+				type: 'text',
+				label: 'Nome',
+				vModel: 'first_name',
+				sizes: {
+					sm: '6'
+				}
 			},
 			{
-				text: 'Feminino',
-				value: 'f'
+				type: 'text',
+				label: 'Sobrenome',
+				vModel: 'last_name',
+				sizes: {
+					sm: '6'
+				}
 			},
 			{
-				text: 'Não definir',
-				value: 'n'
+				type: 'text',
+				label: 'Usuário',
+				vModel: 'username',
+				sizes: {
+					sm: '6'
+				}
+			},
+			{
+				type: 'select',
+				label: 'Gênero',
+				vModel: 'gender',
+				sizes: {
+					sm: '6'
+				},
+				items: [
+					{
+						text: 'Masculino',
+						value: 'm'
+					},
+					{
+						text: 'Feminino',
+						value: 'f'
+					},
+					{
+						text: 'Não definir',
+						value: 'n'
+					}
+				],
+			},
+			{
+				type: 'email',
+				label: 'Email',
+				vModel: 'email'
+			},
+		]
+	},
+	{
+		type: 'group',
+		label: 'Segurança da conta',
+		description: 'Informe e confirme uma senha forte e segura',
+		items: [
+			{
+				type: 'password',
+				label: 'Senha',
+				vModel: 'password',
+				sizes: {
+					sm: '6'
+				}
+			},
+			{
+				type: 'password',
+				label: 'Confirmar senha',
+				vModel: 'password_confirmation',
+				sizes: {
+					sm: '6'
+				}
 			}
-		],
-	},
-	{
-		type: 'email',
-		label: 'Email',
-		vModel: 'email'
-	},
-	{
-		type: 'password',
-		label: 'Senha',
-		vModel: 'password',
-		sizes: {
-			sm: '6'
-		}
-	},
-	{
-		type: 'password',
-		label: 'Confirmar senha',
-		vModel: 'password_confirmation',
-		sizes: {
-			sm: '6'
-		}
+
+		]
 	}
 ]" />
 			</v-col>
