@@ -1,4 +1,5 @@
 import { useAppStore } from "@/store/app";
+import { useUserStore } from "@/store/user";
 import vuetify from "@/plugins/vuetify";
 
 const themeConfigKey = 'vtfy_theme_name';
@@ -54,6 +55,13 @@ export default {
                 ...breadcrumbs
             ])
         },
+        inAdminPanel() {
+            return useAppStore().appConfig.app == 'admin';
+        },
+        inAppPanel() {
+            return useAppStore().appConfig.app == 'app';
+        },
         config: config
-    }
+    },
+    logged: useUserStore
 };

@@ -5,9 +5,20 @@
 		<v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
 
 		<template #append>
-			<!-- dark mode toggler -->
-			<v-btn @click="$utils.app.config.themeToggleDark()" prepend-icon="mdi-brightness-6"
-				:text="$utils.app.config.themeIsDark() ? 'Light' : 'Dark'" class="text-none" size="small" />
+			<!-- admin panel button -->
+			<v-btn v-if="$utils.app.inAppPanel() && $utils.logged().hasAdminAccess" prepend-icon="mdi-chart-pie-outline"
+				text="Admin panel" size="small" variant="outlined" :to="{ name: 'admin.home' }" color="primary" />
+
+			<v-btn-group class="mx-2" variant="text">
+				<!-- notifications -->
+				<v-btn :icon="notifications.has ? 'mdi-bell-ring-outline' : 'mdi-bell-outline'"
+					:color="notifications.has ? 'warning' : 'grey-lighten-1'"
+					:class="[notifications.has ? 'has-notifications' : '']" />
+
+				<!-- dark mode toggler -->
+				<v-btn @click="$utils.app.config.themeToggleDark()" icon="mdi-brightness-6"
+					:text="$utils.app.config.themeIsDark() ? 'Light' : 'Dark'" class="text-none" size="small" />
+			</v-btn-group>
 
 			<!-- user avatar -->
 			<v-menu>
@@ -34,7 +45,8 @@
 									<span v-else class="text-h4">{{ computed_userStore.getInitials }}</span>
 								</v-avatar>
 								<div class="pt-1 pb-3">
-									<h3 class="text-h6 font-weight-bold">{{ computed_userStore.getUsername.substring(0, 9) }}
+									<h3 class="text-h6 font-weight-bold">{{ computed_userStore.getUsername.substring(0, 9)
+									}}
 									</h3>
 									<p>{{ computed_userStore.getEmail }}</p>
 								</div>
@@ -65,7 +77,10 @@ import { mergeProps } from 'vue';
 export default {
 	data() {
 		return {
-			breadcrumbs: []
+			breadcrumbs: [],
+			notifications: {
+				has: false
+			}
 		};
 	},
 	emits: {
@@ -108,3 +123,37 @@ export default {
 }
 
 </script>
+
+<style scoped>
+.has-notifications {
+	animation: hasNotifications .75s ease 0s infinite alternate backwards;
+}
+
+@keyframes hasNotifications {
+	0% {
+		animation-timing-function: ease-out;
+		transform: scale(1);
+		transform-origin: center center;
+	}
+
+	10% {
+		animation-timing-function: ease-in;
+		transform: scale(0.91);
+	}
+
+	17% {
+		animation-timing-function: ease-out;
+		transform: scale(0.98);
+	}
+
+	33% {
+		animation-timing-function: ease-in;
+		transform: scale(0.87);
+	}
+
+	45% {
+		animation-timing-function: ease-out;
+		transform: scale(1);
+	}
+}
+</style>
