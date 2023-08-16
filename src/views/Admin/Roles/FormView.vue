@@ -3,38 +3,54 @@
 	<template v-else>
 		<actions-bar :bar-title="computedIsCreating ? 'Novo função' : 'Editar função'"></actions-bar>
 
-		<v-row justify="center" class="py-5">
-			<v-col cols="12" md="3" lg="4">
-				<v-text-field v-model="role.form.data.display_name" label="Nome da função"
-					:error-messages="role.form.errors?.display_name"></v-text-field>
-			</v-col>
-			<v-col cols="12" md="9" lg="8" :class="{ 'd-none': computedIsCreating }">
-				<v-expansion-panels variant="accordion">
-					<v-expansion-panel v-for="permissible, permissibleIndex in role.form.data.permissibles"
-						:key="permissibleIndex" :title="role.permissiblesConfig[permissibleIndex] ?? permissibleIndex">
+		<v-row justify="center">
+			<v-col cols="12" md="10" lg="8" xl="6">
+				<group-elem title="Nome da função"
+					:description="computedIsCreating ? 'Informe um nome direto e descritivo para esta função' : 'Atualize o nome desta função'">
+					<template #content>
+						<v-row>
+							<v-col>
+								<v-text-field v-model="role.form.data.display_name" label="Nome da função"
+									:error-messages="role.form.errors?.display_name"></v-text-field>
+							</v-col>
+						</v-row>
+					</template>
+				</group-elem>
+				<group-elem v-if="!computedIsCreating" title="Gerenciáveis"
+					description="Para cada um dos gerenciáveis abaixo, habilite as ações que o usuário que possuir esta função terá permissão de executar sobre o mesmo.">
+					<template #content>
+						<v-row>
+							<v-col>
+								<v-expansion-panels variant="accordion">
+									<v-expansion-panel v-for="permissible, permissibleIndex in role.form.data.permissibles"
+										:key="permissibleIndex"
+										:title="role.permissiblesConfig[permissibleIndex] ?? permissibleIndex">
 
-						<v-expansion-panel-text>
-							<v-card elevation="0">
-								<v-card-item>
-									<div class="d-flex flex-wrap justify-center">
-										<v-switch v-model="role.form.data.permissibles[permissibleIndex][ruleIndex]"
-											v-for="rule, ruleIndex in permissible" :key="ruleIndex"
-											:label="role.permissibleRulesConfig[ruleIndex]"></v-switch>
-									</div>
-								</v-card-item>
-							</v-card>
-						</v-expansion-panel-text>
+										<v-expansion-panel-text>
+											<v-card elevation="0">
+												<v-card-item>
+													<div class="d-flex flex-wrap justify-center">
+														<v-switch
+															v-model="role.form.data.permissibles[permissibleIndex][ruleIndex]"
+															v-for="rule, ruleIndex in permissible" :key="ruleIndex"
+															:label="role.permissibleRulesConfig[ruleIndex]"></v-switch>
+													</div>
+												</v-card-item>
+											</v-card>
+										</v-expansion-panel-text>
 
-					</v-expansion-panel>
-				</v-expansion-panels>
-
+									</v-expansion-panel>
+								</v-expansion-panels>
+							</v-col>
+						</v-row>
+					</template>
+				</group-elem>
 			</v-col>
 			<v-col cols="12" class="text-center">
 				<v-btn @click.stop="methodSubmitRole" :text="computedIsCreating ? 'Cadastrar' : 'Atualizar'"
 					prepend-icon="mdi-check" color="primary" :loading="role.form.submitting"></v-btn>
 			</v-col>
 		</v-row>
-
 	</template>
 </template>
 
@@ -44,9 +60,10 @@ import axios from '@/plugins/axios';
 import alert from '@/services/alert';
 import LoadingElem from '@/components/LoadingElem.vue';
 import ActionsBar from '@/layouts/default/ActionsBar.vue';
+import GroupElem from '@/components/GroupElem.vue';
 
 export default {
-	components: { LoadingElem, ActionsBar },
+	components: { LoadingElem, ActionsBar, GroupElem },
 	data() {
 		return {
 			loadingContent: true,

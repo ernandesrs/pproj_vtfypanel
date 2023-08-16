@@ -5,7 +5,7 @@
 			text="Você está atribuindo a este usuário o nível de acesso 'Super usuário', isso o concede poder total sobre o sistema, incluindo permissões para alterar e excluir outros 'super usuários'. Tem certeza de que quer prosseguir?"
 			:confirm-callback="methodUpdateLevelConfirmed" :cancel-callback="methodUpdateLevelCanceled" />
 		<actions-bar :bar-title="this.computedIsCreating ? 'Novo usuário' : 'Editar usuário'"></actions-bar>
-		<v-row class="justify-center pa-md-8">
+		<v-row class="justify-center">
 			<v-col v-if="!this.computedIsCreating" cols="12" sm="10" lg="4" class="text-center">
 				<v-avatar size="175">
 					<v-img v-if="user.form.data?.photo_url" :src="user.form.data?.photo_url"></v-img>
@@ -51,49 +51,64 @@
 			</v-col>
 			<v-col cols="12" sm="10" lg="6">
 				<v-form v-model="user.form.valid">
+					<group-elem title="Dados da conta"
+						:description="(computedIsCreating ? 'Informe os dados do usuário' : 'Atualize os dados do usuário')">
+						<template #content>
+							<v-row>
+								<v-col cols="12" sm="6">
+									<v-text-field v-model="user.form.data.first_name" label="Nome"
+										:error-messages="user.form.errors?.first_name"></v-text-field>
+								</v-col>
+								<v-col cols="12" sm="6">
+									<v-text-field v-model="user.form.data.last_name" label="Sobrenome"
+										:error-messages="user.form.errors?.last_name"></v-text-field>
+								</v-col>
+								<v-col cols="12" sm="6">
+									<v-text-field v-model="user.form.data.username" label="Usuário"
+										:error-messages="user.form.errors?.username"></v-text-field>
+								</v-col>
+								<v-col cols="12" sm="6">
+									<v-select v-model="user.form.data.gender" label="Gênero" item-title="text"
+										item-value="value" :items="[
+											{
+												text: 'Masculino',
+												value: 'm'
+											},
+											{
+												text: 'Feminino',
+												value: 'f'
+											},
+											{
+												text: 'Não definir',
+												value: 'n'
+											}
+										]"></v-select>
+								</v-col>
+								<v-col cols="12">
+									<v-text-field v-model="user.form.data.email" label="Email"
+										:error-messages="user.form.errors?.email"
+										:readonly="this.computedIsCreating ? false : true"></v-text-field>
+								</v-col>
+							</v-row>
+						</template>
+					</group-elem>
+					<group-elem title="Segurança"
+						:description="(computedIsCreating ? 'Informe e confirme a senha' : 'Informe e confirme uma nova senha')">
+						<template #content>
+							<v-row>
+								<v-col cols="12" sm="6">
+									<v-text-field v-model="user.form.data.password" label="Senha"
+										:error-messages="user.form.errors?.password" type="password"></v-text-field>
+								</v-col>
+								<v-col cols="12" sm="6">
+									<v-text-field v-model="user.form.data.password_confirmation" label="Confirmar senha"
+										:error-messages="user.form.errors?.password_confirmation"
+										type="password"></v-text-field>
+								</v-col>
+							</v-row>
+						</template>
+					</group-elem>
 					<v-row>
-						<v-col cols="12" sm="6">
-							<v-text-field v-model="user.form.data.first_name" label="Nome"
-								:error-messages="user.form.errors?.first_name"></v-text-field>
-						</v-col>
-						<v-col cols="12" sm="6">
-							<v-text-field v-model="user.form.data.last_name" label="Sobrenome"
-								:error-messages="user.form.errors?.last_name"></v-text-field>
-						</v-col>
-						<v-col cols="12" sm="6">
-							<v-text-field v-model="user.form.data.username" label="Usuário"
-								:error-messages="user.form.errors?.username"></v-text-field>
-						</v-col>
-						<v-col cols="12" sm="6">
-							<v-select v-model="user.form.data.gender" label="Gênero" item-title="text" item-value="value"
-								:items="[
-									{
-										text: 'Masculino',
-										value: 'm'
-									},
-									{
-										text: 'Feminino',
-										value: 'f'
-									},
-									{
-										text: 'Não definir',
-										value: 'n'
-									}
-								]"></v-select>
-						</v-col>
-						<v-col cols="12">
-							<v-text-field v-model="user.form.data.email" label="Email"
-								:error-messages="user.form.errors?.email"
-								:readonly="this.computedIsCreating ? false : true"></v-text-field>
-						</v-col>
-						<v-col cols="12" sm="6">
-							<v-text-field v-model="user.form.data.password" label="Senha"
-								:error-messages="user.form.errors?.password" type="password"></v-text-field>
-						</v-col>
-						<v-col cols="12" sm="6">
-							<v-text-field v-model="user.form.data.password_confirmation" label="Confirmar senha"
-								:error-messages="user.form.errors?.password_confirmation" type="password"></v-text-field>
-						</v-col>
 						<v-col cols="12" class="text-center">
 							<v-btn @click.stop="methodSubmitForm" prepend-icon="mdi-check"
 								:text="this.computedIsCreating ? 'Criar usuário' : 'Atualizar'" color="primary"
@@ -115,9 +130,10 @@ import LoadingElem from '@/components/LoadingElem.vue';
 import ActionsBar from '@/layouts/default/ActionsBar.vue';
 import ConfirmationButton from '@/components/ConfirmationButton.vue';
 import ConfirmationDialog from '@/components/ConfirmationDialog.vue';
+import GroupElem from '@/components/GroupElem.vue';
 
 export default {
-	components: { LoadingElem, ActionsBar, ConfirmationButton, ConfirmationDialog },
+	components: { LoadingElem, ActionsBar, ConfirmationButton, ConfirmationDialog, GroupElem },
 	data() {
 		return {
 			superUserDialogConfirmation: false,
