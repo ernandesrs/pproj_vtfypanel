@@ -18,87 +18,69 @@
           :error-messages="photoUpload.errors?.photo"></v-file-input>
       </div>
     </v-col>
+
     <v-col cols="12" sm="10" lg="6">
-      <form-elem :data="data" :fields="[
-        {
-          type: 'text',
-          label: 'Nome',
-          vModel: 'first_name',
-          sizes: {
-            sm: '6'
-          }
-        },
-        {
-          type: 'text',
-          label: 'Sobrenome',
-          vModel: 'last_name',
-          sizes: {
-            sm: '6'
-          }
-        },
-        {
-          type: 'text',
-          label: 'Usuário',
-          vModel: 'username',
-          sizes: {
-            sm: '6'
-          }
-        },
-        {
-          type: 'select',
-          label: 'Gênero',
-          vModel: 'gender',
-          sizes: {
-            sm: '6'
-          },
-          items: [
-            {
-              text: 'Masculino',
-              value: 'm'
-            },
-            {
-              text: 'Feminino',
-              value: 'f'
-            },
-            {
-              text: 'Não definir',
-              value: 'n'
-            }
-          ]
-        },
-        {
-          type: 'email',
-          label: 'Email',
-          vModel: 'email',
-          sizes: {
-          }
-        },
-        {
-          type: 'password',
-          label: 'Senha',
-          vModel: 'password',
-          sizes: {
-            sm: '6'
-          }
-        },
-        {
-          type: 'password',
-          label: 'Confirmar senha',
-          vModel: 'password_confirmation',
-          sizes: {
-            sm: '6'
-          }
-        },
-      ]" :submit-button="{
-  text: 'Atualizar perfil'
-}" :submit-options="{
-  action: '/me/update',
-  method: 'put',
-  success: {
-    title: 'Perfil atualizado!',
-    message: this.data.first_name + ', seu perfil foi atualizado com sucesso!'
-  }
-}"></form-elem>
+      <v-form>
+        <group-elem title="Dados da sua conta" description="Atualize os dados da sua conta">
+          <template #content>
+            <v-row>
+              <v-col cols="12" sm="6">
+                <v-text-field v-model="data.first_name" label="Nome" :error-messages="errors?.first_name"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-text-field v-model="data.last_name" label="Sobrenome"
+                  :error-messages="errors?.last_name"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-text-field v-model="data.username" label="Usuário" :error-messages="errors?.username"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-select v-model="data.gender" label="Gênero" item-title="text" item-value="value" :items="[
+                  {
+                    text: 'Masculino',
+                    value: 'm'
+                  },
+                  {
+                    text: 'Feminino',
+                    value: 'f'
+                  },
+                  {
+                    text: 'Não definir',
+                    value: 'n'
+                  }
+                ]"></v-select>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field v-model="data.email" label="Email" :error-messages="errors?.email" readonly></v-text-field>
+              </v-col>
+            </v-row>
+          </template>
+        </group-elem>
+        <group-elem title="Segurança" description="Informe e confirme uma nova senha segura para sua conta">
+          <template #content>
+            <v-row>
+              <v-col cols="12" sm="6">
+                <v-text-field v-model="data.password" @click:append-inner="visiblePassword = !visiblePassword"
+                  :append-inner-icon="visiblePassword ? 'mdi-eye' : 'mdi-eye-off'" label="Senha"
+                  :error-messages="errors?.password" :type="visiblePassword ? 'text' : 'password'"></v-text-field>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-text-field v-model="data.password_confirmation"
+                  @click:append-inner="visiblePassword = !visiblePassword"
+                  :append-inner-icon="visiblePassword ? 'mdi-eye' : 'mdi-eye-off'" label="Confirmar senha"
+                  :error-messages="errors?.password_confirmation"
+                  :type="visiblePassword ? 'text' : 'password'"></v-text-field>
+              </v-col>
+            </v-row>
+          </template>
+        </group-elem>
+        <v-row>
+          <v-col cols="12" class="text-center">
+            <v-btn @click.stop="method_submitForm" prepend-icon="mdi-check" text="Atualizar perfil" color="primary"
+              :loading="submitting"></v-btn>
+          </v-col>
+        </v-row>
+      </v-form>
     </v-col>
   </v-row>
 </template>
@@ -111,13 +93,16 @@ import axios from '@/plugins/axios';
 import alert from '@/services/alert';
 import ActionsBar from '@/layouts/default/ActionsBar.vue';
 import ConfirmationButton from '@/components/ConfirmationButton.vue';
-import FormElem from '@/components/FormElem.vue';
+import GroupElem from '@/components/GroupElem.vue';
 
 export default {
-  components: { ActionsBar, ConfirmationButton, FormElem },
+  components: { ActionsBar, ConfirmationButton, GroupElem },
   data() {
     return {
       data: {},
+      errors: {},
+      submitting: false,
+      visiblePassword: false,
       photoUpload: {
         uploading: false,
         photo: null,
@@ -174,6 +159,52 @@ export default {
           this.photoUpload.uploading = false;
         }
       })
+    },
+    method_submitForm() {
+      let data = {
+        first_name: this.data.first_name,
+        last_name: this.data.last_name,
+        username: this.data.username,
+        gender: this.data.gender,
+        email: this.data.email
+      };
+      const action = '/me/update';
+      const method = 'put';
+
+      if (this.data.password?.length > 0 || this.data.password_confirmation?.length > 0) {
+        data = {
+          ...data,
+          password: this.data.password,
+          password_confirmation: this.data.password_confirmation
+        };
+      }
+
+      this.submitting = true;
+      axios.req({
+        action: action,
+        method: method,
+        data: data,
+        success: (resp) => {
+          alert.add('Os dados da sua conta foram atualizados com sucesso!',
+            'info',
+            'Atualizado!',
+            null
+          );
+
+          // update user store
+          useUserStore().updateUser(resp.data.user);
+
+          this.errors = {};
+          this.data.password = '';
+          this.data.password_confirmation = '';
+        },
+        fail: (resp) => {
+          this.errors = resp.response.data.errors;
+        },
+        finally: () => {
+          this.submitting = false;
+        }
+      });
     }
   }
 }
