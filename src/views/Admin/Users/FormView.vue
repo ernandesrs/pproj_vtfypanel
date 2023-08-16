@@ -34,7 +34,7 @@
 										text: level.text,
 										value: level.key
 									};
-								})" item-title="text" item-value="value" label="Nível de acesso" density="compact"
+								})" item-title="text" item-value="value" label="Nível de acesso" density="compact" variant="filled"
 								:loading="user.form.submitting" :readonly="user.form.submitting"
 								:disabled="!$permissions.addResource('user').canPromote()"></v-select>
 						</v-card-item>
@@ -43,7 +43,7 @@
 							<v-select @update:modelValue="methodUpdateRoles" v-model="user.form.data.roles"
 								:items="roles.list" item-title="display_name" item-value="id" label="Funções atribuídas"
 								chips multiple :loading="roles.loading || user.form.submitting"
-								:readonly="roles.loading || user.form.submitting" density="compact"
+								:readonly="roles.loading || user.form.submitting" density="compact" variant="filled"
 								:disabled="!$permissions.addResource('user').canPromote()"></v-select>
 						</v-card-item>
 					</v-card>
@@ -232,40 +232,6 @@ export default {
 				},
 				finally: () => {
 					this.roles.loading = false;
-				}
-			});
-		},
-		methodSubmitForm() {
-			let action = this.computedIsCreating ? '/admin/users' : '/admin/users/' + this.user.form.data.id;
-			let method = this.computedIsCreating ? 'post' : 'put';
-			let data = {
-				"first_name": this.user.form.data.first_name,
-				"last_name": this.user.form.data.last_name,
-				"username": this.user.form.data.username,
-				"gender": this.user.form.data.gender,
-				"email": this.user.form.data.email,
-				"password": this.user.form.data.password,
-				"password_confirmation": this.user.form.data.password_confirmation
-			};
-
-			this.user.form.submitting = true;
-			axios.req({
-				action: action,
-				method: method,
-				data: data,
-				success: () => {
-					if (this.computedIsCreating) {
-						alert.addSuccess('Novo usuário registrado com sucesso!', 'Registrado!', true);
-						this.$router.push({ name: 'admin.users' });
-					} else {
-						alert.addInfo('Usuário atualizado com sucesso!', 'Atualizado!', false);
-					}
-				},
-				fail: (resp) => {
-					this.user.form.errors = resp.response.data.errors;
-				},
-				finally: () => {
-					this.user.form.submitting = false;
 				}
 			});
 		},
