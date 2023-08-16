@@ -2,7 +2,8 @@
   <v-layout class="bg-background">
     <app-navigation v-model="drawer"></app-navigation>
 
-    <app-bar v-model="drawer" :notifications="notifications"></app-bar>
+    <app-bar v-model="drawer" :notifications="notifications"
+      :notification-as-read-callback="method_markNotificationAsRead"></app-bar>
 
     <app-view></app-view>
   </v-layout>
@@ -15,6 +16,7 @@ import { useUserStore } from '@/store/user';
 import AppBar from './AppBar.vue';
 import AppView from './AppView.vue';
 import AppNavigation from './AppNavigation.vue';
+import axios from '@/plugins/axios';
 
 export default {
   components: { AppBar, AppView, AppNavigation },
@@ -22,57 +24,9 @@ export default {
     return {
       drawer: false,
       notifications: {
-        has: true,
-        items: [
-          {
-            title: 'Notificação #1',
-            icon: 'mdi-account',
-            read: false,
-            color: 'info',
-            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit ratione assumenda explicabo nulla aliquam.',
-            to: { name: 'admin.home' }
-          },
-          {
-            title: 'Notificação #2',
-            icon: 'mdi-email-outline',
-            read: false,
-            color: 'info',
-            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit ratione assumenda explicabo nulla aliquam.',
-            to: { name: 'admin.home' }
-          },
-          {
-            title: 'Notificação #3',
-            icon: 'mdi-purse-outline',
-            read: false,
-            color: 'success',
-            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit ratione assumenda explicabo nulla aliquam.',
-            to: { name: 'admin.home' }
-          },
-          {
-            title: 'Notificação #4',
-            icon: 'mdi-alert-outline',
-            read: false,
-            color: 'warning',
-            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit ratione assumenda explicabo nulla aliquam.',
-            to: { name: 'admin.home' }
-          },
-          {
-            title: 'Notificação #5',
-            icon: 'mdi-purse-outline',
-            read: true,
-            color: 'success',
-            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit ratione assumenda explicabo nulla aliquam.',
-            to: { name: 'admin.home' }
-          },
-          {
-            title: 'Notificação #5',
-            icon: 'mdi-alert-outline',
-            read: true,
-            color: 'warning',
-            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit ratione assumenda explicabo nulla aliquam.',
-            to: { name: 'admin.home' }
-          }
-        ]
+        has: false,
+        unread: '0',
+        items: []
       }
     };
   },
@@ -87,6 +41,63 @@ export default {
       }
     }
   },
+  created() {
+    if (this.$utils.app.inAdminPanel()) {
+      this.method_getNotifications();
+
+      setInterval(() => {
+        this.method_getNotifications();
+      }, 25000);
+    }
+  },
+  methods: {
+    method_updateAppTitle(newBreadcrumbs) {
+      document.title = '[VTFY' + this.computed_appConfigFromStore.appName + '] ' + newBreadcrumbs.map((i) => { return i.title ?? i.text; }).join(' » ');
+    },
+    method_getNotifications() {
+      const action = '/admin/notifications';
+      const method = 'get';
+
+      axios.req({
+        action: action,
+        method: method,
+        success: (resp) => {
+          this.notifications.has = resp.data.unread_total ? true : false;
+          this.notifications.unread = resp.data.unread_total + '';
+
+          this.notifications.items = [];
+          Object.entries(resp.data.notifications.list).map((not) => {
+            this.notifications.items.push({
+              id: not[1].id,
+              title: not[1].data.title,
+              read: not[1].read_at ? true : false,
+              description: not[1].data.description,
+              to: null
+            });
+          });
+        }
+      });
+    },
+    method_markNotificationAsRead(index, item) {
+      const id = item?.id;
+
+      if (!id || item.read) {
+        return;
+      }
+
+      axios.req({
+        action: '/admin/notifications/' + id + '/mark-as-read',
+        method: 'put',
+        success: () => {
+          this.notifications.unread--;
+          this.notifications.items[index].read = true;
+          if (this.notifications.unread == 0) {
+            this.notifications.has = false;
+          }
+        }
+      });
+    }
+  },
   computed: {
     computed_userStore() {
       return useUserStore();
@@ -96,14 +107,6 @@ export default {
     },
     computed_appBreadcrumbs() {
       return useAppStore().appBreadcrumbs;
-    }
-  },
-  methods: {
-    method_logout() {
-      this.computed_userStore.logout();
-    },
-    method_updateAppTitle(newBreadcrumbs) {
-      document.title = '[VTFY' + this.computed_appConfigFromStore.appName + '] ' + newBreadcrumbs.map((i) => { return i.title ?? i.text; }).join(' » ');
     }
   }
 }

@@ -11,18 +11,47 @@
 
 			<v-btn-group class="mx-2" variant="text">
 				<!-- notifications -->
-				<v-btn :icon="notifications.has ? 'mdi-bell-ring-outline' : 'mdi-bell-outline'"
+				<v-btn :prepend-icon="notifications.has ? 'mdi-bell-ring-outline' : 'mdi-bell-outline'"
 					:color="notifications.has ? 'warning' : 'grey-lighten-1'"
-					:class="[notifications.has ? 'has-notifications' : '']" id="notifications-activator" />
+					:class="[notifications.has ? 'has-notifications' : '']" id="notifications-activator"
+					:text="notifications.unread + ''" />
 				<v-menu activator="#notifications-activator" location="start">
-					<v-list class="px-2" style="max-width: 325px;">
-						<v-list-item class="pa-3 mb-2" v-for="(item, index) in notifications.items" :key="index"
-							:value="index" :to="item.to" :prepend-icon="item.icon" border="start"
-							:color="item.read ? 'grey-lighten-1' : item.color">
-							<v-list-item-title>{{ item.title }}</v-list-item-title>
-							<v-list-item-subtitle>{{ item.description }}</v-list-item-subtitle>
-						</v-list-item>
-					</v-list>
+					<v-card class="px-2 pt-2 pb-5" style="width:100%!important; max-width: 425px; max-height: 90vh;">
+						<v-card-item>
+							<div class="d-flex justify-space-between align-center w-100 pa-2">
+								<h6 class="text-body-1">Notificações</h6>
+								<v-btn append-icon="mdi-arrow-right" text="Ver todas" variant="plain"
+									color="primary"></v-btn>
+							</div>
+						</v-card-item>
+						<template v-if="notifications.items.length">
+							<v-card-item v-for="(item, index) in notifications.items" :key="index"
+								:data-identificator="item?.id">
+								<div class="d-inline-flex align-center pa-4 w-100 rounded" :class="[
+									// bg
+									item.read ? 'bg-transparent' : (this.$utils.app.config.themeIsDark() ? 'bg-grey-darken-3' : 'bg-grey-lighten-3'),
+									// text
+									item.read ? (this.$utils.app.config.themeIsDark() ? 'text-grey-darken-1' : 'text-grey-lighten-1') : (this.$utils.app.config.themeIsDark() ? 'text-grey-lighten-3' : 'text-grey-darken-2')
+								]">
+									<v-icon :icon="item?.icon ?? 'mdi-bell-outline'" />
+									<div class="pl-3 pr-5">
+										<h5 class="text-body-1 font-weight-medium">{{ item.title }}</h5>
+										<p class="text-subtitle-2 font-weight-regular">{{ item.description }}</p>
+									</div>
+									<v-tooltip v-if="!item.read" text="Marcar como lida" location="start">
+										<template v-slot:activator="{ props }">
+											<v-btn
+												@click.prevent="notificationAsReadCallback ? notificationAsReadCallback(index, item) : null"
+												icon="mdi-check" variant="plain" size="small" v-bind="props" />
+										</template>
+									</v-tooltip>
+								</div>
+							</v-card-item>
+						</template>
+						<v-card-item v-else>
+							<p class="text-center text-grey-lighten-1">Não há notificações</p>
+						</v-card-item>
+					</v-card>
 				</v-menu>
 
 				<!-- dark mode toggler -->
@@ -98,7 +127,8 @@ export default {
 			type: Boolean,
 			default: false
 		},
-		notifications: Object
+		notifications: Object,
+		notificationAsReadCallback: [null, Function]
 	},
 	watch: {
 		computed_breadcrumbsFromStore: {
@@ -118,6 +148,9 @@ export default {
 		},
 		method_navigationDrawerToggle() {
 			this.$emit('update:modelValue', !this.modelValue);
+		},
+		method_markNotificationAsRead(item) {
+			console.log(item);
 		}
 	},
 	computed: {
