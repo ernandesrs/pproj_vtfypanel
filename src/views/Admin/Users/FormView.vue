@@ -110,7 +110,7 @@
 					</group-elem>
 					<v-row>
 						<v-col cols="12" class="text-center">
-							<v-btn @click.stop="methodSubmitForm" prepend-icon="mdi-check"
+							<v-btn @click.stop="method_submitForm" prepend-icon="mdi-check"
 								:text="this.computedIsCreating ? 'Criar usuário' : 'Atualizar'" color="primary"
 								:loading="user.form.submitting"></v-btn>
 						</v-col>
@@ -232,6 +232,60 @@ export default {
 				},
 				finally: () => {
 					this.roles.loading = false;
+				}
+			});
+		},
+		method_submitForm() {
+			let data = {
+				first_name: this.user.form.data.first_name,
+				last_name: this.user.form.data.last_name,
+				username: this.user.form.data.username,
+				gender: this.user.form.data.gender,
+				email: this.user.form.data.email
+			};
+			const action = this.computedIsCreating ? '/admin/users' : '/admin/users/' + this.user.form.data.id;
+			const method = this.computedIsCreating ? 'post' : 'put';
+
+			if (this.user.form.data.password?.length > 0 || this.user.form.data.password_confirmation?.length > 0) {
+				data = {
+					...data,
+					password: this.user.form.data.password,
+					password_confirmation: this.user.form.data.password_confirmation
+				};
+			}
+
+			this.user.form.submitting = true;
+			axios.req({
+				action: action,
+				method: method,
+				data: data,
+				success: (resp) => {
+					if (this.computedIsCreating) {
+						alert.add('O novo usuário foi registrado com sucesso!',
+							'success',
+							'Usuário registrado!',
+							null,
+							true
+						);
+						this.user.form.data = resp.data.user;
+						this.$router.push({ name: 'admin.users' });
+					} else {
+						this.user.form.errors = {};
+						this.user.form.data.password = '';
+						this.user.form.data.password_confirmation = '';
+
+						alert.add('O usuário foi atualizado com sucesso!',
+							'info',
+							'Usuário atualizado!',
+							null
+						);
+					}
+				},
+				fail: (resp) => {
+					this.user.form.errors = resp.response.data.errors;
+				},
+				finally: () => {
+					this.user.form.submitting = false;
 				}
 			});
 		},
