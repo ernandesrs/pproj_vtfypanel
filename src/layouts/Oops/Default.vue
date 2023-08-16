@@ -22,23 +22,23 @@ export default {
     };
   },
   watch: {
-    computedAppBreadcrumbs: {
+    computed_appBreadcrumbs: {
       deep: true,
       immediate: true,
       handler(nv, ov) {
         if (nv != ov) {
-          this.methodUpdateAppTitle(nv);
+          this.method_updateAppTitle(nv);
         }
       }
     }
   },
   computed: {
-    computedAppBreadcrumbs() {
+    computed_appBreadcrumbs() {
       return useAppStore().appBreadcrumbs;
     }
   },
   methods: {
-    methodUpdateAppTitle(newBreadcrumbs) {
+    method_updateAppTitle(newBreadcrumbs) {
       document.title = '[VTFY' + (this.computedAppConfigFromStore?.appName ?? '') + '] ' + newBreadcrumbs.map((i) => { return i.title ?? i.text; }).join(' » ');
     }
   }

@@ -21,7 +21,7 @@ export default {
     };
   },
   computed: {
-    computedFlashAlertFromStore() {
+    computed_flashAlertFromStore() {
       return useAppStore().appFlashAlert;
     }
   }

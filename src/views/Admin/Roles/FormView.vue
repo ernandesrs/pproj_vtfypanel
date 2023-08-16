@@ -1,12 +1,12 @@
 <template>
 	<loading-elem v-if="loadingContent"></loading-elem>
 	<template v-else>
-		<actions-bar :bar-title="computedIsCreating ? 'Novo função' : 'Editar função'"></actions-bar>
+		<actions-bar :bar-title="computed_isCreating ? 'Novo função' : 'Editar função'"></actions-bar>
 
 		<v-row justify="center">
 			<v-col cols="12" md="10" lg="8" xl="6">
 				<group-elem title="Nome da função"
-					:description="computedIsCreating ? 'Informe um nome direto e descritivo para esta função' : 'Atualize o nome desta função'">
+					:description="computed_isCreating ? 'Informe um nome direto e descritivo para esta função' : 'Atualize o nome desta função'">
 					<template #content>
 						<v-row>
 							<v-col>
@@ -16,7 +16,7 @@
 						</v-row>
 					</template>
 				</group-elem>
-				<group-elem v-if="!computedIsCreating" title="Gerenciáveis"
+				<group-elem v-if="!computed_isCreating" title="Gerenciáveis"
 					description="Para cada um dos gerenciáveis abaixo, habilite as ações que o usuário que possuir esta função terá permissão de executar sobre o mesmo.">
 					<template #content>
 						<v-row>
@@ -47,7 +47,7 @@
 				</group-elem>
 			</v-col>
 			<v-col cols="12" class="text-center">
-				<v-btn @click.stop="methodSubmitRole" :text="computedIsCreating ? 'Cadastrar' : 'Atualizar'"
+				<v-btn @click.stop="method_submitRole" :text="computed_isCreating ? 'Cadastrar' : 'Atualizar'"
 					prepend-icon="mdi-check" color="primary" :loading="role.form.submitting"></v-btn>
 			</v-col>
 		</v-row>
@@ -99,22 +99,22 @@ export default {
 		};
 	},
 	created() {
-		this.methodMain();
+		this.method_main();
 	},
 	updated() {
-		this.methodSetBreadcrumbs();
+		this.method_setBreadcrumbs();
 	},
 	methods: {
-		methodMain() {
-			this.methodSetBreadcrumbs();
+		method_main() {
+			this.method_setBreadcrumbs();
 
-			if (!this.computedIsCreating) {
-				this.methodGetRole(this.$route.params.role_id);
+			if (!this.computed_isCreating) {
+				this.method_getRole(this.$route.params.role_id);
 			} else {
 				this.loadingContent = false;
 			}
 		},
-		methodGetRole(id) {
+		method_getRole(id) {
 			axios.req({
 				action: '/admin/roles/' + id,
 				method: 'get',
@@ -126,10 +126,10 @@ export default {
 				}
 			});
 		},
-		methodSubmitRole() {
+		method_submitRole() {
 			let data = this.role.form.data;
-			let action = this.computedIsCreating ? '/admin/roles' : '/admin/roles/' + data.id;
-			let method = this.computedIsCreating ? 'post' : 'put';
+			let action = this.computed_isCreating ? '/admin/roles' : '/admin/roles/' + data.id;
+			let method = this.computed_isCreating ? 'post' : 'put';
 
 			this.role.form.submitting = true;
 			axios.req({
@@ -137,10 +137,10 @@ export default {
 				method: method,
 				data: {
 					display_name: data.display_name,
-					permissibles: this.computedIsCreating ? [] : data.permissibles
+					permissibles: this.computed_isCreating ? [] : data.permissibles
 				},
 				success: (resp) => {
-					if (this.computedIsCreating) {
+					if (this.computed_isCreating) {
 						alert.add('Nova função ' + resp.data.role.display_name + ' cadastrada com sucesso!',
 							'success',
 							'Função cadastrada!',
@@ -165,7 +165,7 @@ export default {
 				}
 			});
 		},
-		methodSetBreadcrumbs() {
+		method_setBreadcrumbs() {
 			this.$utils.app.breadcrumbs([
 				{
 					text: 'Funções',
@@ -173,7 +173,7 @@ export default {
 					disabled: false
 				},
 				{
-					text: this.computedIsCreating ? 'Nova' : 'Editar',
+					text: this.computed_isCreating ? 'Nova' : 'Editar',
 					to: { name: 'admin.roles' },
 					disabled: true
 				}
@@ -181,7 +181,7 @@ export default {
 		}
 	},
 	computed: {
-		computedIsCreating() {
+		computed_isCreating() {
 			return this.$route.params?.role_id ? false : true;
 		}
 	}

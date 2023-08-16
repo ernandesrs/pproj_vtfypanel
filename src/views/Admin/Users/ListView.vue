@@ -9,11 +9,11 @@
 			icon: 'mdi-account-plus',
 			to: { name: 'admin.users.create' }
 		}"></actions-bar>
-		<list-group-elem @changePage="methodChangePage" resource="user" :items="users.list" :pages="users.pages"
-			v-slot="{ item }" :action-edit="methodEditUser" :action-delete="methodDeleteUserConfirmed"
+		<list-group-elem @changePage="method_changePage" resource="user" :items="users.list" :pages="users.pages"
+			v-slot="{ item }" :action-edit="method_editUser" :action-delete="method_deleteUserConfirmed"
 			action-delete-dialog-title="Excluir usuário?"
 			action-delete-dialog-text="A exclusão deste usuário será definitiva e não poderá ser desfeita." :action-filter="(event) => {
-				return methodGetUsers(1, event.search);
+				return method_getUsers(1, event.search);
 			}">
 			<v-row>
 				<v-col cols="12" sm="2" md="1" class="d-none d-sm-flex justify-center align-center">
@@ -98,10 +98,10 @@ export default {
 		};
 	},
 	created() {
-		this.methodMain();
+		this.method_main();
 	},
 	methods: {
-		methodMain() {
+		method_main() {
 			this.$utils.app.breadcrumbs([
 				{
 					title: 'Usuários',
@@ -110,9 +110,9 @@ export default {
 				}
 			]);
 
-			this.methodGetUsers(1);
+			this.method_getUsers(1);
 		},
-		methodGetUsers(page, search = null) {
+		method_getUsers(page, search = null) {
 			return axios.req({
 				action: '/admin/users?page=' + page + '&limit=' + this.users.limit + (search ? '&search=' + search : ''),
 				method: 'get',
@@ -125,10 +125,10 @@ export default {
 				}
 			});
 		},
-		methodChangePage(page) {
-			this.methodGetUsers(page.page);
+		method_changePage(page) {
+			this.method_getUsers(page.page);
 		},
-		methodEditUser(event) {
+		method_editUser(event) {
 			this.$router.push({
 				name: 'admin.users.edit',
 				params: {
@@ -136,7 +136,7 @@ export default {
 				}
 			});
 		},
-		methodDeleteUserConfirmed(event) {
+		method_deleteUserConfirmed(event) {
 			let id = event.target.getAttribute('data-identificator');
 			let index = this.users.list.findIndex((user) => {
 				return user.id == id;

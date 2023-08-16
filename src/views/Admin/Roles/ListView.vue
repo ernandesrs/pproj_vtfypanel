@@ -10,11 +10,11 @@
 			to: { name: 'admin.roles.create' },
 		}"></actions-bar>
 
-		<list-group-elem @changePage="methodChangePage" resource="role" :items="roles.list" :pages="roles.pages"
-			v-slot="{ item }" :action-edit="methodEdit" :action-delete="methodDeleteConfirmed"
+		<list-group-elem @changePage="method_changePage" resource="role" :items="roles.list" :pages="roles.pages"
+			v-slot="{ item }" :action-edit="method_edit" :action-delete="method_deleteConfirmed"
 			action-delete-dialog-title="Excluir esta função?"
 			action-delete-dialog-text="A exclusão desta função será definitiva e não poderá ser desfeita."
-			:action-filter="methodFilter">
+			:action-filter="method_filter">
 
 			<v-row>
 				<v-col cols="12" sm="8" md="4" lg="3">
@@ -54,10 +54,10 @@ export default {
 		};
 	},
 	created() {
-		this.methodMain();
+		this.method_main();
 	},
 	methods: {
-		methodMain() {
+		method_main() {
 			this.$utils.app.breadcrumbs([
 				{
 					text: 'Funções',
@@ -66,12 +66,12 @@ export default {
 				}
 			]);
 
-			this.methodGetRoles(1);
+			this.method_getRoles(1);
 		},
-		methodChangePage(page) {
-			return this.methodGetRoles(page.page);
+		method_changePage(page) {
+			return this.method_getRoles(page.page);
 		},
-		methodGetRoles(page, search = null) {
+		method_getRoles(page, search = null) {
 			let action = '/admin/roles?page=' + page + '&limit=' + this.roles.limit + (search ? '&search=' + search : '');
 
 			return axios.req({
@@ -86,11 +86,11 @@ export default {
 				}
 			});
 		},
-		methodEdit(event) {
+		method_edit(event) {
 			let id = event.target.getAttribute('data-identificator');
 			this.$router.push({ name: 'admin.roles.edit', params: { role_id: id } });
 		},
-		methodDeleteConfirmed(event) {
+		method_deleteConfirmed(event) {
 			let id = event.target.getAttribute('data-identificator');
 
 			return axios.req({
@@ -108,8 +108,8 @@ export default {
 				}
 			});
 		},
-		methodFilter(event) {
-			return this.methodGetRoles(1, event.search);
+		method_filter(event) {
+			return this.method_getRoles(1, event.search);
 		}
 	}
 }

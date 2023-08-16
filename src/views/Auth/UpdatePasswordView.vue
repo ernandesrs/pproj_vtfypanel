@@ -18,7 +18,7 @@
 									type="password"></v-text-field>
 							</v-col>
 							<v-col cols="12" class="d-flex justify-center">
-								<v-btn @click.stop="methodUpdatePassword" color="primary" size="large" variant="flat"
+								<v-btn @click.stop="method_updatePassword" color="primary" size="large" variant="flat"
 									prepend-icon="mdi-login" :loading="formUpdatePassword.submitting">Atualizar
 									senha</v-btn>
 							</v-col>
@@ -76,7 +76,7 @@ export default {
 		}
 	},
 	methods: {
-		methodUpdatePassword() {
+		method_updatePassword() {
 			if (!this.formUpdatePassword.valid) {
 				alert.addError('InvalidDataException', false, 'Verifique os dados');
 				return;

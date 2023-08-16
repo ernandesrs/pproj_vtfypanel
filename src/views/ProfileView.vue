@@ -12,8 +12,8 @@
       <div class="py-3">
         <confirmation-button v-if="data?.photo_url" icon="mdi-trash-can-outline" text="Excluir foto" color="red"
           size="small" dialog-title="Excluir sua foto?" dialog-text="A foto não poderá ser recuperada."
-          :confirm-callback="methodDeleteUserPhoto"></confirmation-button>
-        <v-file-input @update:model-value="methodUploadUserPhoto" v-model="photoUpload.photo" v-else
+          :confirm-callback="method_deleteUserPhoto"></confirmation-button>
+        <v-file-input @update:model-value="method_uploadUserPhoto" v-model="photoUpload.photo" v-else
           accept="image/png, image/jpeg, image/bmp" placeholder="Enviar foto" prepend-icon="mdi-account" label="Foto"
           :error-messages="photoUpload.errors?.photo"></v-file-input>
       </div>
@@ -142,7 +142,7 @@ export default {
     this.data = useUserStore().getUser;
   },
   methods: {
-    methodDeleteUserPhoto() {
+    method_deleteUserPhoto() {
       return axios.req({
         action: '/me/photo-delete',
         method: 'delete',
@@ -152,7 +152,7 @@ export default {
         }
       })
     },
-    methodUploadUserPhoto(event) {
+    method_uploadUserPhoto(event) {
       let data = new FormData();
 
       data.append('photo', event[0]);

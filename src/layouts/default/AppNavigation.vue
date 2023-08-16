@@ -4,13 +4,13 @@
 			<v-icon icon="$vuetify" :size="75"></v-icon>
 			<v-app-bar-title>
 				<span class="font-weight-bold">VTFY</span><span class="font-weight-light">{{
-					computedAppConfigFromStore.appName
+					computed_appConfigFromStore.appName
 				}}</span>
 			</v-app-bar-title>
 		</div>
 
 		<v-list class="pa-3">
-			<template v-for="item in navs[computedAppConfigFromStore.app].mainNav" :key="item">
+			<template v-for="item in navs[computed_appConfigFromStore.app].mainNav" :key="item">
 				<v-list-group v-if="item?.items" :title="item.text">
 					<template v-slot:activator="{ props }">
 						<v-list-item v-bind="props" :prepend-icon="item.icon" :title="item.text"></v-list-item>
@@ -26,7 +26,7 @@
 
 		<template v-slot:append>
 			<v-list class="pa-3">
-				<v-list-item @click="item.callback" v-for="item in navs[computedAppConfigFromStore.app].endNav" :key="item"
+				<v-list-item @click="item.callback" v-for="item in navs[computed_appConfigFromStore.app].endNav" :key="item"
 					:color="item.color ?? null" :title="item.text" :prepend-icon="item.icon" :to="item.to ?? null"
 					:active="item.activeIn.includes(this.$route.name)" rounded></v-list-item>
 			</v-list>
@@ -63,7 +63,7 @@ export default {
 						{
 							text: 'Logout',
 							icon: 'mdi-logout',
-							callback: this.methodLogout,
+							callback: this.method_logout,
 							color: 'red',
 							activeIn: []
 						}
@@ -107,7 +107,7 @@ export default {
 						{
 							text: 'Logout',
 							icon: 'mdi-logout',
-							callback: this.methodLogout,
+							callback: this.method_logout,
 							color: 'red',
 							activeIn: []
 						}
@@ -142,26 +142,26 @@ export default {
 		}
 	},
 	created() {
-		this.methodDefineNavigationDrawerStatus()
-	},
-	computed: {
-		computedAppConfigFromStore() {
-			return useAppStore().appConfig;
-		},
-		computedUserStore() {
-			return useUserStore();
-		}
+		this.method_defineNavigationDrawerStatus()
 	},
 	methods: {
-		methodDefineNavigationDrawerStatus() {
+		method_defineNavigationDrawerStatus() {
 			if (window.innerWidth < 1280) {
 				this.drawer = false;
 			} else {
 				this.drawer = true;
 			}
 		},
-		methodLogout() {
-			this.computedUserStore.logout();
+		method_logout() {
+			this.computed_userStore.logout();
+		}
+	},
+	computed: {
+		computed_appConfigFromStore() {
+			return useAppStore().appConfig;
+		},
+		computed_userStore() {
+			return useUserStore();
 		}
 	}
 }

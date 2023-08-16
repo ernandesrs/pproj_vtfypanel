@@ -3,32 +3,32 @@
 	<template v-else>
 		<confirmation-dialog v-model="superUserDialogConfirmation" color="danger" title="IMPORTANTE!"
 			text="Você está atribuindo a este usuário o nível de acesso 'Super usuário', isso o concede poder total sobre o sistema, incluindo permissões para alterar e excluir outros 'super usuários'. Tem certeza de que quer prosseguir?"
-			:confirm-callback="methodUpdateLevelConfirmed" :cancel-callback="methodUpdateLevelCanceled" />
-		<actions-bar :bar-title="this.computedIsCreating ? 'Novo usuário' : 'Editar usuário'"></actions-bar>
+			:confirm-callback="method_updateLevelConfirmed" :cancel-callback="method_updateLevelCanceled" />
+		<actions-bar :bar-title="this.computed_isCreating ? 'Novo usuário' : 'Editar usuário'"></actions-bar>
 		<v-row class="justify-center">
-			<v-col v-if="!this.computedIsCreating" cols="12" sm="10" lg="4" class="text-center">
+			<v-col v-if="!this.computed_isCreating" cols="12" sm="10" lg="4" class="text-center">
 				<v-avatar size="175">
 					<v-img v-if="user.form.data?.photo_url" :src="user.form.data?.photo_url"></v-img>
 					<div v-else
 						class="text-h2 font-weight-bold w-100 h-100 rounded-circle d-flex justify-center align-center border">
-						{{ computedIsCreating ? 'U' : user.form.data?.first_name[0] }}
+						{{ computed_isCreating ? 'U' : user.form.data?.first_name[0] }}
 					</div>
 				</v-avatar>
 				<v-sheet v-if="user.form.data?.photo_url" class="py-3">
 					<confirmation-button v-if="user.form.data?.photo_url" icon="mdi-trash-can-outline" text="Excluir foto"
 						color="danger" size="small" dialog-title="Excluir a foto do usuário?"
 						dialog-text="A exclusão não poderá ser revertida."
-						:confirm-callback="methodDeleteUserPhoto"></confirmation-button>
+						:confirm-callback="method_deleteUserPhoto"></confirmation-button>
 				</v-sheet>
 				<v-sheet class="py-3">
 					<v-card>
 						<v-card-item>
 							<v-alert v-if="[8, 9].includes(user.form.data.level)"
 								:type="[8].includes(user.form.data.level) ? 'info' : [9].includes(user.form.data.level) ? 'warning' : ''"
-								:text="[8].includes(user.form.data.level) ? 'Este usuário possui acesso ao administrativo deste sistema.' : [9].includes(user.form.data.level) ? (computedAuthUserFromStore.getUser.id == user.form.data.id ? 'Você' : 'Este usuário') + ' possui todos os tipos de permissões neste sistema.' : ''"
+								:text="[8].includes(user.form.data.level) ? 'Este usuário possui acesso ao administrativo deste sistema.' : [9].includes(user.form.data.level) ? (computed_authUserFromStore.getUser.id == user.form.data.id ? 'Você' : 'Este usuário') + ' possui todos os tipos de permissões neste sistema.' : ''"
 								variant="plain"
-								:class="[computedAuthUserFromStore.getUser.id != user.form.data.id ? 'mb-4' : '']"></v-alert>
-							<v-select v-if="computedAuthUserFromStore.getUser.id != user.form.data.id"
+								:class="[computed_authUserFromStore.getUser.id != user.form.data.id ? 'mb-4' : '']"></v-alert>
+							<v-select v-if="computed_authUserFromStore.getUser.id != user.form.data.id"
 								v-model="user.form.data.level" :items="(Object.values(user.levels)).map((level) => {
 									return {
 										text: level.text,
@@ -40,7 +40,7 @@
 						</v-card-item>
 
 						<v-card-item v-if="[8].includes(user.form.data.level)">
-							<v-select @update:modelValue="methodUpdateRoles" v-model="user.form.data.roles"
+							<v-select @update:modelValue="method_updateRoles" v-model="user.form.data.roles"
 								:items="roles.list" item-title="display_name" item-value="id" label="Funções atribuídas"
 								chips multiple :loading="roles.loading || user.form.submitting"
 								:readonly="roles.loading || user.form.submitting" density="compact" variant="filled"
@@ -52,7 +52,7 @@
 			<v-col cols="12" sm="10" lg="6">
 				<v-form v-model="user.form.valid">
 					<group-elem title="Dados da conta"
-						:description="(computedIsCreating ? 'Informe os dados do usuário' : 'Atualize os dados do usuário')">
+						:description="(computed_isCreating ? 'Informe os dados do usuário' : 'Atualize os dados do usuário')">
 						<template #content>
 							<v-row>
 								<v-col cols="12" sm="6">
@@ -87,23 +87,28 @@
 								<v-col cols="12">
 									<v-text-field v-model="user.form.data.email" label="Email"
 										:error-messages="user.form.errors?.email"
-										:readonly="this.computedIsCreating ? false : true"></v-text-field>
+										:readonly="this.computed_isCreating ? false : true"></v-text-field>
 								</v-col>
 							</v-row>
 						</template>
 					</group-elem>
 					<group-elem title="Segurança"
-						:description="(computedIsCreating ? 'Informe e confirme a senha' : 'Informe e confirme uma nova senha')">
+						:description="(computed_isCreating ? 'Informe e confirme a senha' : 'Informe e confirme uma nova senha')">
 						<template #content>
 							<v-row>
 								<v-col cols="12" sm="6">
-									<v-text-field v-model="user.form.data.password" label="Senha"
-										:error-messages="user.form.errors?.password" type="password"></v-text-field>
+									<v-text-field v-model="user.form.data.password"
+										@click:append-inner="visiblePassword = !visiblePassword"
+										:append-inner-icon="visiblePassword ? 'mdi-eye' : 'mdi-eye-off'" label="Senha"
+										:error-messages="user.form.errors?.password"
+										:type="visiblePassword ? 'text' : 'password'"></v-text-field>
 								</v-col>
 								<v-col cols="12" sm="6">
-									<v-text-field v-model="user.form.data.password_confirmation" label="Confirmar senha"
+									<v-text-field v-model="user.form.data.password_confirmation"
+										@click:append-inner="visiblePassword = !visiblePassword"
+										:append-inner-icon="visiblePassword ? 'mdi-eye' : 'mdi-eye-off'" label="Confirmar senha"
 										:error-messages="user.form.errors?.password_confirmation"
-										type="password"></v-text-field>
+										:type="visiblePassword ? 'text' : 'password'"></v-text-field>
 								</v-col>
 							</v-row>
 						</template>
@@ -111,7 +116,7 @@
 					<v-row>
 						<v-col cols="12" class="text-center">
 							<v-btn @click.stop="method_submitForm" prepend-icon="mdi-check"
-								:text="this.computedIsCreating ? 'Criar usuário' : 'Atualizar'" color="primary"
+								:text="this.computed_isCreating ? 'Criar usuário' : 'Atualizar'" color="primary"
 								:loading="user.form.submitting"></v-btn>
 						</v-col>
 					</v-row>
@@ -138,6 +143,7 @@ export default {
 		return {
 			superUserDialogConfirmation: false,
 			loadingContent: true,
+			visiblePassword: false,
 			user: {
 				old_level: null,
 				form: {
@@ -180,19 +186,19 @@ export default {
 
 				if (nv != ov) {
 					this.user.old_level = ov;
-					this.methodUpdateLevel();
+					this.method_updateLevel();
 				}
 			}
 		}
 	},
 	created() {
-		this.methodMain();
+		this.method_main();
 	},
 	methods: {
-		methodMain() {
-			if (!this.computedIsCreating) {
-				this.methodGetUser();
-				this.methodGetRoles();
+		method_main() {
+			if (!this.computed_isCreating) {
+				this.method_getUser();
+				this.method_getRoles();
 			} else {
 				this.loadingContent = false;
 			}
@@ -204,13 +210,13 @@ export default {
 					to: { name: 'admin.users' }
 				},
 				{
-					title: this.computedIsCreating ? 'Novo' : 'Editar',
+					title: this.computed_isCreating ? 'Novo' : 'Editar',
 					disabled: true,
 					to: { name: 'admin.users.create' }
 				},
 			]);
 		},
-		methodGetUser() {
+		method_getUser() {
 			axios.req({
 				action: '/admin/users/' + this.$route.params?.user_id,
 				method: 'get',
@@ -222,7 +228,7 @@ export default {
 				}
 			});
 		},
-		methodGetRoles() {
+		method_getRoles() {
 			this.roles.loading = true;
 			axios.req({
 				action: '/admin/roles',
@@ -243,8 +249,8 @@ export default {
 				gender: this.user.form.data.gender,
 				email: this.user.form.data.email
 			};
-			const action = this.computedIsCreating ? '/admin/users' : '/admin/users/' + this.user.form.data.id;
-			const method = this.computedIsCreating ? 'post' : 'put';
+			const action = this.computed_isCreating ? '/admin/users' : '/admin/users/' + this.user.form.data.id;
+			const method = this.computed_isCreating ? 'post' : 'put';
 
 			if (this.user.form.data.password?.length > 0 || this.user.form.data.password_confirmation?.length > 0) {
 				data = {
@@ -260,7 +266,7 @@ export default {
 				method: method,
 				data: data,
 				success: (resp) => {
-					if (this.computedIsCreating) {
+					if (this.computed_isCreating) {
 						alert.add('O novo usuário foi registrado com sucesso!',
 							'success',
 							'Usuário registrado!',
@@ -289,7 +295,7 @@ export default {
 				}
 			});
 		},
-		methodDeleteUserPhoto() {
+		method_deleteUserPhoto() {
 			let action = '/admin/users/' + this.user.form.data.id + '/photo-delete';
 
 			axios.req({
@@ -301,15 +307,15 @@ export default {
 				}
 			});
 		},
-		methodUpdateLevel() {
+		method_updateLevel() {
 			if (this.user.form.data.level == 9) {
 				this.superUserDialogConfirmation = true;
 				return;
 			}
 
-			this.methodUpdateLevelConfirmed();
+			this.method_updateLevelConfirmed();
 		},
-		methodUpdateLevelConfirmed() {
+		method_updateLevelConfirmed() {
 			this.user.form.submitting = true;
 			return axios.req({
 				action: '/admin/users/' + this.user.form.data.id + '/update-level',
@@ -327,10 +333,10 @@ export default {
 				}
 			});
 		},
-		methodUpdateLevelCanceled() {
+		method_updateLevelCanceled() {
 			this.user.form.data.level = this.user.old_level;
 		},
-		methodUpdateRoles(event) {
+		method_updateRoles(event) {
 			let action = null;
 			let method = null;
 
@@ -364,7 +370,7 @@ export default {
 				action: action,
 				method: method,
 				success: () => {
-					this.methodGetUser();
+					this.method_getUser();
 				},
 				finally: () => {
 					this.user.form.submitting = false;
@@ -373,10 +379,10 @@ export default {
 		}
 	},
 	computed: {
-		computedIsCreating() {
+		computed_isCreating() {
 			return this.$route.params?.user_id ? false : true;
 		},
-		computedAuthUserFromStore() {
+		computed_authUserFromStore() {
 			return useUserStore();
 		}
 	}

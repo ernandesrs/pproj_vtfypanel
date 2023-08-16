@@ -24,33 +24,33 @@ export default {
     };
   },
   watch: {
-    computedAppBreadcrumbs: {
+    computed_appBreadcrumbs: {
       deep: true,
       immediate: true,
       handler(nv, ov) {
         if (nv != ov) {
-          this.methodUpdateAppTitle(nv);
+          this.method_updateAppTitle(nv);
         }
       }
     }
   },
   computed: {
-    computedUserStore() {
+    computed_userStore() {
       return useUserStore();
     },
-    computedAppConfigFromStore() {
+    computed_appConfigFromStore() {
       return useAppStore().appConfig;
     },
-    computedAppBreadcrumbs() {
+    computed_appBreadcrumbs() {
       return useAppStore().appBreadcrumbs;
     }
   },
   methods: {
-    methodLogout() {
-      this.computedUserStore.logout();
+    method_logout() {
+      this.computed_userStore.logout();
     },
-    methodUpdateAppTitle(newBreadcrumbs) {
-      document.title = '[VTFY' + this.computedAppConfigFromStore.appName + '] ' + newBreadcrumbs.map((i) => { return i.title ?? i.text; }).join(' » ');
+    method_updateAppTitle(newBreadcrumbs) {
+      document.title = '[VTFY' + this.computed_appConfigFromStore.appName + '] ' + newBreadcrumbs.map((i) => { return i.title ?? i.text; }).join(' » ');
     }
   }
 }

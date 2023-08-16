@@ -72,15 +72,15 @@ export default {
     };
   },
   created() {
-    this.methodMain();
+    this.method_main();
   },
   methods: {
-    methodMain() {
+    method_main() {
       this.$utils.app.breadcrumbs([]);
 
-      this.methodGetDashContent();
+      this.method_getDashContent();
     },
-    methodGetDashContent() {
+    method_getDashContent() {
       axios.req({
         action: '/admin',
         method: 'get',

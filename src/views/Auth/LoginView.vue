@@ -22,7 +22,7 @@
 									Registrar conta
 								</v-btn>
 
-								<v-btn @click.stop="methodLogin" color="primary" size="large" variant="flat"
+								<v-btn @click.stop="method_login" color="primary" size="large" variant="flat"
 									prepend-icon="mdi-login" :loading="formLogin.submitting">Login</v-btn>
 							</v-col>
 						</v-row>
@@ -81,7 +81,7 @@ export default {
 		]);
 	},
 	methods: {
-		methodLogin() {
+		method_login() {
 			if (!this.formLogin.valid) {
 				alert.addError('InvalidDataException', false, 'Verifique os dados');
 				return;

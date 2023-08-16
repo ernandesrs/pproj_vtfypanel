@@ -59,7 +59,7 @@
 									Tenho conta
 								</v-btn>
 
-								<v-btn @click.stop="methodRegister" color="primary" size="large" variant="flat"
+								<v-btn @click.stop="method_register" color="primary" size="large" variant="flat"
 									prepend-icon="mdi-check" :loading="formRegister.submitting">Cadastrar</v-btn>
 							</v-col>
 						</v-row>
@@ -159,7 +159,7 @@ export default {
 		]);
 	},
 	methods: {
-		methodRegister() {
+		method_register() {
 			if (!this.formRegister.valid) {
 				alert.addError('InvalidDataException', false, 'Verifique os dados');
 				return;

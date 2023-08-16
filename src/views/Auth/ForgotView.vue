@@ -20,7 +20,7 @@
 									Login
 								</v-btn>
 
-								<v-btn @click.stop="methodForgot" color="primary" size="large" variant="flat"
+								<v-btn @click.stop="method_forgot" color="primary" size="large" variant="flat"
 									prepend-icon="mdi-login" :loading="formForgot.submitting">Recuperar</v-btn>
 							</v-col>
 						</v-row>
@@ -69,7 +69,7 @@ export default {
 		]);
 	},
 	methods: {
-		methodForgot() {
+		method_forgot() {
 			if (!this.formForgot.valid) {
 				alert.addError('InvalidDataException', false, 'Verifique os dados');
 				return;

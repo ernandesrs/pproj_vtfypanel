@@ -12,7 +12,7 @@
 			<v-card-actions class="justify-space-between pb-5 px-6">
 				<v-btn @click.stop="dialog = false" prepend-icon="mdi-close" text="Cancelar"
 					:color="color" :disabled="confirmLoading" variant="outlined" class="px-4"></v-btn>
-				<v-btn @click.stop="methodConfirmAction" prepend-icon="mdi-check" text="Confirmar"
+				<v-btn @click.stop="method_confirmAction" prepend-icon="mdi-check" text="Confirmar"
 					:color="color" :data-identificator="dataIdentificator" :loading="confirmLoading"
 					variant="elevated" class="px-4"></v-btn>
 			</v-card-actions>
@@ -89,7 +89,7 @@ export default {
 		}
 	},
 	methods: {
-		methodConfirmAction(event) {
+		method_confirmAction(event) {
 			this.confirmLoading = true;
 			if (this.confirmCallback) {
 				let promise = this.confirmCallback(event);

@@ -4,7 +4,7 @@
 
 		<v-btn-group density="compact" elevation="1" class="mr-6">
 			<v-btn @click.stop="$router.back()" prepend-icon="mdi-arrow-left" text="Voltar" class="text-none"></v-btn>
-			<v-btn @click.stop="methodActionCreateClick" v-if="actionButtonCreate.show"
+			<v-btn @click.stop="method_actionCreateClick" v-if="actionButtonCreate.show"
 				:prepend-icon="actionButtonCreate.icon ?? 'mdi-plus'" :text="actionButtonCreate.text" color="success"
 				class="text-none" :disabled="actionButtonCreate.disabled"></v-btn>
 		</v-btn-group>
@@ -33,7 +33,7 @@ export default {
 		}
 	},
 	methods: {
-		methodActionCreateClick(event) {
+		method_actionCreateClick(event) {
 			if (this.actionButtonCreate?.url) {
 				window.location.href = this.actionButtonCreate.url;
 			} else if (this.actionButtonCreate?.to) {

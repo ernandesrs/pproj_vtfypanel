@@ -2,10 +2,10 @@
 	<v-row v-if="actionFilter">
 		<v-col></v-col>
 		<v-col cols="12" md="4" lg="3">
-			<v-form @submit.prevent="methodFilter">
+			<v-form @submit.prevent="method_filter">
 				<v-text-field v-model="filter.form.search" append-inner-icon="mdi-magnify" label="Buscar por..." type="text"
 					density="compact" variant="outlined" clear-icon="mdi-close-circle" clearable
-					@click:append-inner="methodFilter" @click:clear="methodClearFilterField"
+					@click:append-inner="method_filter" @click:clear="method_clearFilterField"
 					:loading="filter.form.submitting" :readonly="filter.form.submitting"></v-text-field>
 			</v-form>
 		</v-col>
@@ -16,7 +16,7 @@
 				<tr>
 					<th class="d-none d-md-table-cell">ID</th>
 					<th>Informações</th>
-					<th v-if="computedHasAction">Ações</th>
+					<th v-if="computed_hasAction">Ações</th>
 				</tr>
 			</thead>
 			<tbody style="position: relative;">
@@ -35,20 +35,20 @@
 					<td class="w-100 py-6">
 						<slot :item="item" :index="index" />
 					</td>
-					<td v-if="computedHasAction">
+					<td v-if="computed_hasAction">
 						<v-btn-group density="compact">
 							<!-- actions button -->
-							<v-btn v-if="actionShow" @click.stop="methodShowItem" text="Ver" prepend-icon="mdi-eye-outline"
+							<v-btn v-if="actionShow" @click.stop="method_showItem" text="Ver" prepend-icon="mdi-eye-outline"
 								size="small" color="secondary" :data-identificator="item?.id ?? index"
 								:disabled="!$permissions.addResource(this.resource).canView()" />
-							<v-btn v-if="actionEdit" @click.stop="methodEditItem" text="Editar"
+							<v-btn v-if="actionEdit" @click.stop="method_editItem" text="Editar"
 								prepend-icon="mdi-square-edit-outline" size="small" color="primary"
 								:data-identificator="item?.id ?? index"
 								:disabled="!$permissions.addResource(this.resource).canUpdate()" />
 							<confirmation-button v-if="actionDelete" text="Excluir" icon="mdi-delete-outline" size="small"
 								color="danger" :dialog-title="actionDeleteDialogTitle ?? 'Confirmar exclusão?'"
 								:dialog-text="actionDeleteDialogText" :data-identificator="item?.id ?? index"
-								:confirm-callback="computedGetConfirmCallback" :confirm-route="computedGetConfirmRoute"
+								:confirm-callback="computed_getConfirmCallback" :confirm-route="computed_getConfirmRoute"
 								variant="outlined" :disabled="!$permissions.addResource(this.resource).canDelete()" />
 							<!-- /actions button -->
 						</v-btn-group>
@@ -59,12 +59,12 @@
 		</v-table>
 
 		<v-pagination v-if="listPages.length && listPages.length - 2 > 1" :length="listPages.length - 2" :total-visible="5"
-			@update:model-value="methodPaginationUpdateModelValue"></v-pagination>
+			@update:model-value="method_paginationUpdateModelValue"></v-pagination>
 	</div>
 	<v-card v-else>
 		<v-card-text>
 			<p class="text-h7 text-lg-h6 text-center text-grey-darken-1">
-				{{ computedEmptyListText }}
+				{{ computed_emptyListText }}
 			</p>
 		</v-card-text>
 	</v-card>
@@ -159,27 +159,27 @@ export default {
 		}
 	},
 	computed: {
-		computedEmptyListText() {
+		computed_emptyListText() {
 			return this.emptyListText ?? "Lista vazia";
 		},
-		computedHasAction() {
+		computed_hasAction() {
 			return this.actionShow || this.actionEdit || this.actionDelete;
 		},
-		computedGetConfirmCallback() {
+		computed_getConfirmCallback() {
 			return typeof this.actionDelete === 'function' ? this.actionDelete : null;
 		},
-		computedGetConfirmRoute() {
+		computed_getConfirmRoute() {
 			return typeof this.actionDelete === 'object' ? this.actionDelete : null;
 		}
 	},
 	methods: {
-		methodShowItem(event) {
-			this.methodCall(this.actionShow, event);
+		method_showItem(event) {
+			this.method_call(this.actionShow, event);
 		},
-		methodEditItem(event) {
-			this.methodCall(this.actionEdit, event);
+		method_editItem(event) {
+			this.method_call(this.actionEdit, event);
 		},
-		methodCall(action, event) {
+		method_call(action, event) {
 			switch (typeof action) {
 				case 'function':
 					action(event);
@@ -192,11 +192,11 @@ export default {
 					break;
 			}
 		},
-		methodPaginationUpdateModelValue(currentPage) {
+		method_paginationUpdateModelValue(currentPage) {
 			this.loadingList = true;
 			this.$emit('changePage', { page: currentPage, url: this.listPages[currentPage] });
 		},
-		methodFilter() {
+		method_filter() {
 			if (!this.actionFilter) {
 				return;
 			}
@@ -214,8 +214,8 @@ export default {
 				}
 			}
 		},
-		methodClearFilterField() {
-			this.methodFilter();
+		method_clearFilterField() {
+			this.method_filter();
 		}
 	}
 }

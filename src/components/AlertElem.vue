@@ -1,9 +1,9 @@
 <template>
-	<v-snackbar location="top right" v-model="snackbar" :timeout="computedAlertDuration" multi-line
-		:color="computedAlertColor" transition="slide-x-reverse-transition" width="100%" max-width="425px">
-		<div v-if="computedAlertTitle" class="text-subtitle-1 pb-2 font-weight-medium">{{ computedAlertTitle.toUpperCase()
+	<v-snackbar location="top right" v-model="snackbar" :timeout="computed_alertDuration" multi-line
+		:color="computed_alertColor" transition="slide-x-reverse-transition" width="100%" max-width="425px">
+		<div v-if="computed_alertTitle" class="text-subtitle-1 pb-2 font-weight-medium">{{ computed_alertTitle.toUpperCase()
 		}}</div>
-		<p>{{ computedAlertMessage }}</p>
+		<p>{{ computed_alertMessage }}</p>
 
 		<template v-slot:actions>
 			<v-btn icon="mdi-close" variant="text" @click="snackbar = false"></v-btn>
@@ -69,7 +69,7 @@ export default {
 		}
 	},
 	watch: {
-		computedAlertMessage: {
+		computed_alertMessage: {
 			deep: true,
 			handler(nv) {
 				if (nv) {
@@ -77,7 +77,7 @@ export default {
 				}
 			}
 		},
-		computedAlertFromStore: {
+		computed_alertFromStore: {
 			deep: true,
 			handler(nv) {
 				if (nv) {
@@ -85,10 +85,10 @@ export default {
 				}
 			}
 		},
-		computedCurrentRoute(nv, ov) {
+		computed_currentRoute(nv, ov) {
 			if (nv !== ov) {
 				if (this.alert?.message) {
-					this.methodClose();
+					this.method_close();
 				}
 
 				setTimeout(() => {
@@ -98,31 +98,31 @@ export default {
 		}
 	},
 	computed: {
-		computedAlertColor() {
+		computed_alertColor() {
 			return this.alert?.color ?? COLORS[this.alert?.type ?? this.type ?? this.type ?? 'default'];
 		},
-		computedAlertTitle() {
+		computed_alertTitle() {
 			return this.alert.title ?? this.title ?? TITLES[this.alert?.type ?? this.type] ?? null;
 		},
-		computedAlertMessage() {
+		computed_alertMessage() {
 			return this.alert?.message ?? this.message;
 		},
-		computedAlertDuration() {
+		computed_alertDuration() {
 			return this.alert?.duration ?? this.duration ?? this.timeout;
 		},
-		computedAlertFromStore() {
+		computed_alertFromStore() {
 			return useAppStore().appFlashAlert?.message ? useAppStore().appFlashAlert : null;
 		},
-		computedCurrentRoute() {
+		computed_currentRoute() {
 			return this.$route.name;
 		}
 	},
 	methods: {
-		methodClose() {
+		method_close() {
 			this.snackbar = false;
-			this.methodClear();
+			this.method_clear();
 		},
-		methodClear() {
+		method_clear() {
 			this.alert.message = null;
 		}
 	},

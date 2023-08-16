@@ -5,9 +5,9 @@
             <p class="pt-3 pb-5" v-html="text"></p>
 
             <div class="d-flex justify-space-between">
-                <v-btn @click.stop="methodCancelAction" prepend-icon="mdi-close" text="Cancelar" :color="color"
+                <v-btn @click.stop="method_cancelAction" prepend-icon="mdi-close" text="Cancelar" :color="color"
                     :disabled="confirmLoading" variant="outlined" class="px-4"></v-btn>
-                <v-btn @click.stop="methodConfirmAction" prepend-icon="mdi-check" text="Confirmar" :color="color"
+                <v-btn @click.stop="method_confirmAction" prepend-icon="mdi-check" text="Confirmar" :color="color"
                     :data-identificator="dataIdentificator" :loading="confirmLoading" class="px-4"></v-btn>
             </div>
         </v-alert>
@@ -84,7 +84,7 @@ export default {
         }
     },
     methods: {
-        methodConfirmAction(event) {
+        method_confirmAction(event) {
             this.confirmLoading = true;
             if (this.confirmCallback) {
                 let promise = this.confirmCallback(event);
@@ -100,7 +100,7 @@ export default {
                 this.$router.push(this.confirmRoute);
             }
         },
-        methodCancelAction(event) {
+        method_cancelAction(event) {
             if (this.cancelCallback) {
                 let promise = this.cancelCallback(event);
 

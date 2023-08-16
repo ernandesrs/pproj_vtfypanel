@@ -1,6 +1,6 @@
 <template>
 	<v-app-bar density="compact" elevation="0" class="border-b">
-		<v-app-bar-nav-icon variant="text" @click.stop="navigationDrawerToggle"></v-app-bar-nav-icon>
+		<v-app-bar-nav-icon variant="text" @click.stop="method_navigationDrawerToggle"></v-app-bar-nav-icon>
 
 		<v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
 
@@ -16,9 +16,9 @@
 						<template v-slot:activator="{ props: tooltip }">
 							<v-btn color="primary" v-bind="mergeProps(menu, tooltip)">
 								<v-avatar size="32" color="primary">
-									<v-img v-if="computedUserStore.getPhotoUrl"
-										:src="computedUserStore.getPhotoUrl"></v-img>
-									<span v-else class="text-h8">{{ computedUserStore.getInitials }}</span>
+									<v-img v-if="computed_userStore.getPhotoUrl"
+										:src="computed_userStore.getPhotoUrl"></v-img>
+									<span v-else class="text-h8">{{ computed_userStore.getInitials }}</span>
 								</v-avatar>
 							</v-btn>
 						</template>
@@ -29,20 +29,20 @@
 						<v-card>
 							<v-card-text>
 								<v-avatar size="125" color="primary">
-									<v-img v-if="computedUserStore.getPhotoUrl"
-										:src="computedUserStore.getPhotoUrl"></v-img>
-									<span v-else class="text-h4">{{ computedUserStore.getInitials }}</span>
+									<v-img v-if="computed_userStore.getPhotoUrl"
+										:src="computed_userStore.getPhotoUrl"></v-img>
+									<span v-else class="text-h4">{{ computed_userStore.getInitials }}</span>
 								</v-avatar>
 								<div class="pt-1 pb-3">
-									<h3 class="text-h6 font-weight-bold">{{ computedUserStore.getUsername.substring(0, 9) }}
+									<h3 class="text-h6 font-weight-bold">{{ computed_userStore.getUsername.substring(0, 9) }}
 									</h3>
-									<p>{{ computedUserStore.getEmail }}</p>
+									<p>{{ computed_userStore.getEmail }}</p>
 								</div>
 								<div class="d-flex justify-center">
 									<v-btn elevation="0" prepend-icon="mdi-account" size="small" text="Perfil"
 										color="primary" variant="outlined" class="ma-1" :to="{ name: 'app.profile' }"
 										:disabled="this.$route.name == 'app.profile'"></v-btn>
-									<v-btn @click.stop="methodLogout" elevation="0" color="red" prepend-icon="mdi-logout"
+									<v-btn @click.stop="method_logout" elevation="0" color="red" prepend-icon="mdi-logout"
 										size="small" text="Sair" class="ma-1"></v-btn>
 								</div>
 							</v-card-text>
@@ -78,7 +78,7 @@ export default {
 		}
 	},
 	watch: {
-		computedBreadcrumbsFromStore: {
+		computed_breadcrumbsFromStore: {
 			deep: true,
 			handler(nv) {
 				this.breadcrumbs = nv;
@@ -90,18 +90,18 @@ export default {
 	},
 	methods: {
 		mergeProps,
-		methodLogout() {
-			this.computedUserStore.logout();
+		method_logout() {
+			this.computed_userStore.logout();
 		},
-		navigationDrawerToggle() {
+		method_navigationDrawerToggle() {
 			this.$emit('update:modelValue', !this.modelValue);
 		}
 	},
 	computed: {
-		computedUserStore() {
+		computed_userStore() {
 			return useUserStore();
 		},
-		computedBreadcrumbsFromStore() {
+		computed_breadcrumbsFromStore() {
 			return useAppStore().appBreadcrumbs;
 		}
 	}
