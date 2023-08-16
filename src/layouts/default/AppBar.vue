@@ -13,7 +13,17 @@
 				<!-- notifications -->
 				<v-btn :icon="notifications.has ? 'mdi-bell-ring-outline' : 'mdi-bell-outline'"
 					:color="notifications.has ? 'warning' : 'grey-lighten-1'"
-					:class="[notifications.has ? 'has-notifications' : '']" />
+					:class="[notifications.has ? 'has-notifications' : '']" id="notifications-activator" />
+				<v-menu activator="#notifications-activator" location="start">
+					<v-list class="px-2" style="max-width: 325px;">
+						<v-list-item class="pa-3 mb-2" v-for="(item, index) in notifications.items" :key="index"
+							:value="index" :to="item.to" :prepend-icon="item.icon" border="start"
+							:color="item.read ? 'grey-lighten-1' : item.color">
+							<v-list-item-title>{{ item.title }}</v-list-item-title>
+							<v-list-item-subtitle>{{ item.description }}</v-list-item-subtitle>
+						</v-list-item>
+					</v-list>
+				</v-menu>
 
 				<!-- dark mode toggler -->
 				<v-btn @click="$utils.app.config.themeToggleDark()" icon="mdi-brightness-6"
@@ -77,10 +87,7 @@ import { mergeProps } from 'vue';
 export default {
 	data() {
 		return {
-			breadcrumbs: [],
-			notifications: {
-				has: false
-			}
+			breadcrumbs: []
 		};
 	},
 	emits: {
@@ -90,7 +97,8 @@ export default {
 		modelValue: {
 			type: Boolean,
 			default: false
-		}
+		},
+		notifications: Object
 	},
 	watch: {
 		computed_breadcrumbsFromStore: {

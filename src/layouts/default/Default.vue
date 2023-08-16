@@ -2,7 +2,7 @@
   <v-layout class="bg-background">
     <app-navigation v-model="drawer"></app-navigation>
 
-    <app-bar v-model="drawer"></app-bar>
+    <app-bar v-model="drawer" :notifications="notifications"></app-bar>
 
     <app-view></app-view>
   </v-layout>
@@ -20,7 +20,60 @@ export default {
   components: { AppBar, AppView, AppNavigation },
   data() {
     return {
-      drawer: false
+      drawer: false,
+      notifications: {
+        has: true,
+        items: [
+          {
+            title: 'Notificação #1',
+            icon: 'mdi-account',
+            read: false,
+            color: 'info',
+            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit ratione assumenda explicabo nulla aliquam.',
+            to: { name: 'admin.home' }
+          },
+          {
+            title: 'Notificação #2',
+            icon: 'mdi-email-outline',
+            read: false,
+            color: 'info',
+            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit ratione assumenda explicabo nulla aliquam.',
+            to: { name: 'admin.home' }
+          },
+          {
+            title: 'Notificação #3',
+            icon: 'mdi-purse-outline',
+            read: false,
+            color: 'success',
+            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit ratione assumenda explicabo nulla aliquam.',
+            to: { name: 'admin.home' }
+          },
+          {
+            title: 'Notificação #4',
+            icon: 'mdi-alert-outline',
+            read: false,
+            color: 'warning',
+            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit ratione assumenda explicabo nulla aliquam.',
+            to: { name: 'admin.home' }
+          },
+          {
+            title: 'Notificação #5',
+            icon: 'mdi-purse-outline',
+            read: true,
+            color: 'success',
+            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit ratione assumenda explicabo nulla aliquam.',
+            to: { name: 'admin.home' }
+          },
+          {
+            title: 'Notificação #5',
+            icon: 'mdi-alert-outline',
+            read: true,
+            color: 'warning',
+            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit ratione assumenda explicabo nulla aliquam.',
+            to: { name: 'admin.home' }
+          }
+        ]
+      }
     };
   },
   watch: {
