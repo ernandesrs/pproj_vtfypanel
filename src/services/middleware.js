@@ -47,11 +47,15 @@ export default {
 
         if (!useUserStore().hasAdminAccess) {
             route = { name: 'app.home' };
-        } else {
-            useAppStore().appConfig = { app: 'admin', appName: 'ADMIN' };
         }
 
         next(route);
+    },
+    inAppPanel() {
+        useAppStore().appConfig = { app: 'app', appName: 'PANEL' };
+    },
+    inAdminPanel() {
+        useAppStore().appConfig = { app: 'admin', appName: 'ADMIN' };
     },
     canAccessListView: (to, from, next) => {
         let route = null;

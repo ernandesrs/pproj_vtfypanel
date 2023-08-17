@@ -20,7 +20,7 @@ const routes = [
   },
   {
     path: '/app',
-    beforeEnter: middleware.redirectIfUnauthenticated,
+    beforeEnter: [middleware.redirectIfUnauthenticated, middleware.inAppPanel],
     component: () => import('@/layouts/default/Default.vue'),
     children: [
       {
@@ -37,7 +37,7 @@ const routes = [
   },
   {
     path: '/admin',
-    beforeEnter: [middleware.redirectIfUnauthenticated, middleware.redirectIfUnauthenticatedOrNotAdmin],
+    beforeEnter: [middleware.redirectIfUnauthenticated, middleware.redirectIfUnauthenticatedOrNotAdmin, middleware.inAdminPanel],
     component: () => import('@/layouts/default/Default.vue'),
     children: [
       {
@@ -80,6 +80,11 @@ const routes = [
         name: 'admin.roles.edit',
         beforeEnter: [middleware.canAccessUpdateView],
         component: () => import('@/views/Admin/Roles/FormView.vue')
+      },
+      {
+        path: 'perfil',
+        name: 'admin.profile',
+        component: () => import('@/views/ProfileView.vue')
       }
     ]
   },

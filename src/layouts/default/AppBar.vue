@@ -7,7 +7,11 @@
 		<template #append>
 			<!-- admin panel button -->
 			<v-btn v-if="$utils.app.inAppPanel() && $utils.logged().hasAdminAccess" prepend-icon="mdi-chart-pie-outline"
-				text="Admin panel" size="small" variant="outlined" :to="{ name: 'admin.home' }" color="primary" />
+				text="Administrativo" size="small" variant="outlined" :to="{ name: 'admin.home' }" color="primary" />
+
+			<!-- app panel button -->
+			<v-btn v-if="$utils.app.inAdminPanel()" prepend-icon="mdi-chart-pie-outline"
+				text="Painel cliente" size="small" variant="outlined" :to="{ name: 'app.home' }" color="primary" />
 
 			<v-btn-group class="mx-2" variant="text">
 				<!-- notifications -->

@@ -23,6 +23,8 @@ export default {
   data() {
     return {
       drawer: false,
+      adminNotificationsHandler: null,
+      panelNotificationsHandler: null,
       notifications: {
         has: false,
         unread: '0',
@@ -41,20 +43,50 @@ export default {
       }
     }
   },
+  updated() {
+    this.method_notification();
+  },
   created() {
-    if (this.$utils.app.inAdminPanel()) {
-      this.method_getNotifications();
-
-      setInterval(() => {
-        this.method_getNotifications();
-      }, 25000);
-    }
+    this.method_notification();
   },
   methods: {
     method_updateAppTitle(newBreadcrumbs) {
       document.title = '[VTFY' + this.computed_appConfigFromStore.appName + '] ' + newBreadcrumbs.map((i) => { return i.title ?? i.text; }).join(' » ');
     },
-    method_getNotifications() {
+    method_notification() {
+      if (this.$utils.app.inAdminPanel()) {
+        if (this.panelNotificationsHandler) {
+          clearInterval(this.panelNotificationsHandler);
+          this.panelNotificationsHandler = null;
+          this.notifications = {
+            has: false,
+            items: [],
+            unread: '0'
+          };
+        }
+
+        if (!this.notifications.items.length) {
+          this.method_getAdminNotifications();
+        }
+
+        if (!this.adminNotificationsHandler) {
+          this.adminNotificationsHandler = setInterval(() => {
+            this.method_getAdminNotifications();
+          }, 30000);
+        }
+      } else {
+        if (this.adminNotificationsHandler) {
+          clearInterval(this.adminNotificationsHandler);
+          this.adminNotificationsHandler = null;
+          this.notifications = {
+            has: false,
+            items: [],
+            unread: '0'
+          };
+        }
+      }
+    },
+    method_getAdminNotifications() {
       const action = '/admin/notifications';
       const method = 'get';
 

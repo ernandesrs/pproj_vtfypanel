@@ -101,8 +101,8 @@ export default {
 						{
 							text: 'Perfil',
 							icon: 'mdi-account',
-							to: { name: 'app.profile' },
-							activeIn: ['app.profile']
+							to: { name: 'admin.profile' },
+							activeIn: ['admin.profile']
 						},
 						{
 							text: 'Logout',
