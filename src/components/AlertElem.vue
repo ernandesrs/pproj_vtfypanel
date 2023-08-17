@@ -1,10 +1,12 @@
 <template>
 	<v-snackbar location="top right" v-model="snackbar" :timeout="computed_alertDuration" multi-line
 		:color="computed_alertColor" transition="slide-x-reverse-transition" width="100%" max-width="425px">
-		<div v-if="computed_alertTitle" class="text-subtitle-1 pb-2 font-weight-medium">{{ computed_alertTitle.toUpperCase()
-		}}</div>
-		<p>{{ computed_alertMessage }}</p>
-
+		<div v-if="computed_alertTitle" class="text-subtitle-1 pb-2 font-weight-medium">
+			{{ computed_alertTitle.toUpperCase() }}
+		</div>
+		<p>
+			{{ computed_alertMessage }}
+		</p>
 		<template v-slot:actions>
 			<v-btn icon="mdi-close" variant="text" @click="snackbar = false"></v-btn>
 		</template>
@@ -111,7 +113,7 @@ export default {
 			return this.alert?.duration ?? this.duration ?? this.timeout;
 		},
 		computed_alertFromStore() {
-			return useAppStore().appFlashAlert?.message ? useAppStore().appFlashAlert : null;
+			return useAppStore().hasFlashAlert ? useAppStore().getFlashAlert : null;
 		},
 		computed_currentRoute() {
 			return this.$route.name;

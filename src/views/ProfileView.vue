@@ -111,12 +111,7 @@ export default {
     };
   },
   created() {
-    useAppStore().updateBreadcrumbs([
-      {
-        title: "Home",
-        disabled: false,
-        to: { name: "app.home" }
-      },
+    this.computed_appStore.updateBreadcrumbs([
       {
         title: "Perfil",
         disabled: true,
@@ -124,7 +119,7 @@ export default {
       }
     ]);
 
-    this.data = useUserStore().getUser;
+    this.data = this.computed_userStore.getUser;
   },
   methods: {
     method_deleteUserPhoto() {
@@ -205,6 +200,14 @@ export default {
           this.submitting = false;
         }
       });
+    }
+  },
+  computed: {
+    computed_appStore() {
+      return useAppStore();
+    },
+    computed_userStore() {
+      return useUserStore();
     }
   }
 }

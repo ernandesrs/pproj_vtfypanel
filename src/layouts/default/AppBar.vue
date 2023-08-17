@@ -6,12 +6,12 @@
 
 		<template #append>
 			<!-- admin panel button -->
-			<v-btn v-if="$utils.app.inAppPanel() && $utils.logged().hasAdminAccess" prepend-icon="mdi-chart-pie-outline"
+			<v-btn v-if="computed_appStore.isClientApp && computed_userStore.hasAdminAccess" prepend-icon="mdi-chart-pie-outline"
 				text="Administrativo" size="small" variant="outlined" :to="{ name: 'admin.home' }" color="primary" />
 
 			<!-- app panel button -->
-			<v-btn v-if="$utils.app.inAdminPanel()" prepend-icon="mdi-chart-pie-outline"
-				text="Painel cliente" size="small" variant="outlined" :to="{ name: 'app.home' }" color="primary" />
+			<v-btn v-if="computed_appStore.isAdminApp" prepend-icon="mdi-chart-pie-outline" text="Cliente" size="small"
+				variant="outlined" :to="{ name: 'app.home' }" color="primary" />
 
 			<v-btn-group class="mx-2" variant="text">
 				<!-- notifications -->
@@ -135,7 +135,7 @@ export default {
 		notificationAsReadCallback: [null, Function]
 	},
 	watch: {
-		computed_breadcrumbsFromStore: {
+		'computed_appStore.breadcrumbs': {
 			deep: true,
 			handler(nv) {
 				this.breadcrumbs = nv;
@@ -161,8 +161,8 @@ export default {
 		computed_userStore() {
 			return useUserStore();
 		},
-		computed_breadcrumbsFromStore() {
-			return useAppStore().appBreadcrumbs;
+		computed_appStore() {
+			return useAppStore();
 		}
 	}
 }

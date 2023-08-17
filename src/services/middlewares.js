@@ -1,8 +1,8 @@
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
 import axios from '../plugins/axios';
-import token from '../services/token';
-import alert from '../services/alert';
+import token from './token';
+import alert from './alert';
 import permissions from './permissions';
 
 export default {
@@ -42,20 +42,20 @@ export default {
             });
         });
     },
-    redirectIfUnauthenticatedOrNotAdmin: (to, from, next) => {
+    inAdminPanel(to, from, next) {
         let route = null;
 
-        if (!useUserStore().hasAdminAccess) {
+        if (useUserStore().hasAdminAccess) {
+            useAppStore().updateApp('admin', 'ADMIN');
+        } else {
             route = { name: 'app.home' };
         }
 
         next(route);
+
     },
     inAppPanel() {
-        useAppStore().appConfig = { app: 'app', appName: 'PANEL' };
-    },
-    inAdminPanel() {
-        useAppStore().appConfig = { app: 'admin', appName: 'ADMIN' };
+        useAppStore().updateApp('app', 'PANEL');
     },
     canAccessListView: (to, from, next) => {
         let route = null;

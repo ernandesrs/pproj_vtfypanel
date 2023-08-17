@@ -21,6 +21,7 @@
 
 <script>
 
+import { useAppStore } from '@/store/app';
 import axios from '@/plugins/axios';
 import LoadingElem from '@/components/LoadingElem.vue';
 
@@ -76,7 +77,7 @@ export default {
   },
   methods: {
     method_main() {
-      this.$utils.app.breadcrumbs([]);
+      useAppStore().updateBreadcrumbs([]);
 
       this.method_getDashContent();
     },

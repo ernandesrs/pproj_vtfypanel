@@ -25,10 +25,10 @@
 						<v-card-item>
 							<v-alert v-if="[8, 9].includes(user.form.data.level)"
 								:type="[8].includes(user.form.data.level) ? 'info' : [9].includes(user.form.data.level) ? 'warning' : ''"
-								:text="[8].includes(user.form.data.level) ? 'Este usuário possui acesso ao administrativo deste sistema.' : [9].includes(user.form.data.level) ? (computed_authUserFromStore.getUser.id == user.form.data.id ? 'Você' : 'Este usuário') + ' possui todos os tipos de permissões neste sistema.' : ''"
+								:text="[8].includes(user.form.data.level) ? 'Este usuário possui acesso ao administrativo deste sistema.' : [9].includes(user.form.data.level) ? (computed_userStore.getUser.id == user.form.data.id ? 'Você' : 'Este usuário') + ' possui todos os tipos de permissões neste sistema.' : ''"
 								variant="plain"
-								:class="[computed_authUserFromStore.getUser.id != user.form.data.id ? 'mb-4' : '']"></v-alert>
-							<v-select v-if="computed_authUserFromStore.getUser.id != user.form.data.id"
+								:class="[computed_userStore.getUser.id != user.form.data.id ? 'mb-4' : '']"></v-alert>
+							<v-select v-if="computed_userStore.getUser.id != user.form.data.id"
 								v-model="user.form.data.level" :items="(Object.values(user.levels)).map((level) => {
 									return {
 										text: level.text,
@@ -106,8 +106,8 @@
 								<v-col cols="12" sm="6">
 									<v-text-field v-model="user.form.data.password_confirmation"
 										@click:append-inner="visiblePassword = !visiblePassword"
-										:append-inner-icon="visiblePassword ? 'mdi-eye' : 'mdi-eye-off'" label="Confirmar senha"
-										:error-messages="user.form.errors?.password_confirmation"
+										:append-inner-icon="visiblePassword ? 'mdi-eye' : 'mdi-eye-off'"
+										label="Confirmar senha" :error-messages="user.form.errors?.password_confirmation"
 										:type="visiblePassword ? 'text' : 'password'"></v-text-field>
 								</v-col>
 							</v-row>
@@ -129,6 +129,7 @@
 <script>
 
 import { useUserStore } from '@/store/user';
+import { useAppStore } from '@/store/app';
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
 import LoadingElem from '@/components/LoadingElem.vue';
@@ -203,7 +204,7 @@ export default {
 				this.loadingContent = false;
 			}
 
-			this.$utils.app.breadcrumbs([
+			this.computed_appStore.updateBreadcrumbs([
 				{
 					title: 'Usuários',
 					disabled: false,
@@ -382,7 +383,10 @@ export default {
 		computed_isCreating() {
 			return this.$route.params?.user_id ? false : true;
 		},
-		computed_authUserFromStore() {
+		computed_appStore() {
+			return useAppStore();
+		},
+		computed_userStore() {
 			return useUserStore();
 		}
 	}

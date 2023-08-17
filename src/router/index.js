@@ -1,6 +1,6 @@
 // Composables
 import { createRouter, createWebHistory } from 'vue-router'
-import middleware from '../services/middleware'
+import middlewares from '../services/middlewares'
 
 const routes = [
   {
@@ -13,14 +13,17 @@ const routes = [
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        // beforeEnter: middleware.redirectIfUnauthenticated,
+        // beforeEnter: middlewares.redirectIfUnauthenticated,
         component: () =>/* webpackChunkName: "home" */ import('@/views/HomeView.vue')
       }
     ]
   },
   {
     path: '/app',
-    beforeEnter: [middleware.redirectIfUnauthenticated, middleware.inAppPanel],
+    beforeEnter: [
+      middlewares.redirectIfUnauthenticated,
+      middlewares.inAppPanel
+    ],
     component: () => import('@/layouts/default/Default.vue'),
     children: [
       {
@@ -37,7 +40,10 @@ const routes = [
   },
   {
     path: '/admin',
-    beforeEnter: [middleware.redirectIfUnauthenticated, middleware.redirectIfUnauthenticatedOrNotAdmin, middleware.inAdminPanel],
+    beforeEnter: [
+      middlewares.redirectIfUnauthenticated,
+      middlewares.inAdminPanel
+    ],
     component: () => import('@/layouts/default/Default.vue'),
     children: [
       {
@@ -48,37 +54,49 @@ const routes = [
       {
         path: 'usuarios',
         name: 'admin.users',
-        beforeEnter: [middleware.canAccessListView],
+        beforeEnter: [
+          middlewares.canAccessListView
+        ],
         component: () => import('@/views/Admin/Users/ListView.vue'),
       },
       {
         path: 'usuarios/criar',
         name: 'admin.users.create',
-        beforeEnter: [middleware.canAccessCreateView],
+        beforeEnter: [
+          middlewares.canAccessCreateView
+        ],
         component: () => import('@/views/Admin/Users/FormView.vue'),
       },
       {
         path: 'usuarios/:user_id/editar',
         name: 'admin.users.edit',
-        beforeEnter: [middleware.canAccessUpdateView],
+        beforeEnter: [
+          middlewares.canAccessUpdateView
+        ],
         component: () => import('@/views/Admin/Users/FormView.vue'),
       },
       {
         path: 'funcoes',
         name: 'admin.roles',
-        beforeEnter: [middleware.canAccessListView],
+        beforeEnter: [
+          middlewares.canAccessListView
+        ],
         component: () => import('@/views/Admin/Roles/ListView.vue')
       },
       {
         path: 'funcoes/criar',
         name: 'admin.roles.create',
-        beforeEnter: [middleware.canAccessCreateView],
+        beforeEnter: [
+          middlewares.canAccessCreateView
+        ],
         component: () => import('@/views/Admin/Roles/FormView.vue')
       },
       {
         path: 'funcoes/:role_id/editar',
         name: 'admin.roles.edit',
-        beforeEnter: [middleware.canAccessUpdateView],
+        beforeEnter: [
+          middlewares.canAccessUpdateView
+        ],
         component: () => import('@/views/Admin/Roles/FormView.vue')
       },
       {
@@ -95,31 +113,41 @@ const routes = [
       {
         path: 'login',
         name: 'auth.login',
-        beforeEnter: middleware.redirectIfAuthenticated,
+        beforeEnter: [
+          middlewares.redirectIfAuthenticated
+        ],
         component: () => import('@/views/Auth/LoginView.vue'),
       },
       {
         path: 'forgot',
         name: 'auth.forgot',
-        beforeEnter: middleware.redirectIfAuthenticated,
+        beforeEnter: [
+          middlewares.redirectIfAuthenticated
+        ],
         component: () => import('@/views/Auth/ForgotView.vue'),
       },
       {
         path: 'update-password',
         name: 'auth.updatePassword',
-        beforeEnter: middleware.redirectIfAuthenticated,
+        beforeEnter: [
+          middlewares.redirectIfAuthenticated
+        ],
         component: () => import('@/views/Auth/UpdatePasswordView.vue'),
       },
       {
         path: 'register',
         name: 'auth.register',
-        beforeEnter: middleware.redirectIfAuthenticated,
+        beforeEnter: [
+          middlewares.redirectIfAuthenticated
+        ],
         component: () => import('@/views/Auth/RegisterView.vue'),
       },
       {
         path: 'verify-account',
         name: 'auth.verify',
-        beforeEnter: middleware.redirectIfUnauthenticated,
+        beforeEnter: [
+          middlewares.redirectIfUnauthenticated
+        ],
         component: () => import('@/views/Auth/VerifyView.vue'),
       }
     ]

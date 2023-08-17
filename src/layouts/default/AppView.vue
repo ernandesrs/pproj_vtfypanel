@@ -10,21 +10,10 @@
 
 <script>
 
-import { useAppStore } from '@/store/app';
 import AlertElem from '@/components/AlertElem.vue';
 
 export default {
-  components: { AlertElem },
-  data() {
-    return {
-      flashAlert: null,
-    };
-  },
-  computed: {
-    computed_flashAlertFromStore() {
-      return useAppStore().appFlashAlert;
-    }
-  }
+  components: { AlertElem }
 }
 
 </script>

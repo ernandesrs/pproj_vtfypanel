@@ -23,8 +23,8 @@ export default {
   data() {
     return {
       drawer: false,
-      adminNotificationsHandler: null,
-      panelNotificationsHandler: null,
+      adminAppNotificationsHandler: null,
+      clientAppNotificationsHandler: null,
       notifications: {
         has: false,
         unread: '0',
@@ -33,7 +33,7 @@ export default {
     };
   },
   watch: {
-    computed_appBreadcrumbs: {
+    'computed_appStore.breadcrumbs': {
       deep: true,
       immediate: true,
       handler(nv, ov) {
@@ -51,13 +51,16 @@ export default {
   },
   methods: {
     method_updateAppTitle(newBreadcrumbs) {
-      document.title = '[VTFY' + this.computed_appConfigFromStore.appName + '] ' + newBreadcrumbs.map((i) => { return i.title ?? i.text; }).join(' » ');
+      document.title = '[VTFY' + this.computed_appStore.name + '] ' + newBreadcrumbs.map((i) => { return i.title ?? i.text; }).join(' » ');
     },
     method_notification() {
-      if (this.$utils.app.inAdminPanel()) {
-        if (this.panelNotificationsHandler) {
-          clearInterval(this.panelNotificationsHandler);
-          this.panelNotificationsHandler = null;
+      /**
+       * notifications to admin app
+       */
+      if (this.computed_appStore.isAdminApp) {
+        if (this.clientAppNotificationsHandler) {
+          clearInterval(this.clientAppNotificationsHandler);
+          this.clientAppNotificationsHandler = null;
           this.notifications = {
             has: false,
             items: [],
@@ -69,15 +72,20 @@ export default {
           this.method_getAdminNotifications();
         }
 
-        if (!this.adminNotificationsHandler) {
-          this.adminNotificationsHandler = setInterval(() => {
+        if (!this.adminAppNotificationsHandler) {
+          this.adminAppNotificationsHandler = setInterval(() => {
             this.method_getAdminNotifications();
           }, 30000);
         }
-      } else {
-        if (this.adminNotificationsHandler) {
-          clearInterval(this.adminNotificationsHandler);
-          this.adminNotificationsHandler = null;
+      }
+
+      /**
+       * notifications to client app
+       */
+      else if (this.computed_appStore.isClientApp) {
+        if (this.adminAppNotificationsHandler) {
+          clearInterval(this.adminAppNotificationsHandler);
+          this.adminAppNotificationsHandler = null;
           this.notifications = {
             has: false,
             items: [],
@@ -87,15 +95,15 @@ export default {
       }
     },
     method_getAdminNotifications() {
-      const action = '/admin/notifications';
+      const action = '/admin/notifications/unread';
       const method = 'get';
 
       axios.req({
         action: action,
         method: method,
         success: (resp) => {
-          this.notifications.has = resp.data.unread_total ? true : false;
-          this.notifications.unread = resp.data.unread_total + '';
+          this.notifications.has = resp.data.total ? true : false;
+          this.notifications.unread = resp.data.total + '';
 
           this.notifications.items = [];
           Object.entries(resp.data.notifications.list).map((not) => {
@@ -134,11 +142,8 @@ export default {
     computed_userStore() {
       return useUserStore();
     },
-    computed_appConfigFromStore() {
-      return useAppStore().appConfig;
-    },
-    computed_appBreadcrumbs() {
-      return useAppStore().appBreadcrumbs;
+    computed_appStore() {
+      return useAppStore();
     }
   }
 }

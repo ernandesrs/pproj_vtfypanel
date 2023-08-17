@@ -1,5 +1,3 @@
-import { useAppStore } from "@/store/app";
-import { useUserStore } from "@/store/user";
 import vuetify from "@/plugins/vuetify";
 
 const themeConfigKey = 'vtfy_theme_name';
@@ -45,23 +43,6 @@ const config = {
 
 export default {
     app: {
-        breadcrumbs: (breadcrumbs = []) => {
-            useAppStore().updateBreadcrumbs([
-                {
-                    title: 'Dashboard',
-                    disabled: false,
-                    to: { name: 'admin.home' }
-                },
-                ...breadcrumbs
-            ])
-        },
-        inAdminPanel() {
-            return useAppStore().appConfig.app == 'admin';
-        },
-        inAppPanel() {
-            return useAppStore().appConfig.app == 'app';
-        },
         config: config
     },
-    logged: useUserStore
 };

@@ -57,6 +57,7 @@
 
 <script>
 
+import { useAppStore } from '@/store/app';
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
 import LoadingElem from '@/components/LoadingElem.vue';
@@ -102,7 +103,7 @@ export default {
 	},
 	methods: {
 		method_main() {
-			this.$utils.app.breadcrumbs([
+			this.computed_appStore.updateBreadcrumbs([
 				{
 					title: 'Usuários',
 					disabled: true,
@@ -150,6 +151,11 @@ export default {
 					alert.addWarning('O usuário(a) foi excluído definitivamente.', 'Excluído!');
 				}
 			});
+		}
+	},
+	computed: {
+		computed_appStore() {
+			return useAppStore();
 		}
 	}
 }

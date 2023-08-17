@@ -56,6 +56,7 @@
 
 <script>
 
+import { useAppStore } from '@/store/app';
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
 import LoadingElem from '@/components/LoadingElem.vue';
@@ -166,7 +167,7 @@ export default {
 			});
 		},
 		method_setBreadcrumbs() {
-			this.$utils.app.breadcrumbs([
+			this.computed_appStore.updateBreadcrumbs([
 				{
 					text: 'Funções',
 					to: { name: 'admin.roles' },
@@ -183,6 +184,9 @@ export default {
 	computed: {
 		computed_isCreating() {
 			return this.$route.params?.role_id ? false : true;
+		},
+		computed_appStore() {
+			return useAppStore();
 		}
 	}
 }
