@@ -10,16 +10,6 @@
 			to: { name: 'admin.roles.create' },
 		}"></actions-bar>
 
-		<div>
-			<p>Pode listar usuários: {{ computed_userStore.permissions('role').canViewAny() }}</p>
-			<p>Pode ver usuário: {{ computed_userStore.permissions('role').canView() }}</p>
-			<p>Pode criar usuário: {{ computed_userStore.permissions('role').canCreate() }}</p>
-			<p>Pode atualizar usuário: {{ computed_userStore.permissions('role').canUpdate() }}</p>
-			<p>Pode excluir usuário: {{ computed_userStore.permissions('role').canDelete() }}</p>
-			<p>Pode excluir forçado usuário: {{ computed_userStore.permissions('role').canForceDelete() }}</p>
-			<p>Pode recuperar usuário: {{ computed_userStore.permissions('role').canRecovery() }}</p>
-		</div>
-
 		<list-group-elem @changePage="method_changePage" resource="role" :items="roles.list" :pages="roles.pages"
 			v-slot="{ item }" :action-edit="method_edit" :action-delete="method_deleteConfirmed"
 			action-delete-dialog-title="Excluir esta função?"
@@ -52,7 +42,6 @@ import alert from '@/services/alert.js';
 import LoadingElem from '@/components/LoadingElem.vue';
 import ActionsBar from '@/layouts/default/ActionsBar.vue';
 import ListGroupElem from '@/components/ListGroupElem.vue';
-import { useUserStore } from '@/store/user';
 
 export default {
 	components: { LoadingElem, ActionsBar, ListGroupElem },

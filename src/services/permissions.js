@@ -73,9 +73,6 @@ const hasPermission = (action, resource) => {
         return (permissibleActions && (permissibleActions[action] ?? false));
     });
 
-    console.log(role);
-
-
     /**
      * If it finds one or more, 'action' is allowed
      */

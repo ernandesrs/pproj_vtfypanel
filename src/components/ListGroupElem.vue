@@ -41,19 +41,18 @@
 							<v-btn v-if="actionShow" @click.stop="method_showItem" :text="actionShowConfig.text"
 								:prepend-icon="actionShowConfig.icon" size="small" :color="actionShowConfig.color"
 								:variant="actionShowConfig.variant" :data-identificator="item?.id ?? index"
-								:disabled="!computed_userStore.permission(this.resource).canView() || typeof actionShowConfig.disabled === 'boolean' ? actionShowConfig.disabled : actionShowConfig.disabled(item)" />
+								:disabled="actionShowConfig.disabled === null ? !computed_userStore.permission(this.resource).canView() : typeof actionShowConfig.disabled === 'boolean' ? actionShowConfig.disabled : actionShowConfig.disabled(item)" />
 							<v-btn v-if="actionEdit" @click.stop="method_editItem" :text="actionEditConfig.text"
 								:prepend-icon="actionEditConfig.icon" size="small" :color="actionEditConfig.color"
 								:variant="actionEditConfig.variant" :data-identificator="item?.id ?? index"
-								:disabled="!computed_userStore.permission(this.resource).canUpdate() || typeof actionEditConfig.disabled === 'boolean' ? actionEditConfig.disabled : actionEditConfig.disabled(item)"
-								:loading="editLoading" />
+								:disabled="actionEditConfig.disabled === null ? !computed_userStore.permission(this.resource).canUpdate() : typeof actionEditConfig.disabled === 'boolean' ? actionEditConfig.disabled : actionEditConfig.disabled(item)" />
 							<confirmation-button v-if="actionDelete" :text="actionDeleteConfig.text"
 								:icon="actionDeleteConfig.icon" size="small" :color="actionDeleteConfig.color"
 								:dialog-title="actionDeleteDialogTitle ?? 'Confirmar exclusão?'"
 								:dialog-text="actionDeleteDialogText" :data-identificator="item?.id ?? index"
 								:confirm-callback="computed_getConfirmCallback" :confirm-route="computed_getConfirmRoute"
 								:variant="actionDeleteConfig.variant"
-								:disabled="!computed_userStore.permission(this.resource).canDelete() || typeof actionDeleteConfig.disabled === 'boolean' ? actionDeleteConfig.disabled : actionDeleteConfig.disabled(item)" />
+								:disabled="actionDeleteConfig.disabled === null ? !computed_userStore.permission(this.resource).canDelete() : typeof actionDeleteConfig.disabled === 'boolean' ? actionDeleteConfig.disabled : actionDeleteConfig.disabled(item)" />
 							<!-- /actions button -->
 						</v-btn-group>
 					</td>
@@ -65,7 +64,7 @@
 		<v-pagination v-if="listPages.length && listPages.length - 2 > 1" :length="listPages.length - 2" :total-visible="5"
 			@update:model-value="method_paginationUpdateModelValue"></v-pagination>
 	</div>
-	<v-card v-else>
+	<v-card v-else elevation="0">
 		<v-card-text>
 			<p class="text-h7 text-lg-h6 text-center text-grey-darken-1">
 				{{ computed_emptyListText }}
@@ -79,7 +78,6 @@
 import { useUserStore } from '@/store/user';
 import ConfirmationButton from './ConfirmationButton.vue';
 import LoadingElem from './LoadingElem.vue';
-import { useUserStore } from '@/store/user';
 
 export default {
 	components: { ConfirmationButton, LoadingElem },
@@ -126,7 +124,7 @@ export default {
 				text: 'Ver',
 				color: 'secondary',
 				icon: 'mdi-eye-outline',
-				disabled: false,
+				disabled: null,
 				variant: 'elevated'
 			})
 		},
@@ -136,7 +134,7 @@ export default {
 				text: 'Editar',
 				color: 'primary',
 				icon: 'mdi-square-edit-outline',
-				disabled: false,
+				disabled: null,
 				variant: 'elevated'
 			})
 		},
@@ -146,7 +144,7 @@ export default {
 				text: 'Excluir',
 				color: 'danger',
 				icon: 'mdi-delete-outline',
-				disabled: false,
+				disabled: null,
 				variant: 'outlined'
 			})
 		},
