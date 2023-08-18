@@ -38,7 +38,7 @@
 									item.read ? (this.$utils.app.config.themeIsDark() ? 'text-grey-darken-1' : 'text-grey-lighten-1') : (this.$utils.app.config.themeIsDark() ? 'text-grey-lighten-3' : 'text-grey-darken-2')
 								]">
 									<v-icon :icon="item?.icon ?? 'mdi-bell-outline'" />
-									<div class="pl-3 pr-5">
+									<div class="pl-3 pr-5 w-100 d-inline-block text-truncate">
 										<h5 class="text-body-1 font-weight-medium">{{ item.title }}</h5>
 										<p class="text-subtitle-2 font-weight-regular">{{ item.description }}</p>
 									</div>
