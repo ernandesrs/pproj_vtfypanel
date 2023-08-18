@@ -4,7 +4,7 @@
 	<template v-else>
 		<actions-bar bar-title="Funções" :action-button-create="{
 			show: true,
-			disabled: !$permissions.addResource('role').canCreate(),
+			disabled: !computed_userStore.permission('role').canCreate(),
 			text: 'Nova função',
 			icon: 'mdi-shield-plus-outline',
 			to: { name: 'admin.roles.create' },
@@ -36,6 +36,7 @@
 <script>
 
 import { useAppStore } from '@/store/app';
+import { useUserStore } from '@/store/user';
 import axios from '@/plugins/axios.js';
 import alert from '@/services/alert.js';
 import LoadingElem from '@/components/LoadingElem.vue';
@@ -116,6 +117,9 @@ export default {
 	computed: {
 		computed_appStore() {
 			return useAppStore();
+		},
+		computed_userStore() {
+			return useUserStore();
 		}
 	}
 }

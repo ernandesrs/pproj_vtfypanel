@@ -1,5 +1,3 @@
-import { useUserStore } from "@/store/user";
-
 /**
  * Allowed resources/permissibles/manageable
  * Check for more or new resources on API return
@@ -15,16 +13,23 @@ const resources = {
          */
         'user',
         'admin.users',
+        'admin.show',
         'admin.users.create',
         'admin.users.edit'
     ],
     'App_Models_Role': [
         'role',
         'admin.roles',
+        'admin.show',
         'admin.roles.create',
         'admin.roles.edit'
     ]
 };
+
+/**
+ * useUserStore instance
+ */
+let userStore = null;
 
 /**
  * @param {String} action viewAny/view/create/update/delete/forceDelete/recovery
@@ -33,10 +38,14 @@ const resources = {
  * @returns {Boolean}
  */
 const hasPermission = (action, resource) => {
+    if (!userStore) {
+        return false;
+    }
+
     /**
      * Superuser has all permissions
      */
-    if (useUserStore().isSuperuser) {
+    if (userStore.isSuperuser) {
         return true;
     }
 
@@ -44,7 +53,7 @@ const hasPermission = (action, resource) => {
         return false;
     }
 
-    const roles = useUserStore().roles;
+    const roles = userStore.roles;
 
     /**
      * Denie 'action' if is not set roles for the user
@@ -74,7 +83,7 @@ const hasPermission = (action, resource) => {
 const findResourceUniqueName = (resource) => {
     const result = Object.entries(resources).find((r) => {
         return r[1].includes(resource);
-    })
+    });
 
     return result ? result[0] : null;
 }
@@ -161,13 +170,20 @@ const functions = {
     }
 };
 
+/**
+ * @param {String} resource A valid resource surname for a resource. See const 'resources' in /services/permissions.js
+ * @returns {null|Object}
+ */
+const addResource = (resource) => {
+    functions.resource = findResourceUniqueName(resource);
+    return functions;
+};
+
 export default {
-    /**
-     * @param {String} resource A valid resource surname for a resource. See const 'resources' in /services/permissions.js
-     * @returns {null|Object}
-     */
-    addResource: (resource) => {
-        functions.resource = findResourceUniqueName(resource);
-        return functions;
+    addUser: (useUserStore) => {
+        userStore = useUserStore;
+        return {
+            addResource
+        };
     }
 };

@@ -1,7 +1,14 @@
+/**
+ * 
+ * this is a store for the logged user
+ * 
+ */
+
 import { defineStore } from 'pinia';
 import token from '@/services/token';
 import router from '@/router';
 import axios from '@/plugins/axios';
+import permissions from '@/services/permissions';
 
 export const useUserStore = defineStore('user', {
     state: () => {
@@ -67,6 +74,9 @@ export const useUserStore = defineStore('user', {
         },
         getLevel() {
             return this.user.level;
+        },
+        permission() {
+            return permissions.addUser(this).addResource;
         }
     }
 });

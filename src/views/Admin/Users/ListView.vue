@@ -4,7 +4,7 @@
 	<template v-else>
 		<actions-bar bar-title="Usuários" :action-button-create="{
 			show: true,
-			disabled: !$permissions.addResource('user').canCreate(),
+			disabled: !computed_userStore.permission('user').canCreate(),
 			text: 'Novo usuário',
 			icon: 'mdi-account-plus',
 			to: { name: 'admin.users.create' }
@@ -58,6 +58,7 @@
 <script>
 
 import { useAppStore } from '@/store/app';
+import { useUserStore } from '@/store/user';
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
 import LoadingElem from '@/components/LoadingElem.vue';
@@ -156,6 +157,9 @@ export default {
 	computed: {
 		computed_appStore() {
 			return useAppStore();
+		},
+		computed_userStore() {
+			return useUserStore();
 		}
 	}
 }
