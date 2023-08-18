@@ -16,10 +16,10 @@
 
 			<v-btn-group class="mx-2" variant="text">
 				<!-- notifications -->
-				<v-btn :prepend-icon="notifications.has ? 'mdi-bell-ring-outline' : 'mdi-bell-outline'"
-					:color="notifications.has ? 'warning' : 'grey-lighten-1'"
-					:class="[notifications.has ? 'has-notifications' : '']" id="notifications-activator"
-					:text="notifications.unread + ''" />
+				<v-btn :prepend-icon="computed_notificationStore.unread ? 'mdi-bell-ring-outline' : 'mdi-bell-outline'"
+					:color="computed_notificationStore.unread ? 'warning' : 'grey-lighten-1'"
+					:class="[computed_notificationStore.unread ? 'has-notifications' : '']" id="notifications-activator"
+					:text="computed_notificationStore.unread + ''" />
 				<v-menu activator="#notifications-activator" location="start">
 					<v-card class="px-2 pt-2 pb-5" style="width:100%!important; max-width: 425px; max-height: 90vh;">
 						<v-card-item>
@@ -29,8 +29,8 @@
 									:to="{ name: 'admin.notifications' }"></v-btn>
 							</div>
 						</v-card-item>
-						<template v-if="notifications.items.length">
-							<v-card-item v-for="(item, index) in notifications.items" :key="index"
+						<template v-if="computed_notificationStore.getUnread.length">
+							<v-card-item v-for="(item, index) in computed_notificationStore.getUnread" :key="index"
 								:data-identificator="item?.id">
 								<div class="d-inline-flex align-center pa-4 w-100 rounded" :class="[
 									// bg
@@ -46,7 +46,7 @@
 									<v-tooltip v-if="!item.read" text="Marcar como lida" location="start">
 										<template v-slot:activator="{ props }">
 											<v-btn
-												@click.prevent="notificationAsReadCallback ? notificationAsReadCallback(index, item) : null"
+												@click.prevent="computed_notificationStore.markAsRead(item.id)"
 												icon="mdi-check" variant="plain" size="small" v-bind="props" />
 										</template>
 									</v-tooltip>
@@ -116,6 +116,7 @@
 
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
+import { useNotificationStore } from '@/store/notifications';
 import { mergeProps } from 'vue';
 
 export default {
@@ -164,6 +165,9 @@ export default {
 		},
 		computed_appStore() {
 			return useAppStore();
+		},
+		computed_notificationStore() {
+			return useNotificationStore();
 		}
 	}
 }
