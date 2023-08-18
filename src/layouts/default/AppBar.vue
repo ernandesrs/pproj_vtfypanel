@@ -45,8 +45,7 @@
 									</div>
 									<v-tooltip v-if="!item.read" text="Marcar como lida" location="start">
 										<template v-slot:activator="{ props }">
-											<v-btn
-												@click.prevent="computed_notificationStore.markAsRead(item.id)"
+											<v-btn @click.prevent="computed_notificationStore.markAsRead(item.id)"
 												icon="mdi-check" variant="plain" size="small" v-bind="props" />
 										</template>
 									</v-tooltip>
@@ -96,8 +95,9 @@
 								</div>
 								<div class="d-flex justify-center">
 									<v-btn elevation="0" prepend-icon="mdi-account" size="small" text="Perfil"
-										color="primary" variant="outlined" class="ma-1" :to="{ name: 'app.profile' }"
-										:disabled="this.$route.name == 'app.profile'"></v-btn>
+										color="primary" variant="outlined" class="ma-1"
+										:to="{ name: (computed_appStore.isAdminApp ? 'admin.profile' : 'app.profile') }"
+										:disabled="['app.profile', 'admin.profile'].includes(this.$route.name)"></v-btn>
 									<v-btn @click.stop="method_logout" elevation="0" color="red" prepend-icon="mdi-logout"
 										size="small" text="Sair" class="ma-1"></v-btn>
 								</div>
