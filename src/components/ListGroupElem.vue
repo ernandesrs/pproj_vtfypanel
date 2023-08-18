@@ -14,7 +14,7 @@
 		<v-table density="compact" class="bg-transparent rounded">
 			<thead>
 				<tr>
-					<th class="d-none d-md-table-cell">ID</th>
+					<th v-if="listItems[0]?.id && typeof listItems[0].id == 'number'" class="d-none d-md-table-cell">ID</th>
 					<th>Informações</th>
 					<th v-if="computed_hasAction">Ações</th>
 				</tr>
@@ -29,7 +29,7 @@
 				</div>
 
 				<tr v-for="item, index in items" :key="index">
-					<td v-if="item?.id" class="text-right d-none d-md-table-cell">
+					<td v-if="item?.id && typeof item.id == 'number'" class="text-right d-none d-md-table-cell">
 						{{ item.id }}
 					</td>
 					<td class="w-100 py-6">
@@ -38,18 +38,22 @@
 					<td v-if="computed_hasAction">
 						<v-btn-group density="compact">
 							<!-- actions button -->
-							<v-btn v-if="actionShow" @click.stop="method_showItem" text="Ver" prepend-icon="mdi-eye-outline"
-								size="small" color="secondary" :data-identificator="item?.id ?? index"
-								:disabled="!computed_userStore.permission(this.resource).canView()" />
-							<v-btn v-if="actionEdit" @click.stop="method_editItem" text="Editar"
-								prepend-icon="mdi-square-edit-outline" size="small" color="primary"
-								:data-identificator="item?.id ?? index"
-								:disabled="!computed_userStore.permission(this.resource).canUpdate()" />
-							<confirmation-button v-if="actionDelete" text="Excluir" icon="mdi-delete-outline" size="small"
-								color="danger" :dialog-title="actionDeleteDialogTitle ?? 'Confirmar exclusão?'"
+							<v-btn v-if="actionShow" @click.stop="method_showItem" :text="actionShowConfig.text"
+								:prepend-icon="actionShowConfig.icon" size="small" :color="actionShowConfig.color"
+								:variant="actionShowConfig.variant" :data-identificator="item?.id ?? index"
+								:disabled="!computed_userStore.permission(this.resource).canView() || typeof actionShowConfig.disabled === 'boolean' ? actionShowConfig.disabled : actionShowConfig.disabled(item)" />
+							<v-btn v-if="actionEdit" @click.stop="method_editItem" :text="actionEditConfig.text"
+								:prepend-icon="actionEditConfig.icon" size="small" :color="actionEditConfig.color"
+								:variant="actionEditConfig.variant" :data-identificator="item?.id ?? index"
+								:disabled="!computed_userStore.permission(this.resource).canUpdate() || typeof actionEditConfig.disabled === 'boolean' ? actionEditConfig.disabled : actionEditConfig.disabled(item)"
+								:loading="editLoading" />
+							<confirmation-button v-if="actionDelete" :text="actionDeleteConfig.text"
+								:icon="actionDeleteConfig.icon" size="small" :color="actionDeleteConfig.color"
+								:dialog-title="actionDeleteDialogTitle ?? 'Confirmar exclusão?'"
 								:dialog-text="actionDeleteDialogText" :data-identificator="item?.id ?? index"
 								:confirm-callback="computed_getConfirmCallback" :confirm-route="computed_getConfirmRoute"
-								variant="outlined" :disabled="!computed_userStore.permission(this.resource).canDelete()" />
+								:variant="actionDeleteConfig.variant"
+								:disabled="!computed_userStore.permission(this.resource).canDelete() || typeof actionDeleteConfig.disabled === 'boolean' ? actionDeleteConfig.disabled : actionDeleteConfig.disabled(item)" />
 							<!-- /actions button -->
 						</v-btn-group>
 					</td>
@@ -114,6 +118,36 @@ export default {
 		pages: {
 			type: Array,
 			default: Array
+		},
+		actionShowConfig: {
+			type: Object,
+			default: Object.create({
+				text: 'Ver',
+				color: 'secondary',
+				icon: 'mdi-eye-outline',
+				disabled: false,
+				variant: 'elevated'
+			})
+		},
+		actionEditConfig: {
+			type: Object,
+			default: Object.create({
+				text: 'Editar',
+				color: 'primary',
+				icon: 'mdi-square-edit-outline',
+				disabled: false,
+				variant: 'elevated'
+			})
+		},
+		actionDeleteConfig: {
+			type: Object,
+			default: Object.create({
+				text: 'Excluir',
+				color: 'danger',
+				icon: 'mdi-delete-outline',
+				disabled: false,
+				variant: 'outlined'
+			})
 		},
 		actionShow: {
 			type: [String, Object, Function],

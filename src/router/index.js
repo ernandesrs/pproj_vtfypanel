@@ -102,6 +102,11 @@ const routes = [
         component: () => import('@/views/Admin/Roles/FormView.vue')
       },
       {
+        path: 'notificacoes',
+        name: 'admin.notifications',
+        component: () => import('@/views/Admin/Notifications/ListView.vue')
+      },
+      {
         path: 'perfil',
         name: 'admin.profile',
         component: () => import('@/views/ProfileView.vue')

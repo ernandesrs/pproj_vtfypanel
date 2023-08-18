@@ -49,8 +49,11 @@ const hasPermission = (action, resource) => {
         return true;
     }
 
+    /**
+     * has permission if not have a resource
+     */
     if (!resource) {
-        return false;
+        return true;
     }
 
     const roles = userStore.roles;
