@@ -4,11 +4,22 @@
 	<template v-else>
 		<actions-bar bar-title="Usuários" :action-button-create="{
 			show: true,
-			disabled: !$permissions.addResource('user').canCreate(),
+			disabled: !computed_userStore.permissions('user').canCreate(),
 			text: 'Novo usuário',
 			icon: 'mdi-account-plus',
 			to: { name: 'admin.users.create' }
 		}"></actions-bar>
+
+		<div>
+			<p>Pode listar usuários: {{ computed_userStore.permissions('user').canViewAny() }}</p>
+			<p>Pode ver usuário: {{ computed_userStore.permissions('user').canView() }}</p>
+			<p>Pode criar usuário: {{ computed_userStore.permissions('user').canCreate() }}</p>
+			<p>Pode atualizar usuário: {{ computed_userStore.permissions('user').canUpdate() }}</p>
+			<p>Pode excluir usuário: {{ computed_userStore.permissions('user').canDelete() }}</p>
+			<p>Pode excluir forçado usuário: {{ computed_userStore.permissions('user').canForceDelete() }}</p>
+			<p>Pode recuperar usuário: {{ computed_userStore.permissions('user').canRecovery() }}</p>
+		</div>
+
 		<list-group-elem @changePage="method_changePage" resource="user" :items="users.list" :pages="users.pages"
 			v-slot="{ item }" :action-edit="method_editUser" :action-delete="method_deleteUserConfirmed"
 			action-delete-dialog-title="Excluir usuário?"
@@ -58,6 +69,7 @@
 <script>
 
 import { useAppStore } from '@/store/app';
+import { useUserStore } from '@/store/user';
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
 import LoadingElem from '@/components/LoadingElem.vue';
@@ -156,6 +168,9 @@ export default {
 	computed: {
 		computed_appStore() {
 			return useAppStore();
+		},
+		computed_userStore() {
+			return useUserStore();
 		}
 	}
 }

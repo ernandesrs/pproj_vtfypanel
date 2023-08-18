@@ -1,3 +1,5 @@
+import { useUserStore } from "@/store/user";
+
 /**
  * Allowed resources/permissibles/manageable
  * Check for more or new resources on API return
@@ -25,25 +27,16 @@ const resources = {
 };
 
 /**
- * The user store
- */
-let userStore = null;
-
-/**
  * @param {String} action viewAny/view/create/update/delete/forceDelete/recovery
  * @param {null|String} resource a valid resource unique name(Example: App_Models_User, App_Models_Role, ...),
  * check const 'resources' in /services/permissions.js
  * @returns {Boolean}
  */
 const hasPermission = (action, resource) => {
-    if (!userStore) {
-        return false;
-    }
-
     /**
      * Superuser has all permissions
      */
-    if (userStore.isSuperuser) {
+    if (useUserStore().isSuperuser) {
         return true;
     }
 
@@ -51,7 +44,7 @@ const hasPermission = (action, resource) => {
         return false;
     }
 
-    const roles = userStore.roles;
+    const roles = useUserStore().roles;
 
     /**
      * Denie 'action' if is not set roles for the user
@@ -68,9 +61,6 @@ const hasPermission = (action, resource) => {
         return (permissibleActions && (permissibleActions[action] ?? false));
     });
 
-    console.log(role);
-
-
     /**
      * If it finds one or more, 'action' is allowed
      */
@@ -78,7 +68,7 @@ const hasPermission = (action, resource) => {
 };
 
 /**
- * @param {String} resource something like 'user', 'role', or route name
+ * @param {*} resource something like 'user', 'role', or route name
  * @returns {String|null}
  */
 const findResourceUniqueName = (resource) => {
@@ -171,20 +161,13 @@ const functions = {
     }
 };
 
-/**
- * @param {String} resource A valid resource surname for a resource. See const 'resources' in /services/permissions.js
- * @returns {null|Object}
- */
-const addResource = (resource) => {
-    functions.resource = findResourceUniqueName(resource);
-    return functions;
-}
-
 export default {
-    setUser: (useUserStore) => {
-        userStore = useUserStore;
-        return {
-            addResource: addResource
-        };
+    /**
+     * @param {String} resource A valid resource surname for a resource. See const 'resources' in /services/permissions.js
+     * @returns {null|Object}
+     */
+    addResource: (resource) => {
+        functions.resource = findResourceUniqueName(resource);
+        return functions;
     }
 };

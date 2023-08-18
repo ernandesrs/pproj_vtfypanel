@@ -3,7 +3,6 @@
  *
  * Bootstraps Vuetify and other plugins then mounts the App`
  */
-import permissions from '@/services/permissions'
 import utils from './services/utils'
 
 // Components
@@ -20,6 +19,5 @@ const app = createApp(App)
 registerPlugins(app)
 
 app.config.globalProperties.$utils = utils;
-app.config.globalProperties.$permissions = permissions;
 
 app.mount('#app')

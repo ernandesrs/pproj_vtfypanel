@@ -40,16 +40,16 @@
 							<!-- actions button -->
 							<v-btn v-if="actionShow" @click.stop="method_showItem" text="Ver" prepend-icon="mdi-eye-outline"
 								size="small" color="secondary" :data-identificator="item?.id ?? index"
-								:disabled="!$permissions.addResource(this.resource).canView()" />
+								:disabled="!computed_userStore.permissions(this.resource).canView()" />
 							<v-btn v-if="actionEdit" @click.stop="method_editItem" text="Editar"
 								prepend-icon="mdi-square-edit-outline" size="small" color="primary"
 								:data-identificator="item?.id ?? index"
-								:disabled="!$permissions.addResource(this.resource).canUpdate()" />
+								:disabled="!computed_userStore.permissions(this.resource).canUpdate()" />
 							<confirmation-button v-if="actionDelete" text="Excluir" icon="mdi-delete-outline" size="small"
 								color="danger" :dialog-title="actionDeleteDialogTitle ?? 'Confirmar exclusão?'"
 								:dialog-text="actionDeleteDialogText" :data-identificator="item?.id ?? index"
 								:confirm-callback="computed_getConfirmCallback" :confirm-route="computed_getConfirmRoute"
-								variant="outlined" :disabled="!$permissions.addResource(this.resource).canDelete()" />
+								variant="outlined" :disabled="!computed_userStore.permissions(this.resource).canDelete()" />
 							<!-- /actions button -->
 						</v-btn-group>
 					</td>
@@ -72,6 +72,7 @@
 
 <script>
 
+import { useUserStore } from '@/store/user';
 import ConfirmationButton from './ConfirmationButton.vue';
 import LoadingElem from './LoadingElem.vue';
 
@@ -158,20 +159,6 @@ export default {
 			}
 		}
 	},
-	computed: {
-		computed_emptyListText() {
-			return this.emptyListText ?? "Lista vazia";
-		},
-		computed_hasAction() {
-			return this.actionShow || this.actionEdit || this.actionDelete;
-		},
-		computed_getConfirmCallback() {
-			return typeof this.actionDelete === 'function' ? this.actionDelete : null;
-		},
-		computed_getConfirmRoute() {
-			return typeof this.actionDelete === 'object' ? this.actionDelete : null;
-		}
-	},
 	methods: {
 		method_showItem(event) {
 			this.method_call(this.actionShow, event);
@@ -216,6 +203,23 @@ export default {
 		},
 		method_clearFilterField() {
 			this.method_filter();
+		}
+	},
+	computed: {
+		computed_emptyListText() {
+			return this.emptyListText ?? "Lista vazia";
+		},
+		computed_hasAction() {
+			return this.actionShow || this.actionEdit || this.actionDelete;
+		},
+		computed_getConfirmCallback() {
+			return typeof this.actionDelete === 'function' ? this.actionDelete : null;
+		},
+		computed_getConfirmRoute() {
+			return typeof this.actionDelete === 'object' ? this.actionDelete : null;
+		},
+		computed_userStore() {
+			return useUserStore();
 		}
 	}
 }

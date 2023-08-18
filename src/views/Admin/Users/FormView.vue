@@ -36,7 +36,7 @@
 									};
 								})" item-title="text" item-value="value" label="Nível de acesso" density="compact" variant="filled"
 								:loading="user.form.submitting" :readonly="user.form.submitting"
-								:disabled="!$permissions.addResource('user').canPromote()"></v-select>
+								:disabled="!computed_userStore.permissions('user').canPromote()"></v-select>
 						</v-card-item>
 
 						<v-card-item v-if="[8].includes(user.form.data.level)">
@@ -44,7 +44,7 @@
 								:items="roles.list" item-title="display_name" item-value="id" label="Funções atribuídas"
 								chips multiple :loading="roles.loading || user.form.submitting"
 								:readonly="roles.loading || user.form.submitting" density="compact" variant="filled"
-								:disabled="!$permissions.addResource('user').canPromote()"></v-select>
+								:disabled="!computed_userStore.permissions('user').canPromote()"></v-select>
 						</v-card-item>
 					</v-card>
 				</v-sheet>

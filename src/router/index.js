@@ -95,7 +95,7 @@ const routes = [
         path: 'funcoes/:role_id/editar',
         name: 'admin.roles.edit',
         beforeEnter: [
-          middlewares.canAccessUpdateView
+          // middlewares.canAccessUpdateView
         ],
         component: () => import('@/views/Admin/Roles/FormView.vue')
       },

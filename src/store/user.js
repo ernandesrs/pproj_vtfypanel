@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import token from '@/services/token';
 import router from '@/router';
 import axios from '@/plugins/axios';
+import perm from '@/services/permissions';
 
 export const useUserStore = defineStore('user', {
     state: () => {
@@ -67,6 +68,9 @@ export const useUserStore = defineStore('user', {
         },
         getLevel() {
             return this.user.level;
+        },
+        permissions() {
+            return perm.setUser(this).addResource;
         }
     }
 });
