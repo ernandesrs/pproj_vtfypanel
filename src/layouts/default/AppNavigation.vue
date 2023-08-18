@@ -20,7 +20,11 @@
 						rounded></v-list-item>
 				</v-list-group>
 				<v-list-item v-else :title="item.text" :prepend-icon="item.icon" :to="item.to"
-					:active="item.activeIn.includes(this.$route.name)" rounded></v-list-item>
+					:active="item.activeIn.includes(this.$route.name)" rounded>
+					<template v-if="item?.badge && item.badge.content() > 0" v-slot:append>
+						<v-badge :color="item.badge.color" :content="item.badge.content() + ''" inline></v-badge>
+					</template>
+				</v-list-item>
 			</template>
 		</v-list>
 
@@ -37,11 +41,13 @@
 <script>
 
 import { useAppStore } from '@/store/app';
+import { useNotificationStore } from '@/store/notifications';
 import { useUserStore } from '@/store/user';
 
 export default {
 	data() {
 		return {
+			notifCount: 10,
 			drawer: false,
 			navs: {
 				app: {
@@ -76,6 +82,18 @@ export default {
 							icon: 'mdi-home',
 							to: { name: 'admin.home' },
 							activeIn: ['admin.home']
+						},
+						{
+							text: 'Notificações',
+							icon: 'mdi-bell-outline',
+							to: { name: 'admin.notifications' },
+							activeIn: ['admin.notifications'],
+							badge: {
+								color: 'warning',
+								content: () => {
+									return this.computed_notificationStore.unread;
+								}
+							}
 						},
 						{
 							text: 'Usuários',
@@ -162,6 +180,9 @@ export default {
 		},
 		computed_userStore() {
 			return useUserStore();
+		},
+		computed_notificationStore() {
+			return useNotificationStore();
 		}
 	}
 }
