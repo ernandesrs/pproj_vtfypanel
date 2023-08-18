@@ -6,8 +6,9 @@
 
 		<template #append>
 			<!-- admin panel button -->
-			<v-btn v-if="computed_appStore.isClientApp && computed_userStore.hasAdminAccess" prepend-icon="mdi-chart-pie-outline"
-				text="Administrativo" size="small" variant="outlined" :to="{ name: 'admin.home' }" color="primary" />
+			<v-btn v-if="computed_appStore.isClientApp && computed_userStore.hasAdminAccess"
+				prepend-icon="mdi-chart-pie-outline" text="Administrativo" size="small" variant="outlined"
+				:to="{ name: 'admin.home' }" color="primary" />
 
 			<!-- app panel button -->
 			<v-btn v-if="computed_appStore.isAdminApp" prepend-icon="mdi-chart-pie-outline" text="Cliente" size="small"
@@ -24,8 +25,8 @@
 						<v-card-item>
 							<div class="d-flex justify-space-between align-center w-100 pa-2">
 								<h6 class="text-body-1">Notificações</h6>
-								<v-btn append-icon="mdi-arrow-right" text="Ver todas" variant="plain"
-									color="primary"></v-btn>
+								<v-btn append-icon="mdi-arrow-right" text="Ver todas" variant="plain" color="primary"
+									:to="{ name: 'admin.notifications' }"></v-btn>
 							</div>
 						</v-card-item>
 						<template v-if="notifications.items.length">
@@ -38,7 +39,7 @@
 									item.read ? (this.$utils.app.config.themeIsDark() ? 'text-grey-darken-1' : 'text-grey-lighten-1') : (this.$utils.app.config.themeIsDark() ? 'text-grey-lighten-3' : 'text-grey-darken-2')
 								]">
 									<v-icon :icon="item?.icon ?? 'mdi-bell-outline'" />
-									<div class="pl-3 pr-5">
+									<div class="pl-3 pr-5 w-100 d-inline-block text-truncate">
 										<h5 class="text-body-1 font-weight-medium">{{ item.title }}</h5>
 										<p class="text-subtitle-2 font-weight-regular">{{ item.description }}</p>
 									</div>

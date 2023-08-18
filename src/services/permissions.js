@@ -13,19 +13,21 @@ const resources = {
          */
         'user',
         'admin.users',
+        'admin.show',
         'admin.users.create',
         'admin.users.edit'
     ],
     'App_Models_Role': [
         'role',
         'admin.roles',
+        'admin.show',
         'admin.roles.create',
         'admin.roles.edit'
     ]
 };
 
 /**
- * The user store
+ * useUserStore instance
  */
 let userStore = null;
 
@@ -47,8 +49,11 @@ const hasPermission = (action, resource) => {
         return true;
     }
 
+    /**
+     * has permission if not have a resource
+     */
     if (!resource) {
-        return false;
+        return true;
     }
 
     const roles = userStore.roles;
@@ -84,7 +89,7 @@ const hasPermission = (action, resource) => {
 const findResourceUniqueName = (resource) => {
     const result = Object.entries(resources).find((r) => {
         return r[1].includes(resource);
-    })
+    });
 
     return result ? result[0] : null;
 }
@@ -178,13 +183,13 @@ const functions = {
 const addResource = (resource) => {
     functions.resource = findResourceUniqueName(resource);
     return functions;
-}
+};
 
 export default {
-    setUser: (useUserStore) => {
+    addUser: (useUserStore) => {
         userStore = useUserStore;
         return {
-            addResource: addResource
+            addResource
         };
     }
 };

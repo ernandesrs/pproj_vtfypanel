@@ -4,7 +4,7 @@
 	<template v-else>
 		<actions-bar bar-title="Usuários" :action-button-create="{
 			show: true,
-			disabled: !computed_userStore.permissions('user').canCreate(),
+			disabled: !computed_userStore.permission('user').canCreate(),
 			text: 'Novo usuário',
 			icon: 'mdi-account-plus',
 			to: { name: 'admin.users.create' }

@@ -71,6 +71,7 @@ const routes = [
         path: 'usuarios/:user_id/editar',
         name: 'admin.users.edit',
         beforeEnter: [
+          middlewares.canAccessShowView,
           middlewares.canAccessUpdateView
         ],
         component: () => import('@/views/Admin/Users/FormView.vue'),
@@ -95,9 +96,15 @@ const routes = [
         path: 'funcoes/:role_id/editar',
         name: 'admin.roles.edit',
         beforeEnter: [
-          // middlewares.canAccessUpdateView
+          middlewares.canAccessShowView,
+          middlewares.canAccessUpdateView
         ],
         component: () => import('@/views/Admin/Roles/FormView.vue')
+      },
+      {
+        path: 'notificacoes',
+        name: 'admin.notifications',
+        component: () => import('@/views/Admin/Notifications/ListView.vue')
       },
       {
         path: 'perfil',

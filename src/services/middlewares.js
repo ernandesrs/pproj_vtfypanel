@@ -59,7 +59,7 @@ export default {
     canAccessListView: (to, from, next) => {
         let route = null;
 
-        if (!useUserStore().permissions(to.name).canViewAny()) {
+        if (!useUserStore().permission(to.name).canViewAny()) {
             alert.addDanger('Você não tem autorização para acessar esta área.', 'Sem autorização', from.name ? false : true);
             route = {
                 name: 'admin.home'
@@ -71,7 +71,19 @@ export default {
     canAccessCreateView: (to, from, next) => {
         let route = null;
 
-        if (!useUserStore().permissions(to.name).canCreate()) {
+        if (!useUserStore().permission(to.name).canCreate()) {
+            alert.addDanger('Você não tem autorização para acessar esta área.', 'Sem autorização', from.name ? false : true);
+            route = {
+                name: 'admin.home'
+            };
+        }
+
+        return next(route);
+    },
+    canAccessShowView: (to, from, next) => {
+        let route = null;
+
+        if (!useUserStore().permission(to.name).canView()) {
             alert.addDanger('Você não tem autorização para acessar esta área.', 'Sem autorização', from.name ? false : true);
             route = {
                 name: 'admin.home'
@@ -83,7 +95,7 @@ export default {
     canAccessUpdateView: (to, from, next) => {
         let route = null;
 
-        if (!useUserStore().permissions(to.name).canUpdate()) {
+        if (!useUserStore().permission(to.name).canUpdate()) {
             alert.addDanger('Você não tem autorização para acessar esta área.', 'Sem autorização', from.name ? false : true);
             route = {
                 name: 'admin.home'
