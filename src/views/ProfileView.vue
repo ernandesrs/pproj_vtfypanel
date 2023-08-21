@@ -1,15 +1,20 @@
 <template>
   <actions-bar bar-title="Meu perfil"></actions-bar>
 
-  <v-row class="justify-center pa-8">
+  <v-row class="justify-center py-6 px-2">
+    <!-- left side: avatar, photo upload/delete, account data, addresses -->
     <v-col cols="12" sm="10" lg="3" class="text-center">
+
+      <!-- avatar -->
       <v-avatar size="175">
         <v-img v-if="data?.photo_url" :src="data?.photo_url"></v-img>
         <div v-else class="text-h2 font-weight-bold w-100 h-100 d-flex justify-center align-center">
           {{ data?.first_name[0] }}{{ data?.last_name[0] }}
         </div>
       </v-avatar>
-      <div class="py-3">
+
+      <!-- photo upload/delete -->
+      <div class="py-3 mt-3">
         <confirmation-button v-if="data?.photo_url" icon="mdi-trash-can-outline" text="Excluir foto" color="red"
           size="small" dialog-title="Excluir sua foto?" dialog-text="A foto não poderá ser recuperada."
           :confirm-callback="method_deleteUserPhoto"></confirmation-button>
@@ -17,9 +22,11 @@
           accept="image/png, image/jpeg, image/bmp" placeholder="Enviar foto" prepend-icon="mdi-account" label="Foto"
           :error-messages="photoUpload.errors?.photo"></v-file-input>
       </div>
+
     </v-col>
 
     <v-col cols="12" sm="10" lg="6">
+
       <v-form>
         <group-elem title="Dados da sua conta" description="Atualize os dados da sua conta">
           <template #content>
@@ -81,6 +88,7 @@
           </v-col>
         </v-row>
       </v-form>
+
     </v-col>
   </v-row>
 </template>

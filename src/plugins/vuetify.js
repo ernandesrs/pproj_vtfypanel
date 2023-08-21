@@ -26,6 +26,12 @@ export default createVuetify({
     },
     VSelect: {
       variant: 'outlined'
+    },
+    VAutocomplete: {
+      variant: 'outlined'
+    },
+    VFileInput: {
+      variant: 'outlined'
     }
   },
   theme: {
