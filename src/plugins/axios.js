@@ -2,7 +2,7 @@ import axios from 'axios';
 import token from './../services/token';
 import alert from '@/services/alert';
 
-axios.defaults.baseURL = 'http://127.0.0.1:8000/api/v1';
+axios.defaults.baseURL = import.meta.env.VITE_APP_API_URL_BASE;
 
 axios.interceptors.request.use(function (config) {
     let apiToken = token.get();
