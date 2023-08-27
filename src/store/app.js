@@ -1,6 +1,10 @@
 // Utilities
 import { defineStore } from 'pinia'
 
+const XS_SIZE = 600;
+const SM_SIZE = 960;
+const MD_SIZE = 1280;
+
 export const useAppStore = defineStore('app', {
   state: () => ({
     app: 'app',
@@ -18,6 +22,17 @@ export const useAppStore = defineStore('app', {
     /***********************************
      * app
      ***********************************/
+    isExtraSmallDevice() {
+      return window.innerWidth <= XS_SIZE;
+    },
+
+    isSmallDevice() {
+      return window.innerWidth <= SM_SIZE;
+    },
+
+    isMediumDevice() {
+      return window.innerWidth <= MD_SIZE;
+    },
 
     /**
      * @returns {String}

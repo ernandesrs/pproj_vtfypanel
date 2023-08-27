@@ -164,7 +164,7 @@ export default {
 	},
 	methods: {
 		method_defineNavigationDrawerStatus() {
-			if (window.innerWidth < 1280) {
+			if (this.computed_appStore.isMediumDevice) {
 				this.drawer = false;
 			} else {
 				this.drawer = true;

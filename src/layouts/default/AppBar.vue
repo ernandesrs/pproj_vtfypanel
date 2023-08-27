@@ -2,26 +2,22 @@
 	<v-app-bar density="compact" elevation="0" class="border-b">
 		<v-app-bar-nav-icon variant="text" @click.stop="method_navigationDrawerToggle"></v-app-bar-nav-icon>
 
-		<v-breadcrumbs :items="breadcrumbs"></v-breadcrumbs>
+		<v-breadcrumbs v-if="!computed_appStore.isExtraSmallDevice" :items="breadcrumbs"></v-breadcrumbs>
 
 		<template #append>
-			<!-- admin panel button -->
-			<v-btn v-if="computed_appStore.isClientApp && computed_userStore.hasAdminAccess"
-				prepend-icon="mdi-chart-pie-outline" text="Administrativo" size="small" variant="outlined"
-				:to="{ name: 'admin.home' }" color="primary" />
+			<v-btn-group class="mx-1" variant="text">
+				<!-- dark mode toggler -->
+				<v-btn @click="$utils.app.config.themeToggleDark()" icon="mdi-brightness-6" size="small" />
 
-			<!-- app panel button -->
-			<v-btn v-if="computed_appStore.isAdminApp" prepend-icon="mdi-chart-pie-outline" text="Cliente" size="small"
-				variant="outlined" :to="{ name: 'app.home' }" color="primary" />
-
-			<v-btn-group class="mx-2" variant="text">
 				<!-- notifications -->
-				<v-btn :prepend-icon="computed_notificationStore.unread ? 'mdi-bell-ring-outline' : 'mdi-bell-outline'"
+				<v-btn :prepend-icon="computed_notificationStore.unread ? 'mdi-bell-ring-outline' : null"
+					:icon="computed_notificationStore.unread == 0 ? 'mdi-bell-outline' : null"
 					:color="computed_notificationStore.unread ? 'warning' : 'grey-lighten-1'"
 					:class="[computed_notificationStore.unread ? 'has-notifications' : '']" id="notifications-activator"
-					:text="computed_notificationStore.unread + ''" />
-				<v-menu activator="#notifications-activator" location="start">
-					<v-card class="px-2 pt-2 pb-5" style="width:100%!important; max-width: 425px; max-height: 90vh;">
+					:text="computed_notificationStore.unread + ''" size="small" />
+				<v-menu activator="#notifications-activator">
+					<v-card class="px-2 pt-2 pb-5"
+						style="width:100%!important; min-width: 350px; max-width: 350px; max-height: 90vh;">
 						<v-card-item>
 							<div class="d-flex justify-space-between align-center w-100 pa-2">
 								<h6 class="text-body-1">Notificações</h6>
@@ -58,55 +54,43 @@
 					</v-card>
 				</v-menu>
 
-				<!-- dark mode toggler -->
-				<v-btn @click="$utils.app.config.themeToggleDark()" icon="mdi-brightness-6"
-					:text="$utils.app.config.themeIsDark() ? 'Light' : 'Dark'" class="text-none" size="small" />
+				<!-- user avatar -->
+				<v-btn color="primary" id="profile-activator" size="small">
+					<v-avatar size="32" color="primary">
+						<v-img v-if="computed_userStore.getPhotoUrl" :src="computed_userStore.getPhotoUrl"></v-img>
+						<span v-else class="text-h8">{{ computed_userStore.getInitials }}</span>
+					</v-avatar>
+				</v-btn>
+				<v-menu activator="#profile-activator">
+					<v-list class="text-center">
+						<v-list-item>
+							<v-card>
+								<v-card-text>
+									<v-avatar size="125" color="primary">
+										<v-img v-if="computed_userStore.getPhotoUrl"
+											:src="computed_userStore.getPhotoUrl"></v-img>
+										<span v-else class="text-h4">{{ computed_userStore.getInitials }}</span>
+									</v-avatar>
+									<div class="pt-1 pb-3">
+										<h3 class="text-h6 font-weight-bold">{{ computed_userStore.getFullName.substring(0,
+											9)
+										}}...</h3>
+										<p>{{ computed_userStore.getEmail }}</p>
+									</div>
+									<div class="d-flex justify-center">
+										<v-btn elevation="0" prepend-icon="mdi-account" size="small" text="Perfil"
+											color="primary" variant="outlined" class="ma-1"
+											:to="{ name: (computed_appStore.isAdminApp ? 'admin.profile' : 'app.profile') }"
+											:disabled="['app.profile', 'admin.profile'].includes(this.$route.name)"></v-btn>
+										<v-btn @click.stop="method_logout" elevation="0" color="red"
+											prepend-icon="mdi-logout" size="small" text="Sair" class="ma-1"></v-btn>
+									</div>
+								</v-card-text>
+							</v-card>
+						</v-list-item>
+					</v-list>
+				</v-menu>
 			</v-btn-group>
-
-			<!-- user avatar -->
-			<v-menu>
-				<template v-slot:activator="{ props: menu }">
-					<v-tooltip location="bottom" text="Usuário logado">
-						<template v-slot:activator="{ props: tooltip }">
-							<v-btn color="primary" v-bind="mergeProps(menu, tooltip)">
-								<v-avatar size="32" color="primary">
-									<v-img v-if="computed_userStore.getPhotoUrl"
-										:src="computed_userStore.getPhotoUrl"></v-img>
-									<span v-else class="text-h8">{{ computed_userStore.getInitials }}</span>
-								</v-avatar>
-							</v-btn>
-						</template>
-					</v-tooltip>
-				</template>
-				<v-list class="text-center">
-					<v-list-item>
-						<v-card>
-							<v-card-text>
-								<v-avatar size="125" color="primary">
-									<v-img v-if="computed_userStore.getPhotoUrl"
-										:src="computed_userStore.getPhotoUrl"></v-img>
-									<span v-else class="text-h4">{{ computed_userStore.getInitials }}</span>
-								</v-avatar>
-								<div class="pt-1 pb-3">
-									<h3 class="text-h6 font-weight-bold">{{ computed_userStore.getUsername.substring(0, 9)
-									}}
-									</h3>
-									<p>{{ computed_userStore.getEmail }}</p>
-								</div>
-								<div class="d-flex justify-center">
-									<v-btn elevation="0" prepend-icon="mdi-account" size="small" text="Perfil"
-										color="primary" variant="outlined" class="ma-1"
-										:to="{ name: (computed_appStore.isAdminApp ? 'admin.profile' : 'app.profile') }"
-										:disabled="['app.profile', 'admin.profile'].includes(this.$route.name)"></v-btn>
-									<v-btn @click.stop="method_logout" elevation="0" color="red" prepend-icon="mdi-logout"
-										size="small" text="Sair" class="ma-1"></v-btn>
-								</div>
-							</v-card-text>
-						</v-card>
-					</v-list-item>
-				</v-list>
-			</v-menu>
-			<!-- /user avatar -->
 
 		</template>
 	</v-app-bar>
