@@ -1,7 +1,8 @@
 <template>
-  <loading-elem v-if="loadingContent" />
+  <base-view :load-contents="[
+    method_getDashContent
+  ]">
 
-  <template v-else>
     <v-row justify="center">
       <v-col v-for="card, indexCard in cards" cols="12" sm="6" lg="4" :key="indexCard">
         <v-card :title="card.title" :prepend-icon="card.icon" elevation="1" :color="card.color">
@@ -16,20 +17,20 @@
         </v-card>
       </v-col>
     </v-row>
-  </template>
+
+  </base-view>
 </template>
 
 <script>
 
 import { useAppStore } from '@/store/app';
 import axios from '@/plugins/axios';
-import LoadingElem from '@/components/LoadingElem.vue';
+import BaseView from '../BaseView.vue';
 
 export default {
-  components: { LoadingElem },
+  components: { BaseView },
   data() {
     return {
-      loadingContent: true,
       cards: {
         users: {
           icon: 'mdi-account-group-outline',
@@ -82,16 +83,13 @@ export default {
       this.method_getDashContent();
     },
     method_getDashContent() {
-      axios.req({
+      return axios.req({
         action: '/admin',
         method: 'get',
         success: (resp) => {
           this.cards.users.items.total = resp.data.users.total;
           this.cards.users.items.verified = resp.data.users.verified;
           this.cards.users.items.not_verified = resp.data.users.not_verified;
-        },
-        finally: () => {
-          this.loadingContent = false;
         }
       });
     }

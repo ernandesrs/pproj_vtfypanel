@@ -1,7 +1,6 @@
 <template>
-  <loading-elem v-if="loadingContent" />
+  <base-view :load-contents="[]">
 
-  <template v-else>
     <v-row v-if="!computed_userStore.isVerified || !hasActiveSubscription">
       <v-col v-if="!computed_userStore.isVerified" cols="12">
         <v-alert :title="verification.resended ? 'Novo link enviado!' : 'Verifique sua conta!'" variant="outlined"
@@ -23,7 +22,8 @@
         </v-card>
       </v-col>
     </v-row>
-  </template>
+
+  </base-view>
 </template>
 
 <script>
@@ -31,13 +31,12 @@
 import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
 import axios from '@/plugins/axios';
-import LoadingElem from '@/components/LoadingElem.vue';
+import BaseView from '../BaseView.vue';
 
 export default {
-  components: { LoadingElem },
+  components: { BaseView },
   data() {
     return {
-      loadingContent: true,
       hasActiveSubscription: false,
       verification: {
         resended: false,
@@ -47,8 +46,6 @@ export default {
   },
   created() {
     this.computed_appStore.updateBreadcrumbs([]);
-
-    this.loadingContent = false;
   },
   methods: {
     method_resendLink() {

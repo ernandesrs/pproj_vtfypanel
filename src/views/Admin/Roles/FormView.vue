@@ -1,7 +1,7 @@
 <template>
-	<loading-elem v-if="loadingContent"></loading-elem>
-	<template v-else>
-		<actions-bar :bar-title="computed_isCreating ? 'Novo função' : 'Editar função'"></actions-bar>
+	<base-view :load-contents="computed_isCreating ? [] : [
+		method_getRole
+	]" :bar-title="computed_isCreating ? 'Novo função' : 'Editar função'">
 
 		<v-row justify="center">
 			<v-col cols="12" md="10" lg="8" xl="6">
@@ -51,7 +51,8 @@
 					prepend-icon="mdi-check" color="primary" :loading="role.form.submitting"></v-btn>
 			</v-col>
 		</v-row>
-	</template>
+
+	</base-view>
 </template>
 
 <script>
@@ -59,15 +60,13 @@
 import { useAppStore } from '@/store/app';
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
-import LoadingElem from '@/components/LoadingElem.vue';
-import ActionsBar from '@/layouts/default/ActionsBar.vue';
 import GroupElem from '@/components/GroupElem.vue';
+import BaseView from '@/views/BaseView.vue';
 
 export default {
-	components: { LoadingElem, ActionsBar, GroupElem },
+	components: { GroupElem, BaseView },
 	data() {
 		return {
-			loadingContent: true,
 			role: {
 				form: {
 					valid: false,
@@ -108,22 +107,15 @@ export default {
 	methods: {
 		method_main() {
 			this.method_setBreadcrumbs();
-
-			if (!this.computed_isCreating) {
-				this.method_getRole(this.$route.params.role_id);
-			} else {
-				this.loadingContent = false;
-			}
 		},
-		method_getRole(id) {
-			axios.req({
+		method_getRole() {
+			let id = this.$route.params.role_id;
+
+			return axios.req({
 				action: '/admin/roles/' + id,
 				method: 'get',
 				success: (resp) => {
 					this.role.form.data = resp.data.role;
-				},
-				finally: () => {
-					this.loadingContent = false;
 				}
 			});
 		},

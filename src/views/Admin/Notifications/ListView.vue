@@ -1,8 +1,5 @@
 <template>
-    <loading-elem v-if="loadingContent" />
-
-    <template v-else>
-        <actions-bar bar-title="Notificações" />
+    <base-view :load-contents="[]" bar-title="Notificações">
 
         <list-group-elem empty-list-text="Sem notificações" :items="computed_notificationStore.getAll" v-slot="{ item }"
             :action-edit-config="{
@@ -36,23 +33,22 @@
                 </v-col>
             </v-row>
         </list-group-elem>
-    </template>
+
+    </base-view>
 </template>
 
 <script>
 
 import { useAppStore } from '@/store/app';
 import { useNotificationStore } from '@/store/notifications';
-import LoadingElem from '@/components/LoadingElem.vue';
-import ActionsBar from '@/layouts/default/ActionsBar.vue';
 import ListGroupElem from '@/components/ListGroupElem.vue';
 import TinyTextElem from '@/components/TinyTextElem.vue';
+import BaseView from '@/views/BaseView.vue';
 
 export default {
-    components: { LoadingElem, ActionsBar, ListGroupElem, TinyTextElem },
+    components: { ListGroupElem, TinyTextElem, BaseView },
     data() {
         return {
-            loadingContent: false
         }
     },
     created() {
@@ -60,8 +56,6 @@ export default {
     },
     methods: {
         method_main() {
-            this.loadingContent = true;
-
             this.computed_appStore.updateBreadcrumbs([
                 {
                     title: 'Notificações',
@@ -69,8 +63,6 @@ export default {
                     disabled: true
                 }
             ]);
-
-            this.loadingContent = false;
         },
         method_markAsRead(event) {
             return this.computed_notificationStore.markAsRead(event.target.getAttribute('data-identificator'));

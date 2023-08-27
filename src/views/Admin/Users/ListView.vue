@@ -1,15 +1,13 @@
 <template>
-	<loading-elem v-if="loadingContent"></loading-elem>
-
-	<template v-else>
-		<actions-bar bar-title="Usuários" :action-button-create="{
-			show: true,
-			disabled: !computed_userStore.permission('user').canCreate(),
-			text: 'Novo usuário',
-			icon: 'mdi-account-plus',
-			to: { name: 'admin.users.create' }
-		}"></actions-bar>
-
+	<base-view :load-contents="[
+		method_getUsers
+	]" bar-title="Usuários" :bar-create-button="{
+	show: true,
+	disabled: !computed_userStore.permission('user').canCreate(),
+	text: 'Novo usuário',
+	icon: 'mdi-account-plus',
+	to: { name: 'admin.users.create' }
+}">
 		<list-group-elem @changePage="method_changePage" resource="user" :items="users.list" :pages="users.pages"
 			v-slot="{ item }" :action-edit="method_editUser" :action-delete="method_deleteUserConfirmed"
 			action-delete-dialog-title="Excluir usuário?"
@@ -53,7 +51,7 @@
 				</v-col>
 			</v-row>
 		</list-group-elem>
-	</template>
+	</base-view>
 </template>
 
 <script>
@@ -62,15 +60,13 @@ import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
-import LoadingElem from '@/components/LoadingElem.vue';
-import ActionsBar from '@/layouts/default/ActionsBar.vue';
 import ListGroupElem from '@/components/ListGroupElem.vue';
+import BaseView from '@/views/BaseView.vue';
 
 export default {
-	components: { LoadingElem, ActionsBar, ListGroupElem },
+	components: { ListGroupElem, BaseView },
 	data() {
 		return {
-			loadingContent: true,
 			users: {
 				limit: 10,
 				list: [],
@@ -112,10 +108,8 @@ export default {
 					to: { name: 'admin.users' }
 				}
 			]);
-
-			this.method_getUsers(1);
 		},
-		method_getUsers(page, search = null) {
+		method_getUsers(page = 1, search = null) {
 			return axios.req({
 				action: '/admin/users?page=' + page + '&limit=' + this.users.limit + (search ? '&search=' + search : ''),
 				method: 'get',

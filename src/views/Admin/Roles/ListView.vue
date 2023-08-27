@@ -1,14 +1,13 @@
 <template>
-	<loading-elem v-if="loadingContent"></loading-elem>
-
-	<template v-else>
-		<actions-bar bar-title="Funções" :action-button-create="{
-			show: true,
-			disabled: !computed_userStore.permission('role').canCreate(),
-			text: 'Nova função',
-			icon: 'mdi-shield-plus-outline',
-			to: { name: 'admin.roles.create' },
-		}"></actions-bar>
+	<base-view :load-contents="[
+		method_getRoles
+	]" bar-title="Funções" :bar-create-button="{
+	show: true,
+	disabled: !computed_userStore.permission('role').canCreate(),
+	text: 'Nova função',
+	icon: 'mdi-shield-plus-outline',
+	to: { name: 'admin.roles.create' },
+}">
 
 		<list-group-elem @changePage="method_changePage" resource="role" :items="roles.list" :pages="roles.pages"
 			v-slot="{ item }" :action-edit="method_edit" :action-delete="method_deleteConfirmed"
@@ -30,7 +29,8 @@
 			</v-row>
 
 		</list-group-elem>
-	</template>
+
+	</base-view>
 </template>
 
 <script>
@@ -39,15 +39,13 @@ import { useAppStore } from '@/store/app';
 import { useUserStore } from '@/store/user';
 import axios from '@/plugins/axios.js';
 import alert from '@/services/alert.js';
-import LoadingElem from '@/components/LoadingElem.vue';
-import ActionsBar from '@/layouts/default/ActionsBar.vue';
 import ListGroupElem from '@/components/ListGroupElem.vue';
+import BaseView from '@/views/BaseView.vue';
 
 export default {
-	components: { LoadingElem, ActionsBar, ListGroupElem },
+	components: { ListGroupElem, BaseView },
 	data() {
 		return {
-			loadingContent: true,
 			roles: {
 				limit: 10,
 				list: [],
@@ -67,13 +65,11 @@ export default {
 					disabled: true
 				}
 			]);
-
-			this.method_getRoles(1);
 		},
 		method_changePage(page) {
 			return this.method_getRoles(page.page);
 		},
-		method_getRoles(page, search = null) {
+		method_getRoles(page = 1, search = null) {
 			let action = '/admin/roles?page=' + page + '&limit=' + this.roles.limit + (search ? '&search=' + search : '');
 
 			return axios.req({
@@ -82,9 +78,6 @@ export default {
 				success: (resp) => {
 					this.roles.list = resp.data.roles.list;
 					this.roles.pages = resp.data.roles.meta.links;
-				},
-				finally: () => {
-					this.loadingContent = false;
 				}
 			});
 		},

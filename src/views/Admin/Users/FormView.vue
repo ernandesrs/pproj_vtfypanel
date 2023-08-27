@@ -1,10 +1,13 @@
 <template>
-	<loading-elem v-if="loadingContent"></loading-elem>
-	<template v-else>
-		<confirmation-dialog v-model="superUserDialogConfirmation" color="danger" title="IMPORTANTE!"
-			text="Você está atribuindo a este usuário o nível de acesso 'Super usuário', isso o concede poder total sobre o sistema, incluindo permissões para alterar e excluir outros 'super usuários'. Tem certeza de que quer prosseguir?"
-			:confirm-callback="method_updateLevelConfirmed" :cancel-callback="method_updateLevelCanceled" />
-		<actions-bar :bar-title="this.computed_isCreating ? 'Novo usuário' : 'Editar usuário'"></actions-bar>
+	<confirmation-dialog v-model="superUserDialogConfirmation" color="danger" title="IMPORTANTE!"
+		text="Você está atribuindo a este usuário o nível de acesso 'Super usuário', isso o concede poder total sobre o sistema, incluindo permissões para alterar e excluir outros 'super usuários'. Tem certeza de que quer prosseguir?"
+		:confirm-callback="method_updateLevelConfirmed" :cancel-callback="method_updateLevelCanceled" />
+
+	<base-view :load-contents="computed_isCreating ? [] : [
+		method_getUser,
+		method_getRoles
+	]" :bar-title="computed_isCreating ? 'Novo usuário' : 'Editar usuário'">
+
 		<v-row class="justify-center">
 			<v-col v-if="!this.computed_isCreating" cols="12" sm="10" lg="4" class="text-center">
 				<v-avatar size="175">
@@ -123,7 +126,8 @@
 				</v-form>
 			</v-col>
 		</v-row>
-	</template>
+
+	</base-view>
 </template>
 
 <script>
@@ -132,18 +136,16 @@ import { useUserStore } from '@/store/user';
 import { useAppStore } from '@/store/app';
 import axios from '@/plugins/axios';
 import alert from '@/services/alert';
-import LoadingElem from '@/components/LoadingElem.vue';
-import ActionsBar from '@/layouts/default/ActionsBar.vue';
 import ConfirmationButton from '@/components/ConfirmationButton.vue';
 import ConfirmationDialog from '@/components/ConfirmationDialog.vue';
 import GroupElem from '@/components/GroupElem.vue';
+import BaseView from '@/views/BaseView.vue';
 
 export default {
-	components: { LoadingElem, ActionsBar, ConfirmationButton, ConfirmationDialog, GroupElem },
+	components: { ConfirmationButton, ConfirmationDialog, GroupElem, BaseView },
 	data() {
 		return {
 			superUserDialogConfirmation: false,
-			loadingContent: true,
 			visiblePassword: false,
 			user: {
 				old_level: null,
@@ -197,13 +199,6 @@ export default {
 	},
 	methods: {
 		method_main() {
-			if (!this.computed_isCreating) {
-				this.method_getUser();
-				this.method_getRoles();
-			} else {
-				this.loadingContent = false;
-			}
-
 			this.computed_appStore.updateBreadcrumbs([
 				{
 					title: 'Usuários',
@@ -218,20 +213,17 @@ export default {
 			]);
 		},
 		method_getUser() {
-			axios.req({
+			return axios.req({
 				action: '/admin/users/' + this.$route.params?.user_id,
 				method: 'get',
 				success: (resp) => {
 					this.user.form.data = resp.data.user;
-				},
-				finally: () => {
-					this.loadingContent = false;
 				}
 			});
 		},
 		method_getRoles() {
 			this.roles.loading = true;
-			axios.req({
+			return axios.req({
 				action: '/admin/roles',
 				method: 'get',
 				success: (resp) => {
