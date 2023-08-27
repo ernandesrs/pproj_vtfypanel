@@ -3,7 +3,6 @@
 		<v-app-bar-title v-if="barTitle" :text="barTitle" class="ml-6"></v-app-bar-title>
 
 		<v-btn-group density="compact" elevation="1" class="mr-6">
-			<v-btn @click.stop="$router.back()" prepend-icon="mdi-arrow-left" text="Voltar" class="text-none"></v-btn>
 			<v-btn @click.stop="method_actionCreateClick" v-if="actionButtonCreate.show"
 				:prepend-icon="actionButtonCreate.icon ?? 'mdi-plus'" :text="actionButtonCreate.text" color="success"
 				class="text-none" :disabled="actionButtonCreate.disabled"></v-btn>
