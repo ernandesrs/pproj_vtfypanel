@@ -56,6 +56,12 @@ export default {
     inAppPanel() {
         useAppStore().updateApp('app', 'PANEL');
     },
+    inAuthPage() {
+        useAppStore().updateApp('auth', '');
+    },
+    inOopsPage() {
+        useAppStore().updateApp('oops', '');
+    },
     canAccessListView: (to, from, next) => {
         let route = null;
 

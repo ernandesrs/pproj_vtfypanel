@@ -115,6 +115,9 @@ const routes = [
   },
   {
     path: '/auth',
+    beforeEnter: [
+      middlewares.inAuthPage
+    ],
     component: () => import('@/layouts/auth/Default.vue'),
     children: [
       {
@@ -161,6 +164,9 @@ const routes = [
   },
   {
     path: '/oops',
+    beforeEnter: [
+      middlewares.inOopsPage
+    ],
     component: () => import('@/layouts/oops/Default.vue'),
     children: [
       {

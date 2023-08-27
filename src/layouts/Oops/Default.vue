@@ -22,7 +22,7 @@ export default {
     };
   },
   watch: {
-    computed_appBreadcrumbs: {
+    'computed_appStore.breadcrumbs': {
       deep: true,
       immediate: true,
       handler(nv, ov) {
@@ -32,14 +32,14 @@ export default {
       }
     }
   },
-  computed: {
-    computed_appBreadcrumbs() {
-      return useAppStore().appBreadcrumbs;
-    }
-  },
   methods: {
     method_updateAppTitle(newBreadcrumbs) {
-      document.title = '[VTFY' + (this.computedAppConfigFromStore?.appName ?? '') + '] ' + newBreadcrumbs.map((i) => { return i.title ?? i.text; }).join(' » ');
+      document.title = '[' + this.computed_appStore.getTitle + '' + (this.computed_appStore.getName ?? '') + '] ' + newBreadcrumbs.map((i) => { return i.title ?? i.text; }).join(' » ');
+    }
+  },
+  computed: {
+    computed_appStore() {
+      return useAppStore();
     }
   }
 }

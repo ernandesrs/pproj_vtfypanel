@@ -3,7 +3,7 @@
 		<div class="text-center pb-3">
 			<v-icon icon="$vuetify" :size="75"></v-icon>
 			<v-app-bar-title>
-				<span class="font-weight-bold">{{ computed_appName }}</span><span class="font-weight-light">{{
+				<span class="font-weight-bold">{{ computed_appStore.getTitle }}</span><span class="font-weight-light">{{
 					computed_appStore.getName
 				}}</span>
 			</v-app-bar-title>
@@ -183,9 +183,6 @@ export default {
 		},
 		computed_notificationStore() {
 			return useNotificationStore();
-		},
-		computed_appName() {
-			return import.meta.env.VITE_APP_NAME;
 		}
 	}
 }

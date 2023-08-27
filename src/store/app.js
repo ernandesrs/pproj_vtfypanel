@@ -4,6 +4,7 @@ import { defineStore } from 'pinia'
 export const useAppStore = defineStore('app', {
   state: () => ({
     app: 'app',
+    title: import.meta.env.VITE_APP_NAME,
     name: 'PANEL',
 
     breadcrumbs: [],
@@ -23,6 +24,13 @@ export const useAppStore = defineStore('app', {
      */
     getApp() {
       return this.app;
+    },
+
+    /**
+     * @returns {String}
+     */
+    getTitle() {
+      return this.title;
     },
 
     /**
@@ -89,16 +97,20 @@ export const useAppStore = defineStore('app', {
       this.name = name;
     },
     updateBreadcrumbs(breadcrumbs) {
-      this.breadcrumbs = [
-        {
-          title: 'Início',
-          to: {
-            name: this.isAdminApp ? 'admin.home' : 'app.home'
+      if (this.isAdminApp || this.isClientApp) {
+        this.breadcrumbs = [
+          {
+            title: 'Início',
+            to: {
+              name: this.isAdminApp ? 'admin.home' : 'app.home'
+            },
+            disabled: false
           },
-          disabled: false
-        },
-        ...breadcrumbs
-      ];
+          ...breadcrumbs
+        ];
+      } else {
+        this.breadcrumbs = breadcrumbs;
+      }
     },
     updateAppFlashAlert(flashAlert) {
       this.flashAlert = flashAlert;

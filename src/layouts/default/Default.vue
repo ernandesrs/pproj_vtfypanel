@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     method_updateAppTitle(newBreadcrumbs) {
-      document.title = '[VTFY' + this.computed_appStore.name + '] ' + newBreadcrumbs.map((i) => { return i.title ?? i.text; }).join(' » ');
+      document.title = '[' + this.computed_appStore.getTitle + ' ' + this.computed_appStore.name + '] ' + newBreadcrumbs.map((i) => { return i.title ?? i.text; }).join(' » ');
     }
   },
   computed: {
