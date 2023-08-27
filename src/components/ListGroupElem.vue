@@ -21,7 +21,7 @@
 			</thead>
 			<tbody style="position: relative;">
 				<div v-if="loadingList"
-					:class="[$utils.app.config.isDarkMode() ? 'dark-loading-list-background' : 'light-loading-list-background']"
+					:class="[$utils.app.config.themeIsDark() ? 'dark-loading-list-background' : 'light-loading-list-background']"
 					style="position: absolute; bottom: 0; right: 0; width: 100%; height: 100%; z-index: 1000;">
 					<div class="d-flex justify-center align-center w-100 h-100">
 						<loading-elem></loading-elem>
