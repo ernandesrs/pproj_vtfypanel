@@ -38,15 +38,16 @@
 					<td v-if="computed_hasAction">
 						<v-btn-group density="compact">
 							<!-- actions button -->
-							<v-btn v-if="actionShow" @click.stop="method_showItem" :text="actionShowConfig.text"
+							<v-btn v-if="actionShow && computed_userStore.permission(this.resource).canView()"
+								@click.stop="method_showItem" :text="actionShowConfig.text"
 								:prepend-icon="actionShowConfig.icon" size="small" :color="actionShowConfig.color"
 								:variant="actionShowConfig.variant" :data-identificator="item?.id ?? index"
 								:disabled="actionShowConfig.disabled === null ? !computed_userStore.permission(this.resource).canView() : typeof actionShowConfig.disabled === 'boolean' ? actionShowConfig.disabled : actionShowConfig.disabled(item)" />
-							<v-btn v-if="actionEdit" @click.stop="method_editItem" :text="actionEditConfig.text"
+							<v-btn v-if="actionEdit && computed_userStore.permission(this.resource).canUpdate()" @click.stop="method_editItem" :text="actionEditConfig.text"
 								:prepend-icon="actionEditConfig.icon" size="small" :color="actionEditConfig.color"
 								:variant="actionEditConfig.variant" :data-identificator="item?.id ?? index"
 								:disabled="actionEditConfig.disabled === null ? !computed_userStore.permission(this.resource).canUpdate() : typeof actionEditConfig.disabled === 'boolean' ? actionEditConfig.disabled : actionEditConfig.disabled(item)" />
-							<confirmation-button v-if="actionDelete" :text="actionDeleteConfig.text"
+							<confirmation-button v-if="actionDelete && computed_userStore.permission(this.resource).canDelete()" :text="actionDeleteConfig.text"
 								:icon="actionDeleteConfig.icon" size="small" :color="actionDeleteConfig.color"
 								:dialog-title="actionDeleteDialogTitle ?? 'Confirmar exclusão?'"
 								:dialog-text="actionDeleteDialogText" :data-identificator="item?.id ?? index"

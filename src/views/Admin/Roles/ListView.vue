@@ -2,8 +2,7 @@
 	<base-view :load-contents="[
 		method_getRoles
 	]" bar-title="Funções" :bar-create-button="{
-	show: true,
-	disabled: !computed_userStore.permission('role').canCreate(),
+	show: computed_userStore.permission('role').canCreate(),
 	text: 'Nova função',
 	icon: 'mdi-shield-plus-outline',
 	to: { name: 'admin.roles.create' },

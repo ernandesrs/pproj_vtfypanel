@@ -2,8 +2,7 @@
 	<base-view :load-contents="[
 		method_getUsers
 	]" bar-title="Usuários" :bar-create-button="{
-	show: true,
-	disabled: !computed_userStore.permission('user').canCreate(),
+	show: computed_userStore.permission('user').canCreate(),
 	text: 'Novo usuário',
 	icon: 'mdi-account-plus',
 	to: { name: 'admin.users.create' }
