@@ -15,12 +15,14 @@
 					<template v-slot:activator="{ props }">
 						<v-list-item v-bind="props" :prepend-icon="item.icon" :title="item.text"></v-list-item>
 					</template>
-					<v-list-item v-for="subItem in item.items" :key="subItem" :prepend-icon="subItem.icon"
-						:title="subItem.text" :to="subItem.to" :active="subItem.activeIn.includes(this.$route.name)"
-						rounded></v-list-item>
+					<template v-for="subItem in item.items" :key="subItem">
+						<v-list-item v-if="computed_userStore.permission(subItem.to?.name).canViewAny()"
+							:prepend-icon="subItem.icon" :title="subItem.text" :to="subItem.to"
+							:active="subItem.activeIn.includes(this.$route.name)" rounded></v-list-item>
+					</template>
 				</v-list-group>
-				<v-list-item v-else :title="item.text" :prepend-icon="item.icon" :to="item.to"
-					:active="item.activeIn.includes(this.$route.name)" rounded>
+				<v-list-item v-else-if="computed_userStore.permission(item.to?.name).canViewAny()" :title="item.text"
+					:prepend-icon="item.icon" :to="item.to" :active="item.activeIn.includes(this.$route.name)" rounded>
 					<template v-if="item?.badge && item.badge.content() > 0" v-slot:append>
 						<v-badge :color="item.badge.color" :content="item.badge.content() + ''" inline></v-badge>
 					</template>
