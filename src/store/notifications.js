@@ -20,13 +20,11 @@ const requestNotifications = (notificationStore) => {
         return;
     }
 
-    notificationStore.unread = 0;
-    notificationStore.total = 0;
-
     return axios.req({
         action: action,
         method: method,
         success: (resp) => {
+            let unreadCount = 0;
             notificationStore.notifications = [];
 
             Object.entries(resp.data.notifications.list).map((not) => {
@@ -42,11 +40,12 @@ const requestNotifications = (notificationStore) => {
                 });
 
                 if (!not[1].read_at) {
-                    notificationStore.unread++;
+                    unreadCount++;
                 }
             });
 
             notificationStore.total = notificationStore.notifications.length;
+            notificationStore.unread = unreadCount;
         }
     });
 }

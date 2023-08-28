@@ -33,7 +33,7 @@
                         <v-tooltip location="bottom" text="Data de visualização">
                             <template v-slot:activator="{ props }">
                                 <tiny-text-elem v-bind="props" size="small" :icon="item.read ? 'mdi-eye-outline' : ''"
-                                    :text="item.read ? (new Date(item.read_at)).toLocaleString('br') : 'Não lido'"
+                                    :text="item.read ? (new Date(item.read_at)).toLocaleString('br') : 'Não visualizado'"
                                     class="ml-2"></tiny-text-elem>
                             </template>
                         </v-tooltip>
