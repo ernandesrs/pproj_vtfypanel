@@ -19,16 +19,24 @@
                         <p>
                             {{ item.title }}
                         </p>
-                        <p class="text-subtitle-1">
+                        <p class="text-subtitle-1 font-weight-light">
                             {{ item.description }}
                         </p>
                     </div>
                     <div class="d-flex">
-                        <tiny-text-elem size="small" :text="(new Date(item.created_at)).toLocaleString('br')"
-                            class="mr-2"></tiny-text-elem>
-                        <tiny-text-elem size="small"
-                            :text="item.read ? (new Date(item.read_at)).toLocaleString('br') : 'Não lido'"
-                            class="ml-2"></tiny-text-elem>
+                        <v-tooltip location="bottom" text="Data da notificação">
+                            <template v-slot:activator="{ props }">
+                                <tiny-text-elem v-bind="props" size="small" icon="mdi-calendar"
+                                    :text="(new Date(item.created_at)).toLocaleString('br')" class="mr-2"></tiny-text-elem>
+                            </template>
+                        </v-tooltip>
+                        <v-tooltip location="bottom" text="Data de visualização">
+                            <template v-slot:activator="{ props }">
+                                <tiny-text-elem v-bind="props" size="small" :icon="item.read ? 'mdi-eye-outline' : ''"
+                                    :text="item.read ? (new Date(item.read_at)).toLocaleString('br') : 'Não lido'"
+                                    class="ml-2"></tiny-text-elem>
+                            </template>
+                        </v-tooltip>
                     </div>
                 </v-col>
             </v-row>

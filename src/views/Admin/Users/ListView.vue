@@ -32,10 +32,14 @@
 						</p>
 					</div>
 					<p>
-						<v-chip size="small" :color="users.levelsConfig[item.level].color">
-							<v-icon start :icon="users.levelsConfig[item.level].icon"></v-icon> {{
-								users.levelsConfig[item.level].text }}
-						</v-chip>
+						<v-tooltip text="Nível de acesso">
+							<template v-slot:activator="{ props }">
+								<v-chip v-bind="props" size="small" :color="users.levelsConfig[item.level].color">
+									<v-icon start :icon="users.levelsConfig[item.level].icon"></v-icon> {{
+										users.levelsConfig[item.level].text }}
+								</v-chip>
+							</template>
+						</v-tooltip>
 						<v-chip :title="item.email_verified_at ? 'Conta verificada' : 'Conta não verificada'" class="mx-1"
 							size="small" :color="item.email_verified_at ? 'success' : 'orange'">
 							<v-icon start :icon="item.email_verified_at ? 'mdi-check' : 'mdi-close'"></v-icon>
