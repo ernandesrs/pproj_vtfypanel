@@ -75,6 +75,11 @@ export default {
 				return;
 			}
 
+			if (useAppStore().isDemo) {
+				alert.addInfo('Esta é uma aplicação DEMO e este recurso não está habilitado.');
+				return;
+			}
+
 			this.formForgot.submitting = true;
 			axios.req({
 				action: '/auth/forget-password',

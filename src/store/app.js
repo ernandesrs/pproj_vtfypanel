@@ -22,6 +22,10 @@ export const useAppStore = defineStore('app', {
     /***********************************
      * app
      ***********************************/
+    isDemo() {
+      return import.meta.env.VITE_APP_DEMO;
+    },
+
     isExtraSmallDevice() {
       return window.innerWidth <= XS_SIZE;
     },

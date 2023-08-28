@@ -47,8 +47,8 @@ export default {
 			formLogin: {
 				valid: false,
 				data: {
-					email: null,
-					password: null
+					email: '',
+					password: ''
 				},
 				rules: {
 					emailRules: [
@@ -79,6 +79,13 @@ export default {
 				title: 'Login'
 			}
 		]);
+
+		if (useAppStore().isDemo) {
+			this.formLogin.data = {
+				email: 'visitor@mail.com',
+				password: 'visitor'
+			}
+		}
 	},
 	methods: {
 		method_login() {

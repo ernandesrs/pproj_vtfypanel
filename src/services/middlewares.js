@@ -11,13 +11,13 @@ export default {
 
         if (apiToken) {
             route = {
-                name: 'app.home'
+                name: 'admin.home'
             };
         }
 
         next(route);
     },
-    redirectIfUnauthenticated: (to, from, next) => {
+    redirectIfUnauthenticated: async (to, from, next) => {
         let apiToken = token.get();
 
         if (!apiToken) {
@@ -27,7 +27,7 @@ export default {
             return;
         }
 
-        axios.request('/me', {}, 'get').then((resp) => {
+        await axios.request('/me', {}, 'get').then((resp) => {
             useUserStore().addUser(resp.data.user);
 
             next()

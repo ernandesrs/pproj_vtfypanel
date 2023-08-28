@@ -165,6 +165,11 @@ export default {
 				return;
 			}
 
+			if (useAppStore().isDemo) {
+				alert.addInfo('Esta é uma aplicação DEMO e este recurso não está habilitado.');
+				return;
+			}
+
 			this.formRegister.submitting = true;
 			axios.req({
 				action: '/auth/register',
